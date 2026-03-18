@@ -1,13 +1,26 @@
 "use client";
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { TrendingUp, PhoneCall, Users, Database } from 'lucide-react';
+import { TrendingUp, PhoneCall, Users, Database, Play, X } from 'lucide-react';
 
 export default function Home() {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const parallaxRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: parallaxRef,
+    offset: ["start end", "end start"]
+  });
+  
+  // y: Illusion of depth (moving slower than scroll)
+  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  // scale: Interactive scaling as it enters and leaves viewport
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.3]);
+
   return (
     <div className="bg-white">
       {/* 1. HERO SECTION (Video Background) */}
@@ -37,12 +50,21 @@ export default function Home() {
             <p className="text-xl md:text-2xl text-gray-200 mb-12 font-medium drop-shadow-md max-w-3xl">
               Gestión operativa B2B diseñada para maximizar la colocación comercial con alto estándar tecnológico.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contacto">
+            <div className="flex flex-col sm:flex-row gap-6 mt-8">
+              <Link href="/contacto" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto text-lg py-5 px-10 shadow-[0_4px_30px_rgba(0,188,76,0.3)] hover:shadow-[0_4px_40px_rgba(0,188,76,0.5)] transition-shadow duration-300">
                   Optimice su colocación
                 </Button>
               </Link>
+              <button 
+                onClick={() => setIsVideoModalOpen(true)}
+                className="w-full sm:w-auto flex items-center justify-center gap-4 text-white font-semibold py-4 px-8 rounded-xl border border-white/20 hover:bg-white/10 hover:border-[var(--color-accent)] backdrop-blur-sm transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-full bg-[var(--color-accent)]/20 border border-[var(--color-accent)]/50 flex items-center justify-center pl-1 group-hover:bg-[var(--color-accent)] group-hover:shadow-[0_0_20px_rgba(0,188,76,0.6)] transition-all duration-300">
+                   <Play size={20} className="text-white fill-white" />
+                </div>
+                Ver Video Corporativo
+              </button>
             </div>
           </AnimatedSection>
         </div>
@@ -77,12 +99,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. SERVICIOS (Imagen de fondo + Overlay 50%, Sin curvas) */}
-      <section className="py-28 relative bg-black">
-        <div className="absolute inset-0 z-0">
+      {/* 3. SERVICIOS (Parallax Dinámico 60fps + Overlay 60%) */}
+      <section 
+        ref={parallaxRef}
+        className="py-28 relative bg-black overflow-hidden"
+      >
+        <motion.div 
+          className="absolute inset-x-0 -top-[25%] -bottom-[25%] z-0"
+          style={{ y, scale }}
+        >
           <Image src="/services-bg.png" alt="Services Network" fill className="object-cover" />
-          <div className="absolute inset-0 bg-black/60 z-10" />
-        </div>
+        </motion.div>
+        
+        <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
           <AnimatedSection className="text-center mb-16">
@@ -178,6 +207,44 @@ export default function Home() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* MODAL DE VIDEO CORPORATIVO */}
+      <AnimatePresence>
+        {isVideoModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8"
+          >
+            {/* Botón de Cierre */}
+            <button 
+              onClick={() => setIsVideoModalOpen(false)}
+              className="absolute top-6 right-6 sm:top-10 sm:right-10 text-white/50 hover:text-white transition-all bg-white/5 p-4 rounded-full hover:bg-[var(--color-accent)] hover:scale-110 z-50"
+            >
+              <X size={32} />
+            </button>
+            
+            {/* Contenedor del reproductor de Video */}
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 50 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="w-full max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(0,188,76,0.2)] relative border border-white/10"
+            >
+              <video 
+                className="w-full h-full object-cover"
+                controls
+                autoPlay
+                playsInline
+                src="/hero-video.mp4"
+                title="Video Corporativo Kreditec"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

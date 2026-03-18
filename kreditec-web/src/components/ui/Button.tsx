@@ -10,7 +10,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = 'inline-flex items-center justify-center rounded-lg font-semibold transition-all duration-300 active:scale-95';
     
     const variants = {
-      primary: 'bg-[var(--color-accent)] text-white hover:bg-green-600 shadow-md hover:shadow-lg',
+      primary: 'bg-gradient-to-tr from-[var(--color-brand)] via-[#005924] to-[var(--color-accent)] bg-[length:200%_200%] bg-left-bottom hover:bg-right-top text-white shadow-lg shadow-[var(--color-accent)]/20 hover:shadow-xl hover:shadow-[var(--color-accent)]/40 hover:-translate-y-0.5',
       secondary: 'bg-[var(--color-brand)] text-white hover:bg-[#001f0d] shadow-md hover:shadow-lg',
       outline: 'border-2 border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white',
       ghost: 'text-gray-600 hover:text-[var(--color-brand)] hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'

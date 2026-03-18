@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram, Linkedin } from 'lucide-react';
 
 export function Footer() {
@@ -8,8 +9,8 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-1 border-gray-800">
-             <div className="text-2xl font-bold mb-4 flex items-center gap-1">
-                <span>KREDIT</span><span className="text-[var(--color-accent)]">EC</span>
+             <div className="mb-6">
+                <Image src="/logo-blanco.png" alt="Kreditec Logo" width={200} height={45} className="h-10 w-auto" />
              </div>
              <p className="text-gray-400 text-sm leading-relaxed mb-6">
                 Gestión Comercial Especializada con tecnología de élite. Información centralizada y verificación segura.

@@ -26,7 +26,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom premium scrollbar */
+@keyframes shimmer {
+  0% { transform: translateX(-150%) skewX(-15deg); }
+  20%, 100% { transform: translateX(150%) skewX(-15deg); }
+}
+.animate-shimmer {
+  animation: shimmer 8s infinite ease-out;
+}
+
+.bg-radial-kreditec {
+  background: radial-gradient(circle at bottom right, rgba(0, 188, 76, 0.15) 0%, rgba(0, 45, 20, 0.95) 60%, rgba(0, 45, 20, 1) 100%);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

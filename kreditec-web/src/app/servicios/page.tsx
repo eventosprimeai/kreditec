@@ -1,68 +1,91 @@
+"use client";
 import React from 'react';
+import Image from 'next/image';
+import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { TrendingUp, PhoneCall, Users, Database } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
-import { TrendingUp, PhoneCall, Users, Database } from 'lucide-react';
 
-export default function Servicios() {
-    return (
-    <div className="pt-32 pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto text-center mb-24">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">Servicios Especializados</h1>
-        <div className="w-24 h-1.5 bg-[var(--color-accent)] mx-auto rounded-full mb-8" />
-        <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-          Nuestra tecnología e infraestructura están diseñadas para replicar la experiencia de venta presencial, pero con resultados medibles y total seguridad de la información.
-        </p>
-      </div>
+export default function ServiciosPage() {
+  return (
+    <div className="bg-white min-h-screen">
+      <InnerHero title="Servicios" bgImage="/services-bg.png" />
 
-      <div className="space-y-24">
-         <ServiceRow 
-            title="Gestión Comercial y Colocación"
-            desc="Colocación proactiva de microcrédito y consumo. Nos integramos a sus pipelines para asegurar que las operaciones lleguen listas para desembolso, validando requisitos bajo las políticas de su institución."
-            icon={<TrendingUp size={40} />}
-         />
-         <ServiceRow 
-            title="Contactabilidad Global"
-            desc="Implementamos herramientas de clase mundial como HubSpot y NUA Talker. No perdemos rastro de ninguna comunicación, garantizando disponibilidad 8/7 para sus potenciales clientes."
-            icon={<PhoneCall size={40} />}
-            reverse
-         />
-         <ServiceRow 
-            title="Captación Inteligente de Leads"
-            desc="A través de bases de datos enriquecidas y marketing masivo, estructuramos un flujo continuo de prospectos calificados para su institución financiera."
-            icon={<Users size={40} />}
-         />
-         <ServiceRow 
-            title="Control & Trazabilidad Total"
-            desc="Grabación y seguimiento total del lead preaprobado. Usted tendrá acceso a dashboards gerenciales para conocer el ROI y la conversión en tiempo real."
-            icon={<Database size={40} />}
-            reverse
-         />
-      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <AnimatedSection className="text-center mb-20">
+          <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
+            Plataformas modulares integradas para resolver todos los frentes de su embudo comercial.
+          </p>
+        </AnimatedSection>
 
-      <div className="mt-32 text-center">
-         <h2 className="text-3xl font-bold mb-8 dark:text-white">¿Listo para optimizar su captación?</h2>
-         <Link href="/contacto">
-            <Button size="lg" className="text-lg px-12 py-4">Inicie su transformación digital hoy</Button>
-         </Link>
+        <div className="flex flex-col gap-24">
+          <ServiceRow 
+             title="Gestión Comercial Especializada" 
+             desc="Transformamos el proceso telemarketing tradicional en un flujo corporativo. No contactamos al azar; perfilamos y maduramos leads hasta que son operaciones listas para la firma, liberando a su equipo interno." 
+             icon={<TrendingUp size={48} />}
+             image="/value-prop.png"
+             reverse={false}
+          />
+          <ServiceRow 
+             title="Contactabilidad e Integración Global" 
+             desc="Operamos nativamente con plataformas líderes como HubSpot y centrales NUA Talker. Esto asegura cero caídas, monitoreo garantizado y registros de cada interacción en la ficha del posible socio." 
+             icon={<PhoneCall size={48} />}
+             image="/tech-security.png"
+             reverse={true}
+          />
+          <ServiceRow 
+             title="Verificación y Filtro Masivo" 
+             desc="Aseguramos una calidad óptima antes de pasar expedientes a sus oficiales de crédito. Evaluamos capacidad de pago superficial conectando diversas bases para maximizar la efectividad en originación." 
+             icon={<Database size={48} />}
+             image="/about-team.png"
+             reverse={false}
+          />
+        </div>
+
+        <AnimatedSection delay={0.3} className="mt-24 text-center bg-gray-50 rounded-3xl p-12 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <h2 className="text-3xl font-bold text-[#002d14] mb-6 tracking-tight">Escale de forma segura hoy mismo.</h2>
+          <Link href="/contacto">
+            <Button size="lg" className="w-full sm:w-auto text-lg py-5 px-10 font-semibold">
+              Despliegue nuestro equipo
+            </Button>
+          </Link>
+        </AnimatedSection>
       </div>
     </div>
-    );
+  );
 }
 
-function ServiceRow({ title, desc, icon, reverse = false }: { title: string, desc: string, icon: React.ReactNode, reverse?: boolean }) {
-   return (
-      <div className={`flex flex-col ${reverse ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 lg:gap-20 items-center`}>
-         <div className="flex-1 w-full aspect-video bg-gray-100 dark:bg-[#001f0e] rounded-3xl flex items-center justify-center text-sm font-medium text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-800 shadow-inner overflow-hidden relative group">
-            <div className="absolute inset-0 bg-transparent group-hover:bg-[var(--color-accent)]/5 transition-colors duration-500 z-0" />
-            <span className="relative z-10 px-6 py-2 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-lg">[SERVICES_IMAGE_PLACEHOLDER]</span>
+function ServiceRow({ title, desc, icon, image, reverse }: { title: string, desc: string, icon: React.ReactNode, image: string, reverse: boolean }) {
+  return (
+    <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}>
+      <AnimatedSection className="flex-1 w-full order-2 lg:order-1">
+         <div className="w-16 h-16 bg-[#002d14] text-[var(--color-accent)] rounded-xl flex items-center justify-center mb-8 shadow-md">
+            {icon}
          </div>
-         <div className="flex-1 space-y-6">
-            <div className="w-20 h-20 rounded-2xl bg-[#002d14] text-[var(--color-accent)] flex items-center justify-center shadow-lg border border-[var(--color-accent)]/20">
-               {icon}
-            </div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">{title}</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{desc}</p>
+         <h2 className="text-3xl font-bold text-[#002d14] mb-6">{title}</h2>
+         <p className="text-lg text-gray-700 leading-relaxed font-medium">
+            {desc}
+         </p>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2} className="flex-1 w-full order-1 lg:order-2">
+         <div className="relative aspect-video lg:aspect-square w-full rounded-2xl overflow-hidden shadow-xl group border border-gray-100">
+            <Image src={image} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-[1.5s] ease-out" />
          </div>
+      </AnimatedSection>
+    </div>
+  );
+}
+
+function InnerHero({ title, bgImage }: { title: string, bgImage: string }) {
+  return (
+    <section className="relative h-[30vh] md:h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden w-full mt-16 md:mt-20">
+      <div className="absolute inset-0 z-0">
+        <Image src={bgImage} alt={title} fill className="object-cover" priority />
+        <div className="absolute inset-0 bg-black/50 z-10" />
       </div>
-   );
+      <div className="relative z-20 text-center px-4">
+         <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">{title}</h1>
+      </div>
+    </section>
+  );
 }

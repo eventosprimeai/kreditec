@@ -10,7 +10,8 @@ export default function NosotrosPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <AnimatedSection className="text-center mb-16">
-          <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-4 tracking-tight">ADN de la Empresa</h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
             Especialistas en ingeniería de procesos orientada al sector financiero popular y solidario ecuatoriano.
           </p>
         </AnimatedSection>

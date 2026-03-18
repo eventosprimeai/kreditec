@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { TrendingUp, PhoneCall, Users, Database } from 'lucide-react';
+import { TrendingUp, PhoneCall, Users, Database, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 
@@ -13,13 +13,15 @@ export default function ServiciosPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <AnimatedSection className="text-center mb-20">
-          <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-4 tracking-tight">Infraestructura Exclusiva</h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
             Plataformas modulares integradas para resolver todos los frentes de su embudo comercial.
           </p>
         </AnimatedSection>
 
         <div className="flex flex-col gap-24">
           <ServiceRow 
+             id="gestion-comercial"
              title="Gestión Comercial Especializada" 
              desc="Transformamos el proceso telemarketing tradicional en un flujo corporativo. No contactamos al azar; perfilamos y maduramos leads hasta que son operaciones listas para la firma, liberando a su equipo interno." 
              icon={<TrendingUp size={48} />}
@@ -27,6 +29,7 @@ export default function ServiciosPage() {
              reverse={false}
           />
           <ServiceRow 
+             id="contactabilidad"
              title="Contactabilidad e Integración Global" 
              desc="Operamos nativamente con plataformas líderes como HubSpot y centrales NUA Talker. Esto asegura cero caídas, monitoreo garantizado y registros de cada interacción en la ficha del posible socio." 
              icon={<PhoneCall size={48} />}
@@ -34,11 +37,20 @@ export default function ServiciosPage() {
              reverse={true}
           />
           <ServiceRow 
+             id="filtro-masivo"
              title="Verificación y Filtro Masivo" 
              desc="Aseguramos una calidad óptima antes de pasar expedientes a sus oficiales de crédito. Evaluamos capacidad de pago superficial conectando diversas bases para maximizar la efectividad en originación." 
              icon={<Database size={48} />}
              image="/about-team.png"
              reverse={false}
+          />
+          <ServiceRow 
+             id="trazabilidad"
+             title="Reportes y Trazabilidad IAM" 
+             desc="Transparencia absoluta en tiempo real. Proporcionamos tableros de control y reportes de auditoría tecnológica para que su equipo monitoree cada fase del embudo y el avance comercial de las campañas de forma corporativa." 
+             icon={<Activity size={48} />}
+             image="/methodology.png"
+             reverse={true}
           />
         </div>
 
@@ -55,9 +67,9 @@ export default function ServiciosPage() {
   );
 }
 
-function ServiceRow({ title, desc, icon, image, reverse }: { title: string, desc: string, icon: React.ReactNode, image: string, reverse: boolean }) {
+function ServiceRow({ id, title, desc, icon, image, reverse }: { id?: string, title: string, desc: string, icon: React.ReactNode, image: string, reverse: boolean }) {
   return (
-    <div className={`flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}>
+    <div id={id} className={`scroll-mt-32 flex flex-col ${reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-12 lg:gap-20`}>
       <AnimatedSection className="flex-1 w-full order-2 lg:order-1">
          <div className="w-16 h-16 bg-[#002d14] text-[var(--color-accent)] rounded-xl flex items-center justify-center mb-8 shadow-md">
             {icon}

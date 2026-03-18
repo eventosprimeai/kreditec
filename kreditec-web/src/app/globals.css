@@ -38,6 +38,23 @@ body {
   background: radial-gradient(circle at bottom right, rgba(0, 188, 76, 0.15) 0%, rgba(0, 45, 20, 0.95) 60%, rgba(0, 45, 20, 1) 100%);
 }
 
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 15s ease infinite;
+}
+
+@keyframes fade-in-out {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 0.29; transform: scale(1.1); }
+}
+.animate-fade-in-out {
+  animation: fade-in-out 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

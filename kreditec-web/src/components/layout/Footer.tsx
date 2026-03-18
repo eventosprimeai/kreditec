@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Linkedin } from 'lucide-react';
+import { Linkedin, Instagram } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -23,8 +23,11 @@ export function Footer() {
                 Gestión Comercial Especializada con tecnología de élite. Información centralizada, verificación estricta y resultados comprobables.
              </p>
              <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[var(--color-accent)] hover:text-white transition-all shadow-lg hover:shadow-[var(--color-accent)]/30 group">
+                <a href="https://www.linkedin.com/company/kreditec/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[var(--color-accent)] hover:text-white transition-all shadow-lg hover:shadow-[var(--color-accent)]/30 group">
                    <Linkedin size={20} className="group-hover:scale-110 transition-transform" />
+                </a>
+                <a href="https://www.instagram.com/kreditec?igsh=MXkxMHNqdnUyMmtieA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[var(--color-accent)] hover:text-white transition-all shadow-lg hover:shadow-[var(--color-accent)]/30 group">
+                   <Instagram size={20} className="group-hover:scale-110 transition-transform" />
                 </a>
              </div>
           </div>

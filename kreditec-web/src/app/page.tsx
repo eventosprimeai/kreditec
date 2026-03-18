@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { TrendingUp, PhoneCall, Users, Database, Play, X } from 'lucide-react';
+import { TrendingUp, PhoneCall, Users, Database, Play, X, ShieldCheck, Lock } from 'lucide-react';
 
 export default function Home() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function Home() {
              poster="/hero-bg.png" 
              className="absolute inset-0 w-full h-full object-cover hidden sm:block"
           >
-             <source src="/hero-video.mp4" type="video/mp4" />
+             <source src="/hero-video-2.mp4" type="video/mp4" />
           </video>
           {/* Mobile Fallback */}
           <Image src="/hero-bg.png" alt="Kreditec Hero Mobile" fill className="object-cover sm:hidden" priority />
@@ -182,6 +182,68 @@ export default function Home() {
                </div>
                <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">100% Digital</h3>
                <p className="text-lg text-gray-600">Sin papeles. Datos estructurados limpios hacia sus sistemas core.</p>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+      {/* 4.5. TECNOLOGÍA Y SEGURIDAD (Sección oscura, enfoque B2B) */}
+      <section className="py-24 bg-[#001108] relative overflow-hidden border-t border-[var(--color-accent)]/20">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[var(--color-accent)] opacity-[0.03] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#00bc4c] opacity-[0.04] rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-16 items-center">
+            <AnimatedSection className="flex-1">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/30 text-[var(--color-accent)] font-bold text-sm tracking-widest uppercase mb-6">
+                <ShieldCheck size={18} /> Protección Institucional
+              </div>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+                Infraestructura blindada y trazabilidad con <span className="text-[var(--color-accent)]">Inteligencia Artificial</span>
+              </h2>
+              <p className="text-lg text-gray-400 mb-8 leading-relaxed">
+                Entendemos que el activo más valioso de su cooperativa son los datos de sus socios. Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional.
+              </p>
+              
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                    <Database className="text-[var(--color-accent)]" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Omnicanalidad Predictiva (HubSpot & NuaTalker)</h4>
+                    <p className="text-gray-400">Registramos cada interacción y maduramos clientes mediante IA hiper-personalizada. Usted tiene el control absoluto de lo que ocurre con cada operación.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                    <Lock className="text-[var(--color-accent)]" size={24} />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-white mb-2">Conectividad Restringida</h4>
+                    <p className="text-gray-400">Todo flujo de datos hacia nuestros contact centers opera bajo túneles cerrados, previniendo fuga o copia no autorizada de historiales financieros.</p>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
+            
+            <AnimatedSection delay={0.2} className="flex-1 w-full">
+              <div className="relative aspect-square md:aspect-[4/3] w-full rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(0,188,76,0.1)] group">
+                <Image src="/services-bg.png" alt="Seguridad Tecnologica B2B" fill className="object-cover group-hover:scale-105 transition-transform duration-[2s]" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-[#001108]/60 to-transparent" />
+                
+                {/* Elemento de UI flotante simulado */}
+                <div className="absolute bottom-6 left-6 right-6 lg:bottom-10 lg:left-10 bg-black/60 backdrop-blur-xl border border-white/10 p-6 rounded-2xl flex items-center justify-between">
+                  <div>
+                     <p className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-1">Estado de Conexión</p>
+                     <p className="text-white text-lg font-bold flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-[var(--color-accent)] animate-pulse" />
+                        Túnel VPN Encriptado Activo
+                     </p>
+                  </div>
+                  <ShieldCheck className="text-[var(--color-accent)] opacity-80" size={40} />
+                </div>
+              </div>
             </AnimatedSection>
           </div>
         </div>

@@ -1,9 +1,39 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { Button } from '@/components/ui/Button';
 
 export default function ContactoPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    institution: '',
+    cargo: '',
+    telefono: '',
+    interes: '',
+    fecha: '',
+    mensaje: '',
+    privacy: false
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.privacy) {
+      alert("Por favor acepte la Política de Privacidad para continuar.");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    // Simulación de llamada a API (Aquí se conectaría con SendGrid, Resend, o el CRM de HubSpot)
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    setIsSubmitting(false);
+    setIsSuccess(true);
+    // Limpiar formulario opcional, o dejar en Success
+  };
+
   return (
     <div className="bg-white min-h-screen pt-32 pb-24 mt-10 md:mt-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,50 +47,104 @@ export default function ContactoPage() {
         <div className="flex flex-col lg:flex-row gap-12">
            <AnimatedSection delay={0.1} className="flex-1 w-full order-2 lg:order-1">
              <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
-                <form className="space-y-6 relative z-10">
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                         <label className="block text-sm font-bold text-gray-700 mb-2">Nombre Completo</label>
-                         <input type="text" className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                      </div>
-                      <div>
-                         <label className="block text-sm font-bold text-gray-700 mb-2">Institución / Flujo</label>
-                         <input type="text" className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                      </div>
-                   </div>
-                   <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Correo Corporativo</label>
-                      <input type="email" className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                   </div>
-                   <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Detalle su requerimiento</label>
-                      <textarea rows={4} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all resize-none" />
-                   </div>
-                   <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                      <input type="checkbox" id="privacy" className="mt-1 w-4 h-4 text-[var(--color-accent)] border-gray-300 rounded focus:ring-[var(--color-accent)]" />
-                      <label htmlFor="privacy" className="text-sm text-gray-600 font-medium leading-relaxed">Acepto la <a href="/politica-de-privacidad" className="text-[var(--color-accent)] hover:underline font-bold">Política de Privacidad</a> y el tratamiento de datos para uso exclusivamente B2B (Notice at Collection).</label>
-                   </div>
-                   <Button type="button" className="w-full py-4 text-lg mt-6 shadow-lg shadow-[var(--color-accent)]/20 hover:-translate-y-1">Agendar Llamada Inicial</Button>
-                </form>
+                {isSuccess ? (
+                  <div className="flex flex-col items-center justify-center text-center py-10 h-full">
+                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                        <svg className="w-10 h-10 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                     </div>
+                     <h3 className="text-2xl font-bold text-[#002d14] mb-3">¡Solicitud Recibida!</h3>
+                     <p className="text-gray-600 text-lg mb-8">Nuestro equipo de ingeniería operativa evaluará su requerimiento y le contactaremos dentro de 24 horas hábiles.</p>
+                     <Button onClick={() => { setIsSuccess(false); setFormData({name: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false}) }}>Enviar Otro Mensaje</Button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                           <label className="block text-sm font-bold text-gray-700 mb-2">Nombre y Apellido <span className="text-red-500">*</span></label>
+                           <input required type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-gray-700 mb-2">Correo Electrónico Corporativo <span className="text-red-500">*</span></label>
+                           <input required type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-gray-700 mb-2">Nombre de la Institución</label>
+                           <input type="text" value={formData.institution} onChange={(e) => setFormData({...formData, institution: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-gray-700 mb-2">Cargo</label>
+                           <input type="text" value={formData.cargo} onChange={(e) => setFormData({...formData, cargo: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-gray-700 mb-2">Teléfono de Contacto <span className="text-red-500">*</span></label>
+                           <input required type="tel" value={formData.telefono} onChange={(e) => setFormData({...formData, telefono: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
+                        </div>
+                        <div>
+                           <label className="block text-sm font-bold text-gray-700 mb-2">Interés Principal</label>
+                           <select value={formData.interes} onChange={(e) => setFormData({...formData, interes: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all text-gray-700">
+                             <option value="">Seleccione una opción</option>
+                             <option value="Colocación de Microcrédito">Colocación de Microcrédito</option>
+                             <option value="Colocación de Consumo">Colocación de Consumo</option>
+                             <option value="Ingeniería de Procesos / Consultoría">Ingeniería de Procesos / Consultoría</option>
+                             <option value="Implementación de Ecosistema Digital">Implementación de Ecosistema Digital (HubSpot/nua talker)</option>
+                             <option value="Informacion general de servicios">Informacion general de servicios KREDITEC</option>
+                             <option value="Agendar una reunion virtual">Agendar una reunion virtual</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Fecha sugerida para reunión virtual</label>
+                        <input type="date" value={formData.fecha} onChange={(e) => setFormData({...formData, fecha: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all text-gray-700" />
+                     </div>
+                     <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Mensaje</label>
+                        <textarea rows={4} placeholder="Cuéntenos sobre los desafíos de su operación actual..." value={formData.mensaje} onChange={(e) => setFormData({...formData, mensaje: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all resize-none placeholder-gray-400" />
+                     </div>
+                     
+                     <div className="flex flex-col gap-4 mt-8">
+                        <div className="flex items-start gap-4 p-5 bg-gray-50 rounded-xl border border-gray-100">
+                           <input type="checkbox" id="privacy" checked={formData.privacy} onChange={(e) => setFormData({...formData, privacy: e.target.checked})} className="mt-1 w-4 h-4 text-[var(--color-accent)] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer" />
+                           <label htmlFor="privacy" className="text-sm text-gray-600 font-medium leading-relaxed cursor-pointer">Acepto la <a href="/politica-de-privacidad" className="text-[var(--color-accent)] hover:underline font-bold">Política de Privacidad</a> y el tratamiento de datos para uso exclusivamente B2B (Notice at Collection).</label>
+                        </div>
+                        <div className="flex items-start gap-3 px-2">
+                           <div className="text-green-600 mt-0.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                           <p className="text-xs text-gray-500 leading-relaxed font-medium"><strong>Su información está segura con nosotros.</strong> Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional para el manejo de información sensible.</p>
+                        </div>
+                     </div>
+                     
+                     <Button type="submit" disabled={isSubmitting} className={`w-full py-4 text-lg mt-8 shadow-lg shadow-[var(--color-accent)]/20 hover:-translate-y-1 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                       {isSubmitting ? 'Procesando Requerimiento...' : 'Optimice su colocación hoy mismo'}
+                     </Button>
+                  </form>
+                )}
              </div>
            </AnimatedSection>
            
            <AnimatedSection delay={0.2} className="flex-1 flex flex-col gap-8 order-1 lg:order-2">
              <div className="bg-[#001f0e] rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--color-accent)] opacity-[0.04] rounded-bl-full group-hover:scale-125 transition-transform duration-700 pointer-events-none" />
-                <h3 className="text-2xl font-bold mb-8">Información de Operaciones</h3>
-                <div className="space-y-6 text-gray-300">
+                <h3 className="text-2xl font-bold mb-8 relative z-10">Información de Operaciones</h3>
+                <div className="space-y-6 text-gray-300 relative z-10">
                    <div>
-                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Desarrollo Comercial</span>
-                      <p className="text-lg text-white font-medium">Valentina Barrera</p>
+                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Responsable</span>
+                      <p className="text-lg text-white font-medium">Valentina Barrera – Gerente General</p>
                    </div>
                    <div>
-                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Contacto Oficial</span>
+                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Teléfono Directo</span>
+                      <a href="tel:+593987471367" className="text-lg text-white font-medium hover:underline">+593 98 747 1367</a>
+                   </div>
+                   <div>
+                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Correo Electrónico</span>
                       <a href="mailto:Vbarrera@kreditecsa.com" className="text-lg text-white font-medium hover:underline">Vbarrera@kreditecsa.com</a>
                    </div>
                    <div>
                       <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Dirección Corporativa</span>
-                      <p className="text-lg text-white font-medium leading-relaxed">6 de Diciembre N34-360 y Portugal, Edif. Zyra Of. 605, Quito, Ecuador.</p>
+                      <p className="text-sm text-gray-300 leading-relaxed font-medium">6 DE DICIEMBRE N34-360 N35 PORTUGAL / EDF. ZYRA OF 605 / IÑAQUITO - QUITO.</p>
+                   </div>
+                   <div>
+                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Horario de Atención</span>
+                      <p className="text-lg text-white font-medium mb-1">Gestión automatizada</p>
+                      <p className="text-sm text-gray-400">Disponibilidad 8/7</p>
                    </div>
                 </div>
              </div>

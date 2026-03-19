@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/CookieBanner";
 import { WhatsAppWidget } from "@/components/WhatsAppWidget";
+import { MaintenanceGuard } from "@/components/MaintenanceGuard";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -25,13 +26,21 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${montserrat.variable} antialiased min-h-screen flex flex-col`}>
-        <Header />
-        <main className="flex-grow">
+        <MaintenanceGuard 
+          LayoutWrapper={
+            <>
+              <Header />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+              <CookieBanner />
+              <WhatsAppWidget />
+            </>
+          }
+        >
           {children}
-        </main>
-        <Footer />
-        <CookieBanner />
-        <WhatsAppWidget />
+        </MaintenanceGuard>
       </body>
     </html>
   );

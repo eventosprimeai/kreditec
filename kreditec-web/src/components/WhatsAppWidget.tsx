@@ -1,21 +1,39 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, MessageCircle } from 'lucide-react';
+import { X, Send, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const WHATSAPP_NUMBER = "593987471367";
 const AGENT_NAME = "Valentina Barrera";
 const AGENT_ROLE = "Gerente General · Kreditec";
-const ONLINE_STATUS = "En línea ahora";
+
+// Horario de atención: Lunes-Domingo 9:00–17:00 (hora Ecuador, UTC-5)
+function isWithinBusinessHours(): boolean {
+  const now = new Date();
+  // Obtener hora local en Ecuador (UTC-5)
+  const ecuadorOffset = -5 * 60;
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  const ecuadorTime = new Date(utc + ecuadorOffset * 60000);
+  const hour = ecuadorTime.getHours();
+  // Lunes=1 ... Domingo=0; todos los días 9–17
+  return hour >= 9 && hour < 17;
+}
 
 export function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
+  const [online, setOnline] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-focus on open
+  useEffect(() => {
+    setOnline(isWithinBusinessHours());
+    // Re-evaluar cada minuto por si cambia el horario mientras está en pantalla
+    const interval = setInterval(() => setOnline(isWithinBusinessHours()), 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     if (isOpen && !sent && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 300);
@@ -56,17 +74,23 @@ export function WhatsAppWidget() {
           >
             {/* Header */}
             <div className="bg-[#002d14] px-4 py-4 flex items-center gap-3">
-              {/* Avatar */}
-              <div className="relative">
-                <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg shrink-0 border-2 border-white/30">
+              <div className="relative shrink-0">
+                <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
                   V
                 </div>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#00bc4c] rounded-full border-2 border-[#002d14]" />
+                {/* Indicador de estado dinámico */}
+                <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#002d14] ${online ? 'bg-[#00bc4c]' : 'bg-yellow-400'}`} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-white font-bold text-sm leading-tight truncate">{AGENT_NAME}</p>
-                <p className="text-white/70 text-xs mt-0.5 truncate">{AGENT_ROLE}</p>
-                <p className="text-[#00bc4c] text-xs font-semibold mt-0.5">{ONLINE_STATUS}</p>
+                <p className="text-white/60 text-xs mt-0.5 truncate">{AGENT_ROLE}</p>
+                <p className={`text-xs font-semibold mt-0.5 flex items-center gap-1 ${online ? 'text-[#00bc4c]' : 'text-yellow-400'}`}>
+                  {online ? (
+                    <><span className="w-1.5 h-1.5 rounded-full bg-[#00bc4c] inline-block animate-pulse" /> En línea · Responde al instante</>
+                  ) : (
+                    <><Clock size={11} /> Fuera de horario · Responde a partir de las 9am</>
+                  )}
+                </p>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
@@ -79,11 +103,11 @@ export function WhatsAppWidget() {
 
             {/* Chat Body */}
             <div
-              className="px-4 py-5 min-h-[140px] flex flex-col justify-end gap-3"
-              style={{ background: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='%23e5ddd5'/%3E%3C/svg%3E\")", backgroundColor: '#e5ddd5' }}
+              className="px-4 py-5 flex flex-col justify-end gap-3"
+              style={{ background: '#e5ddd5', minHeight: '160px' }}
             >
-              {/* Greeting bubble */}
-              <div className="flex items-end gap-2 max-w-[85%]">
+              {/* Burbuja de saludo */}
+              <div className="flex items-end gap-2 max-w-[88%]">
                 <div className="w-7 h-7 rounded-full bg-[#002d14] flex items-center justify-center text-white text-xs font-bold shrink-0 mb-1">V</div>
                 <div className="bg-white rounded-xl rounded-tl-none px-4 py-3 shadow-sm">
                   <p className="text-gray-800 text-sm leading-relaxed">
@@ -93,7 +117,19 @@ export function WhatsAppWidget() {
                 </div>
               </div>
 
-              {/* Sent confirmation */}
+              {/* Nota de horario — sutil e informativa */}
+              {!online && (
+                <div className="flex items-end gap-2 max-w-[88%]">
+                  <div className="w-7 h-7 shrink-0" />
+                  <div className="bg-white/80 rounded-xl rounded-tl-none px-4 py-2.5 shadow-sm border-l-2 border-yellow-400">
+                    <p className="text-gray-600 text-xs leading-relaxed">
+                      🕘 Atención disponible <strong>Lun–Dom, 9:00–17:00</strong>. Su mensaje llegará directo a mi WhatsApp y le responderé en cuanto esté en línea.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Burbuja de confirmación de envío */}
               <AnimatePresence>
                 {sent && (
                   <motion.div
@@ -110,38 +146,43 @@ export function WhatsAppWidget() {
               </AnimatePresence>
             </div>
 
-            {/* Input Area */}
-            <div className="bg-[#f0f0f0] px-3 py-3 flex items-end gap-2">
+            {/* Footer — Input / Estado enviado */}
+            <div className="bg-[#f0f0f0] px-3 py-3 flex flex-col gap-2">
               {sent ? (
-                <div className="flex-1 flex flex-col items-center gap-2 py-1">
+                <div className="flex flex-col items-center gap-1.5 py-1">
                   <p className="text-xs text-gray-500 text-center">Tu mensaje fue abierto en WhatsApp ✅</p>
-                  <button
-                    onClick={handleReset}
-                    className="text-[#075E54] font-semibold text-sm hover:underline"
-                  >
+                  <button onClick={handleReset} className="text-[#002d14] font-semibold text-sm hover:underline">
                     Enviar otro mensaje
                   </button>
                 </div>
               ) : (
                 <>
-                  <textarea
-                    ref={inputRef}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Escribe un mensaje..."
-                    rows={1}
-                    className="flex-1 bg-white rounded-2xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 resize-none outline-none focus:ring-2 focus:ring-[#25D366]/40 border border-transparent max-h-24 overflow-y-auto leading-relaxed"
-                    style={{ minHeight: '42px' }}
-                  />
-                  <button
-                    onClick={handleSend}
-                    disabled={!message.trim()}
-                    className="w-10 h-10 rounded-full bg-[#00bc4c] flex items-center justify-center shrink-0 hover:bg-[#002d14] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
-                    aria-label="Enviar mensaje"
-                  >
-                    <Send size={18} className="text-white translate-x-px" />
-                  </button>
+                  {/* Indicador sutil de destino directo */}
+                  <p className="text-[10px] text-gray-400 text-center px-2 leading-tight">
+                    {online
+                      ? `💬 Este mensaje llegará directo al WhatsApp de ${AGENT_NAME}`
+                      : `📩 Tu mensaje quedará en WhatsApp para ${AGENT_NAME}`}
+                  </p>
+                  <div className="flex items-end gap-2">
+                    <textarea
+                      ref={inputRef}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Escribe un mensaje..."
+                      rows={1}
+                      className="flex-1 bg-white rounded-2xl px-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 resize-none outline-none focus:ring-2 focus:ring-[#00bc4c]/40 border border-transparent max-h-24 overflow-y-auto leading-relaxed"
+                      style={{ minHeight: '42px' }}
+                    />
+                    <button
+                      onClick={handleSend}
+                      disabled={!message.trim()}
+                      className="w-10 h-10 rounded-full bg-[#00bc4c] flex items-center justify-center shrink-0 hover:bg-[#002d14] transition-colors disabled:opacity-40 disabled:cursor-not-allowed shadow-md"
+                      aria-label="Enviar mensaje"
+                    >
+                      <Send size={18} className="text-white translate-x-px" />
+                    </button>
+                  </div>
                 </>
               )}
             </div>
@@ -156,7 +197,7 @@ export function WhatsAppWidget() {
         animate={{ scale: 1 }}
         transition={{ type: 'spring', delay: 1.5, stiffness: 260, damping: 20 }}
       >
-        {/* "Chat" label */}
+        {/* Label "Chat" */}
         <AnimatePresence>
           {!isOpen && (
             <motion.span
@@ -180,7 +221,6 @@ export function WhatsAppWidget() {
             <X size={26} className="text-white" />
           ) : (
             <>
-              {/* Pulse animation ring */}
               <span className="absolute inset-0 rounded-full animate-ping bg-[#00bc4c] opacity-30" />
               <svg viewBox="0 0 24 24" fill="white" width="28" height="28" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.031-.967-.273-.099-.472-.148-.67.15-.198.297-.767.967-.94 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.074-.148-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.571-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.099 3.2 5.077 4.492.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.570-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>

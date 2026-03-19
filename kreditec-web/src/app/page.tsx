@@ -6,10 +6,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { TrendingUp, PhoneCall, Users, Database, Play, X, ShieldCheck, Lock, Trophy, Building, Star, Quote, Handshake, Lightbulb, Scale, Briefcase, BarChart, DollarSign, Zap, Globe, Award, HeartHandshake, Banknote, Target, Rocket, UsersRound, HandCoins } from 'lucide-react';
+import { TrendingUp, PhoneCall, Users, Database, Play, X, ShieldCheck, Lock, Trophy, Building, Star, Quote, Handshake, Lightbulb, Scale, Briefcase, BarChart, DollarSign, Zap, Globe, Award, HeartHandshake, Banknote, Target, Rocket, UsersRound, HandCoins, CalendarDays, CheckCircle2, Activity } from 'lucide-react';
 
 export default function Home() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isTimelineModalOpen, setIsTimelineModalOpen] = useState(false);
 
   return (
     <div className="bg-white">
@@ -134,11 +135,16 @@ export default function Home() {
           </div>
           
           <AnimatedSection delay={0.5} className="mt-16 text-center">
-             <Link href="/servicios">
-                <Button variant="primary" size="lg" className="rounded-full shadow-[0_4px_20px_rgba(0,188,76,0.25)] hover:shadow-[0_4px_25px_rgba(0,188,76,0.4)] transition-all font-semibold px-10 border border-[var(--color-accent)]">
-                   Más información
-                </Button>
-             </Link>
+             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+               <Link href="/servicios">
+                  <Button variant="primary" size="lg" className="rounded-full shadow-[0_4px_20px_rgba(0,188,76,0.25)] hover:shadow-[0_4px_25px_rgba(0,188,76,0.4)] transition-all font-semibold px-10 border border-[var(--color-accent)]">
+                     Más información
+                  </Button>
+               </Link>
+               <Button onClick={() => setIsTimelineModalOpen(true)} variant="outline" size="lg" className="rounded-full font-semibold px-10 text-white border-white/20 hover:bg-white/10 hover:border-white/50 backdrop-blur-md">
+                 Ver su Cronograma
+               </Button>
+             </div>
           </AnimatedSection>
         </div>
       </section>
@@ -434,6 +440,135 @@ export default function Home() {
                 src="/hero-video.mp4"
                 title="Video Corporativo Kreditec"
               />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL DEL CRONOGRAMA */}
+      <AnimatePresence>
+        {isTimelineModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1000] bg-black/80 backdrop-blur-sm overflow-y-auto p-4 sm:p-8"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setIsTimelineModalOpen(false);
+            }}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="w-full max-w-4xl bg-[#001108] border border-[var(--color-accent)]/20 rounded-3xl overflow-hidden shadow-2xl relative mx-auto my-4 sm:my-16"
+            >
+              {/* Contenido del Modal (Cronograma) */}
+              <div className="absolute top-4 right-4 z-50">
+                 <button 
+                  onClick={() => setIsTimelineModalOpen(false)}
+                  className="text-white/50 hover:text-white transition-all bg-white/5 p-3 rounded-full hover:bg-[var(--color-accent)] hover:scale-110"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="p-8 sm:p-12 relative overflow-hidden">
+                {/* Glows */}
+                <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-[#006028]/20 rounded-full filter blur-[100px] pointer-events-none" />
+                <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] bg-[var(--color-accent)]/10 rounded-full filter blur-[100px] pointer-events-none" />
+
+                <div className="text-center mb-16 relative z-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-[var(--color-accent)] font-bold text-sm tracking-widest uppercase mb-6">
+                    <CalendarDays size={18} /> Plan de Despliegue en 28 Días
+                  </div>
+                  <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Cronograma de Ejecución Técnica</h2>
+                  <p className="text-lg text-gray-400 font-medium">Desde el kick-off hasta la salida a producción. No dejamos nada al azar.</p>
+                </div>
+
+                {/* Timeline */}
+                <div className="space-y-8 relative before:absolute before:inset-0 before:ml-6 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-[var(--color-accent)] before:via-white/20 before:to-transparent z-10">
+                  
+                  {/* Semana 1 */}
+                  <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#001108] bg-[var(--color-accent)] text-[#001108] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-[0_0_20px_rgba(0,188,76,0.3)] z-10">
+                      <span className="font-bold text-lg">1</span>
+                    </div>
+                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white/5 border border-white/10 p-6 rounded-2xl">
+                      <h3 className="text-xl font-bold text-white mb-4">Infraestructura y Seguridad</h3>
+                      <ul className="space-y-3 text-sm text-gray-400">
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 1-3:</strong> Auditoría de red y configuración de túneles VPN seguros.</span></li>
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 4-5:</strong> Definición de la arquitectura de datos en HubSpot (campos de crédito, score y estatus financiero).</span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Semana 2 */}
+                  <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#001108] bg-[#006028] text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                      <span className="font-bold text-lg">2</span>
+                    </div>
+                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white/5 border border-white/10 p-6 rounded-2xl">
+                      <h3 className="text-xl font-bold text-white mb-4">Integración y Calidad de Datos</h3>
+                      <ul className="space-y-3 text-sm text-gray-400">
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 8-10:</strong> Mapeo técnico y limpieza de base de datos (eliminación de duplicados y errores).</span></li>
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 11-12:</strong> Pruebas de sincronización API/ETL para asegurar un flujo de datos íntegro.</span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Semana 3 */}
+                  <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#001108] bg-[#006028] text-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                      <span className="font-bold text-lg">3</span>
+                    </div>
+                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white/5 border border-white/10 p-6 rounded-2xl">
+                      <h3 className="text-xl font-bold text-white mb-4">Automatización y Marketing</h3>
+                      <ul className="space-y-3 text-sm text-gray-400">
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 15-17:</strong> Configuración de Pipelines de crédito y Workflows de seguimiento.</span></li>
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 18-19:</strong> Montaje de campañas, plantillas de correo y segmentación de audiencias.</span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Semana 4 */}
+                  <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-[#001108] bg-white text-[#001108] shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 shadow-lg">
+                      <span className="font-bold text-lg">4</span>
+                    </div>
+                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white/5 border border-[var(--color-accent)]/30 p-6 rounded-2xl relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-3 opacity-20"><Activity size={60} className="text-[var(--color-accent)]" /></div>
+                      <h3 className="text-xl font-bold text-[var(--color-accent)] mb-4 relative z-10">Pruebas, Reportes y Salida</h3>
+                      <ul className="space-y-3 text-sm text-gray-300 relative z-10">
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-white">Día 22-24:</strong> Pruebas de usuario (UAT) con un grupo de control y ajuste de errores.</span></li>
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-white">Día 25-26:</strong> Creación de Dashboards gerenciales (conversión y ROI).</span></li>
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-white">Día 27-28:</strong> Capacitación final al equipo y Salida a Producción.</span></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* PopUp CTAs */}
+                <div className="mt-16 text-center space-y-8 relative z-10 border-t border-white/10 pt-10">
+                  <Link href="/servicios" onClick={() => setIsTimelineModalOpen(false)}>
+                    <Button variant="primary" size="lg" className="rounded-full shadow-[0_4px_20px_rgba(0,188,76,0.25)] hover:shadow-[0_4px_25px_rgba(0,188,76,0.4)] transition-all font-semibold px-10 border border-[var(--color-accent)]">
+                       Más información
+                    </Button>
+                  </Link>
+
+                  <div className="bg-white/5 rounded-3xl p-8 border border-white/10 shadow-lg mt-8">
+                    <h2 className="text-2xl font-bold text-white mb-6 tracking-tight">Escale de forma segura hoy mismo.</h2>
+                    <Link href="/contacto" onClick={() => setIsTimelineModalOpen(false)}>
+                      <Button size="lg" className="w-full sm:w-auto text-lg py-4 px-8 font-semibold text-[#001108] bg-white hover:bg-gray-100 border-transparent">
+                        Despliegue nuestro equipo
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+              </div>
             </motion.div>
           </motion.div>
         )}

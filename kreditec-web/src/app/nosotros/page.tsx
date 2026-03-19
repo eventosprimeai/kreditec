@@ -2,6 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
 
 export default function NosotrosPage() {
   return (
@@ -82,6 +84,40 @@ export default function NosotrosPage() {
           </AnimatedSection>
         </div>
       </div>
+
+      {/* 7. ALIADOS (Fondo blanco limpio, logos corporativos) */}
+      <section className="py-16 bg-white border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center">
+            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-10">Aliados Estratégicos y Stack Tecnológico</h3>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                  <div className="w-8 h-8 rounded bg-[#ff7a59]" /> HubSpot
+               </div>
+               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full border-4 border-blue-500" /> NUA Talker
+               </div>
+               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+                  <div className="w-8 h-8 rotate-45 bg-[#002d14]" /> Broker Institucional
+               </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* 8. CTA FINAL */}
+      <section className="py-24 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection delay={0.3} className="text-center bg-gray-50 rounded-3xl p-12 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <h2 className="text-3xl font-bold text-[#002d14] mb-6 tracking-tight">Escale de forma segura hoy mismo.</h2>
+            <Link href="/contacto">
+              <Button size="lg" className="w-full sm:w-auto text-lg py-5 px-10 font-semibold text-white">
+                Despliegue nuestro equipo
+              </Button>
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
     </div>
   );
 }

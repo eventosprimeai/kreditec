@@ -6,13 +6,13 @@ import { AnimatedSection } from '@/components/ui/AnimatedSection';
 export default function NosotrosPage() {
   return (
     <div className="bg-white min-h-screen">
-      <InnerHero title="Nosotros" bgImage="/about-team.png" />
+      <InnerHero title="Nosotros" bgImage="/about-team-expamdido.webp" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <AnimatedSection className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-4 tracking-tight">ADN de la Empresa</h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-medium">
-            Especialistas en ingeniería de procesos orientada al sector financiero popular y solidario ecuatoriano.
+            Seguridad de grado internacional, transparencia absoluta y mitigación de riesgo técnico.
           </p>
         </AnimatedSection>
 
@@ -31,7 +31,7 @@ export default function NosotrosPage() {
           
           <AnimatedSection delay={0.2} className="flex-1 w-full order-1 lg:order-2">
              <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-100">
-                <Image src="/value-prop.png" alt="Equipo Kreditec" fill className="object-cover" />
+                <Image src="/value-prop.webp" alt="Equipo Kreditec" fill className="object-cover" />
              </div>
           </AnimatedSection>
         </div>
@@ -42,11 +42,11 @@ export default function NosotrosPage() {
 
 function InnerHero({ title, bgImage }: { title: string, bgImage: string }) {
   return (
-    <section className="relative h-[30vh] md:h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden w-full mt-16 md:mt-20">
-      <div className="absolute inset-0 z-0">
-        <Image src={bgImage} alt={title} fill className="object-cover" priority />
-        <div className="absolute inset-0 bg-black/50 z-10" />
-      </div>
+    <section 
+      className="relative h-[40vh] md:h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden w-full mt-16 md:mt-20 bg-fixed bg-center bg-cover"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      <div className="absolute inset-0 bg-black/50 z-10" />
       <div className="relative z-20 text-center px-4">
          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">{title}</h1>
       </div>

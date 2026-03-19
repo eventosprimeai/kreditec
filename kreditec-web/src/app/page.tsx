@@ -10,16 +10,6 @@ import { TrendingUp, PhoneCall, Users, Database, Play, X, ShieldCheck, Lock } fr
 
 export default function Home() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const parallaxRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: parallaxRef,
-    offset: ["start end", "end start"]
-  });
-  
-  // y: Illusion of depth (moving slower than scroll)
-  const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
-  // scale: Interactive scaling as it enters and leaves viewport
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.3]);
 
   return (
     <div className="bg-white">
@@ -91,27 +81,19 @@ export default function Home() {
             
             <AnimatedSection delay={0.2} className="flex-1 w-full order-1 lg:order-2">
                <div className="relative aspect-[4/5] md:aspect-square w-full rounded-2xl overflow-hidden shadow-2xl group">
-                  <Image src="/value-prop.png" alt="Fintech Corporate" fill className="object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out" />
-                  <div className="absolute inset-0 bg-black/40 mix-blend-multiply transition-opacity group-hover:bg-black/20" />
+                  <Image src="/value-prop.webp" alt="Fintech Corporate" fill className="object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out" />
                </div>
             </AnimatedSection>
           </div>
         </div>
       </section>
 
-      {/* 3. SERVICIOS (Parallax Dinámico 60fps + Overlay 60%) */}
+      {/* 3. Ecosistema Estratégico (Parallax Fijo) */}
       <section 
-        ref={parallaxRef}
-        className="py-28 relative bg-black overflow-hidden"
+        className="py-32 relative bg-black overflow-hidden bg-fixed bg-[center_top] bg-cover"
+        style={{ backgroundImage: 'url(/services-bg.webp)' }}
       >
-        <motion.div 
-          className="absolute inset-x-0 -top-[25%] -bottom-[25%] z-0"
-          style={{ y, scale }}
-        >
-          <Image src="/services-bg.png" alt="Services Network" fill className="object-cover" />
-        </motion.div>
-        
-        <div className="absolute inset-0 bg-black/60 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/70 z-10 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
           <AnimatedSection className="text-center mb-16">
@@ -162,26 +144,26 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <AnimatedSection delay={0.1} className="flex flex-col items-center text-center">
                <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-sm">
-                  <Image src="/methodology.png" alt="Apertura" fill className="object-cover" />
+                  <Image src="/methodology-final.webp" alt="Apertura" fill className="object-cover" />
                </div>
-               <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">Apertura 24/7</h3>
-               <p className="text-lg text-gray-600">Disponibilidad total para potenciar su alcance y retención.</p>
+               <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">Disponibilidad 8/7</h3>
+               <p className="text-lg text-gray-600">Atención extendida con gestión automatizada.</p>
             </AnimatedSection>
 
             <AnimatedSection delay={0.2} className="flex flex-col items-center text-center">
                <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-sm">
-                  <Image src="/tech-security.png" alt="28 Dias" fill className="object-cover" />
+                  <Image src="/tech-security.webp" alt="28 Dias" fill className="object-cover" />
                </div>
                <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">28 Días</h3>
-               <p className="text-lg text-gray-600">Tiempo de implementación garantizado desde kick-off técnico.</p>
+               <p className="text-lg text-gray-600">Tiempo récord de implementación de 0 a producción.</p>
             </AnimatedSection>
 
             <AnimatedSection delay={0.3} className="flex flex-col items-center text-center">
                <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-sm">
-                  <Image src="/about-team.png" alt="Digital" fill className="object-cover" />
+                  <Image src="/about-team.webp" alt="Digital" fill className="object-cover" />
                </div>
                <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">100% Digital</h3>
-               <p className="text-lg text-gray-600">Sin papeles. Datos estructurados limpios hacia sus sistemas core.</p>
+               <p className="text-lg text-gray-600">Ecosistema sin papeles, enfocado en la eficiencia operativa.</p>
             </AnimatedSection>
           </div>
         </div>
@@ -229,7 +211,7 @@ export default function Home() {
             
             <AnimatedSection delay={0.2} className="flex-1 w-full">
               <div className="relative aspect-square md:aspect-[4/3] w-full rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(0,188,76,0.1)] group">
-                <Image src="/services-bg.png" alt="Seguridad Tecnologica B2B" fill className="object-cover group-hover:scale-105 transition-transform duration-[2s]" />
+                <Image src="/services-bg.webp" alt="Seguridad Tecnologica B2B" fill className="object-cover group-hover:scale-105 transition-transform duration-[2s]" />
                 <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-[#001108]/60 to-transparent" />
                 
                 {/* Elemento de UI flotante simulado */}

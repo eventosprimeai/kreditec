@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/CookieBanner";
+import { WhatsAppWidget } from "@/components/WhatsAppWidget";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -30,6 +31,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <CookieBanner />
+        <WhatsAppWidget />
       </body>
     </html>
   );

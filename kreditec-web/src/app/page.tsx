@@ -75,11 +75,11 @@ export default function Home() {
                   Más que llamadas,<br />Construimos <span className="text-[var(--color-accent)]">Operaciones</span>.
                </h3>
                <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed font-medium">
-                  Somos una empresa de <strong className="font-bold text-[#002d14]">Gestión Comercial Especializada</strong> que replica la experiencia presencial en un ecosistema <strong className="font-bold text-[#002d14]">100% digital</strong>, integrando seguridad y verificación.
+                  Somos una empresa de <strong className="font-bold text-[#002d14]">Gestión Comercial Especializada</strong> que replica la experiencia presencial en un ecosistema <strong className="font-bold text-[#002d14]">100% digital</strong>, integrando tecnología, verificación y seguridad.
                </p>
                <div className="pl-6 border-l-4 border-[var(--color-accent)]/80">
                   <p className="text-gray-500 italic text-lg hover:text-gray-800 transition-colors">
-                     "Ayudamos al sector financiero popular y solidario en Ecuador a ser más eficientes mediante ingeniería de procesos y captación proactiva de microcrédito y consumo."
+                     "Ayudamos a las instituciones del sistema financiero en Ecuador a ser más eficientes mediante transformación digital, ingeniería de procesos y captación pro-activa de micro-crédito y consumo."
                   </p>
                </div>
             </AnimatedSection>
@@ -201,7 +201,7 @@ export default function Home() {
                 Infraestructura blindada y trazabilidad con <span className="text-[var(--color-accent)]">Inteligencia Artificial</span>
               </h2>
               <p className="text-lg text-gray-400 mb-8 leading-relaxed">
-                Entendemos que el activo más valioso de su cooperativa son los datos de sus socios. Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional.
+                Entendemos que el activo más valioso de su institución financiera son los datos de sus clientes. Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional.
               </p>
               
               <div className="space-y-6">
@@ -410,7 +410,7 @@ export default function Home() {
             <AnimatedSection delay={0.2} className="h-full">
                <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
                   <Globe className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={48} />
-                  <h3 className="text-xl font-bold text-white mb-3">Contactabilidad Global</h3>
+                  <h3 className="text-xl font-bold text-white mb-3">Contactabilidad</h3>
                   <p className="text-gray-300 leading-relaxed text-[15px]">Uso de herramientas de clase mundial.</p>
                </div>
             </AnimatedSection>

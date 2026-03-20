@@ -14,7 +14,7 @@ export const defaultTestimonios: Testimonio[] = [
   {
     id: "1",
     autor: "Carlos Ramírez",
-    cargo: "Gerente Comercial, Cooperativa Progreso",
+    cargo: "Gerente Comercial, Institución Financiera Progreso",
     texto: "Desde que implementamos el ecosistema operativo de Kreditec, nuestra originación de crédito creció un 45% en el primer semestre. Su trazabilidad es invaluable."
   },
   {

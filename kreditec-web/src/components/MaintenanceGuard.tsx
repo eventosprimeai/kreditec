@@ -9,18 +9,25 @@ export function MaintenanceGuard({ children, LayoutWrapper }: { children: React.
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check maintenance flag
-    const flag = localStorage.getItem('kreditec_maintenance');
-    setIsMaintenance(flag === 'true');
+    let interval: NodeJS.Timeout;
 
-    // Escuchar cambios en otras pestañas o ventanas
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'kreditec_maintenance') {
-         setIsMaintenance(e.newValue === 'true');
+    const checkMaintenance = async () => {
+      try {
+        const res = await fetch('/api/maintenance', { cache: 'no-store' });
+        const data = await res.json();
+        setIsMaintenance(data.maintenance === true);
+      } catch {
+        // Si falla la conexión, asumimos que NO está en mantenimiento para no bloquear
+        setIsMaintenance(false);
       }
     };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+
+    checkMaintenance();
+
+    // Revisar cada 10 segundos para detectar cambios en tiempo real
+    interval = setInterval(checkMaintenance, 10000);
+
+    return () => clearInterval(interval);
   }, [pathname]);
 
   if (isMaintenance === null) {

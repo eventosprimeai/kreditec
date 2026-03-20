@@ -10,26 +10,46 @@ export default function PrivadoPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Restaurar si ya se logueó en esta sesión (para que no lo pida en recargas)
+    // Restaurar si ya se logueó en esta sesión
     const authSession = sessionStorage.getItem('kreditec_admin_auth');
     if (authSession === 'true') {
       setIsAuthenticated(true);
     }
 
-    const flag = localStorage.getItem('kreditec_maintenance');
-    setIsMaintenance(flag === 'true');
-    setIsReady(true);
+    // Leer estado real desde el servidor
+    fetch('/api/maintenance', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        setIsMaintenance(data.maintenance === true);
+        setIsReady(true);
+      })
+      .catch(() => setIsReady(true));
   }, []);
 
-  const toggleMaintenance = () => {
-    const newVal = !isMaintenance;
-    localStorage.setItem('kreditec_maintenance', newVal.toString());
-    setIsMaintenance(newVal);
-    
-    // Forzar el disparo del evento para otras pestañas abiertas
-    window.dispatchEvent(new Event('storage'));
+  const toggleMaintenance = async () => {
+    setIsLoading(true);
+    try {
+      const newVal = !isMaintenance;
+      const res = await fetch('/api/maintenance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ maintenance: newVal, password: 'Open+2025*' }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setIsMaintenance(data.maintenance);
+      } else {
+        setError('Error al cambiar el estado. Intenta de nuevo.');
+      }
+    } catch {
+      setError('Error de conexión con el servidor.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -60,7 +80,7 @@ export default function PrivadoPage() {
           <h2 className="text-4xl font-black mb-10 text-white">Control de <br/><span className="text-[var(--color-accent)]">Estado Principal</span></h2>
 
           <div className="w-full bg-black/50 border border-white/10 p-6 rounded-3xl mb-10 flex flex-col items-center">
-            <p className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-4">Estado Actual del Frontend</p>
+            <p className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-4">Estado Actual del Sistema</p>
             
             {isMaintenance ? (
               <div className="flex items-center gap-3 text-red-400 font-bold bg-red-400/10 px-6 py-3 rounded-full border border-red-400/20">
@@ -73,14 +93,21 @@ export default function PrivadoPage() {
             )}
           </div>
 
+          {error && <p className="text-red-400 text-sm font-bold mb-4">{error}</p>}
+
           <Button 
              size="lg" 
              variant="outline"
              onClick={toggleMaintenance}
-             className="w-full border-white/20 hover:bg-white/10 text-lg py-6 font-bold"
+             disabled={isLoading}
+             className="w-full border-white/20 hover:bg-white/10 text-lg py-6 font-bold disabled:opacity-50"
           >
-            {isMaintenance ? "Restaurar Frontend" : "Activar Mantenimiento"}
+            {isLoading ? 'Procesando...' : (isMaintenance ? "Restaurar Frontend" : "Activar Mantenimiento")}
           </Button>
+
+          <p className="mt-6 text-xs text-white/20 font-bold tracking-widest uppercase">
+            ✓ Estado sincronizado con el servidor
+          </p>
         </div>
       ) : (
         /* Pantalla de Autenticación */

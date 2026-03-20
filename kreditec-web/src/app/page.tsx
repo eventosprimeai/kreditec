@@ -75,7 +75,7 @@ export default function Home() {
                   Más que llamadas,<br />Construimos <span className="text-[var(--color-accent)]">Operaciones</span>.
                </h3>
                <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed font-medium">
-                  Somos una empresa de <strong className="font-bold text-[#002d14]">Gestión Comercial Especializada</strong> que replica la experiencia presencial en un ecosistema <strong className="font-bold text-[#002d14]">100% digital</strong>, integrando tecnología, verificación y seguridad.
+                  Somos una empresa de <strong className="font-bold text-[#002d14]">Gestión Comercial Especializada</strong> que replica la experiencia presencial en un ecosistema 100% digital, <strong className="font-bold text-[#002d14]">integrando tecnología, verificación y seguridad</strong>.
                </p>
                <div className="pl-6 border-l-4 border-[var(--color-accent)]/80">
                   <p className="text-gray-500 italic text-lg hover:text-gray-800 transition-colors">

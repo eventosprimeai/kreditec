@@ -17,6 +17,12 @@ export default function ContactoPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  
+  const interesOptions = [
+    { value: "Informacion general de servicios", label: "Informacion general de servicios KREDITEC" },
+    { value: "Agendar una reunion virtual", label: "Agendar una reunion virtual" }
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -79,17 +85,47 @@ export default function ContactoPage() {
                            <label className="block text-sm font-bold text-gray-700 mb-2">Teléfono de Contacto <span className="text-red-500">*</span></label>
                            <input required type="tel" value={formData.telefono} onChange={(e) => setFormData({...formData, telefono: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
                         </div>
-                        <div>
+                        <div 
+                           className="relative" 
+                           tabIndex={0} 
+                           onBlur={(e) => {
+                             if (!e.currentTarget.contains(e.relatedTarget)) {
+                               setIsSelectOpen(false);
+                             }
+                           }}
+                        >
                            <label className="block text-sm font-bold text-gray-700 mb-2">Interés Principal</label>
-                           <select value={formData.interes} onChange={(e) => setFormData({...formData, interes: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all text-gray-700">
-                             <option value="">Seleccione una opción</option>
-                             <option value="Colocación de Microcrédito">Colocación de Microcrédito</option>
-                             <option value="Colocación de Consumo">Colocación de Consumo</option>
-                             <option value="Ingeniería de Procesos / Consultoría">Ingeniería de Procesos / Consultoría</option>
-                             <option value="Implementación de Ecosistema Digital">Implementación de Ecosistema Digital (HubSpot/nua talker)</option>
-                             <option value="Informacion general de servicios">Informacion general de servicios KREDITEC</option>
-                             <option value="Agendar una reunion virtual">Agendar una reunion virtual</option>
-                           </select>
+                           <div 
+                             onClick={() => setIsSelectOpen(!isSelectOpen)}
+                             className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-white outline-none transition-all cursor-pointer flex justify-between items-center"
+                           >
+                             <span className={formData.interes ? "text-gray-900" : "text-gray-500"}>
+                               {formData.interes ? interesOptions.find(o => o.value === formData.interes)?.label || "Seleccione una opción" : "Seleccione una opción"}
+                             </span>
+                             <svg className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isSelectOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                           </div>
+                           
+                           {isSelectOpen && (
+                             <div className="absolute z-20 w-full mt-2 bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2">
+                               <div 
+                                 className={`px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between ${!formData.interes ? 'bg-green-50/50' : ''}`}
+                                 onClick={() => { setFormData({...formData, interes: ''}); setIsSelectOpen(false); }}
+                               >
+                                 <span className="text-gray-500">Seleccione una opción</span>
+                                 {!formData.interes && <svg className="w-4 h-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>}
+                               </div>
+                               {interesOptions.map((opt) => (
+                                 <div 
+                                   key={opt.value}
+                                   className={`px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between border-t border-gray-50 ${formData.interes === opt.value ? 'bg-green-50/50' : ''}`}
+                                   onClick={() => { setFormData({...formData, interes: opt.value}); setIsSelectOpen(false); }}
+                                 >
+                                   <span className="text-gray-700 font-medium">{opt.label}</span>
+                                   {formData.interes === opt.value && <svg className="w-4 h-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>}
+                                 </div>
+                               ))}
+                             </div>
+                           )}
                         </div>
                      </div>
                      <div>
@@ -130,12 +166,12 @@ export default function ContactoPage() {
                       <p className="text-lg text-white font-medium">Valentina Barrera – Gerente General</p>
                    </div>
                    <div>
-                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Teléfono Directo</span>
-                      <a href="tel:+593987471367" className="text-lg text-white font-medium hover:underline">+593 98 747 1367</a>
+                      <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Línea Corporativa</span>
+                      <a href="tel:+59324529357" className="text-lg text-white font-medium hover:underline">+593 2 452 9357</a>
                    </div>
                    <div>
                       <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Correo Electrónico</span>
-                      <a href="mailto:Vbarrera@kreditecsa.com" className="text-lg text-white font-medium hover:underline">Vbarrera@kreditecsa.com</a>
+                      <a href="mailto:Info@kreditecsa.com" className="text-lg text-white font-medium hover:underline">Info@kreditecsa.com</a>
                    </div>
                    <div>
                       <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Dirección Corporativa</span>
@@ -143,8 +179,8 @@ export default function ContactoPage() {
                    </div>
                    <div>
                       <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Horario de Atención</span>
-                      <p className="text-lg text-white font-medium mb-1">Gestión automatizada</p>
-                      <p className="text-sm text-gray-400">Disponibilidad 8/7</p>
+                      <p className="text-lg text-white font-medium mb-1">Lunes a Viernes</p>
+                      <p className="text-sm text-gray-400">08:00 am - 05:00 pm</p>
                    </div>
                 </div>
              </div>
@@ -152,7 +188,7 @@ export default function ContactoPage() {
              {/* Google Maps Embed */}
              <div className="flex-1 w-full rounded-3xl overflow-hidden shadow-xl border border-gray-200 min-h-[350px]">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.79051!2d-78.48421045!3d-0.19018699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a71675128ff%3A0xe5a3c0ae06511a5b!2sEdificio%20Zyra!5e0!3m2!1sen!2sec!4v1680000000000!5m2!1sen!2sec" 
+                  src="https://maps.google.com/maps?hl=es&q=Edificio%20Zyra,%20Quito,%20Ecuador&t=&z=16&ie=UTF8&iwloc=B&output=embed" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0 }} 

@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { CheckCircle, Clock, Plus, FileText, AlertCircle, Sparkles, Network, Trash2, History, Send, User, Wrench, Lock, Shield } from "lucide-react";
+import { CheckCircle, Clock, Plus, FileText, AlertCircle, Sparkles, Network, Trash2, History, Send, User, Wrench, Lock, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { Testimonio, defaultTestimonios } from "@/components/TestimoniosCarousel";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 
 interface ThreadMessage {
   id: string;
@@ -36,6 +39,12 @@ export default function InformePage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
+
+  // States para Testimonios
+  const [testimonios, setTestimonios] = useState<Testimonio[]>([]);
+  const [showTestimonioForm, setShowTestimonioForm] = useState(false);
+  const [newTestimonio, setNewTestimonio] = useState({ autor: '', cargo: '', texto: '' });
 
   // Auth
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -71,8 +80,39 @@ export default function InformePage() {
     if (savedHistory) {
       try { setDeletedHistory(JSON.parse(savedHistory)); } catch (e) { console.error(e); }
     }
+
+    // Cargar Testimonios
+    const savedTestimonios = localStorage.getItem('kreditec_testimonios');
+    if (savedTestimonios) {
+      try {
+        const parsedT = JSON.parse(savedTestimonios);
+        if (parsedT.length > 0) setTestimonios(parsedT);
+        else setTestimonios(defaultTestimonios);
+      } catch(e) { setTestimonios(defaultTestimonios); }
+    } else {
+      setTestimonios(defaultTestimonios);
+    }
+
     setIsLoaded(true);
   }, []);
+
+  const saveTestimonios = (newT: Testimonio[]) => {
+    setTestimonios(newT);
+    localStorage.setItem('kreditec_testimonios', JSON.stringify(newT));
+  };
+
+  const handleAddTestimonio = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTestimonio.autor || !newTestimonio.cargo || !newTestimonio.texto) return;
+    const t: Testimonio = { id: Date.now().toString(), ...newTestimonio };
+    saveTestimonios([...testimonios, t]);
+    setNewTestimonio({ autor: '', cargo: '', texto: '' });
+    setShowTestimonioForm(false);
+  };
+
+  const deleteTestimonio = (id: string) => {
+    saveTestimonios(testimonios.filter(t => t.id !== id));
+  };
 
   const saveNotesToLocal = (newNotes: AdjustmentNote[]) => {
     setNotes(newNotes);
@@ -205,47 +245,72 @@ export default function InformePage() {
       </section>
 
       {/* 2.5 Mapa del Sitio */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full mb-16">
-        <div className="bg-white p-8 sm:p-10 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100">
-          <div className="flex items-center gap-4 mb-8 border-b border-gray-100 pb-6">
-            <Network className="text-[#00bc4c]" size={32} />
-            <h2 className="text-2xl font-bold text-[#002d14] tracking-tight">Estructura del Ecosistema Web</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-medium">
-            {[
-              { name: "Inicio (Home)", desc: "Punto de entrada enfocado en conversión, Misión operativa y Métricas B2B." },
-              { name: "Nosotros (/nosotros)", desc: "Identidad, ADN de la Empresa, Timeline histórico y Pilares Tecnológicos." },
-              { name: "Servicios (/servicios)", desc: "Propuesta de Valor, Metodología operativa y Cronograma Táctico V2." },
-              { name: "Contacto (/contacto)", desc: "Múltiples canales directos, integraciones y formulario oficial de Leads." },
-            ].map(item => (
-              <div key={item.name} className="bg-gray-50 border border-gray-100 p-6 rounded-2xl hover:border-[#00bc4c]/30 hover:bg-[#00bc4c]/5 transition-all">
-                <h4 className="text-[#002d14] font-bold text-lg mb-2">{item.name}</h4>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full mb-8">
+        <div className="bg-white rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 overflow-hidden">
+          <button 
+             onClick={() => setActiveAccordion(activeAccordion === 'ecosistema' ? null : 'ecosistema')}
+             className="w-full flex items-center justify-between p-8 sm:p-10 bg-white hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-4">
+              <Network className="text-[#00bc4c]" size={32} />
+              <h2 className="text-2xl font-bold text-[#002d14] tracking-tight text-left">Estructura del Ecosistema Web</h2>
+            </div>
+            <ChevronDown className={`text-gray-400 transition-transform duration-300 ${activeAccordion === 'ecosistema' ? 'rotate-180' : ''}`} size={24} />
+          </button>
+          
+          <AnimatePresence>
+            {activeAccordion === 'ecosistema' && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                <div className="p-8 sm:p-10 pt-0 border-t border-gray-100 mt-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-medium">
+                    {[
+                      { name: "Inicio (Home)", desc: "Punto de entrada enfocado en conversión, Misión operativa y Métricas B2B." },
+                      { name: "Nosotros (/nosotros)", desc: "Identidad, ADN de la Empresa, Timeline histórico y Pilares Tecnológicos." },
+                      { name: "Servicios (/servicios)", desc: "Propuesta de Valor, Metodología operativa y Cronograma Táctico V2." },
+                      { name: "Contacto (/contacto)", desc: "Múltiples canales directos, integraciones y formulario oficial de Leads." },
+                    ].map(item => (
+                      <div key={item.name} className="bg-gray-50 border border-gray-100 p-6 rounded-2xl hover:border-[#00bc4c]/30 hover:bg-[#00bc4c]/5 transition-all">
+                        <h4 className="text-[#002d14] font-bold text-lg mb-2">{item.name}</h4>
+                        <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
       {/* 3. Panel de Ajustes */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full mb-16">
-        <div className="bg-white p-10 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-200">
-
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-            <div>
-              <h3 className="text-3xl font-bold text-[#002d14] mb-2 tracking-tight">Registro de Ajustes y Mejoras</h3>
-              <p className="text-gray-500 font-medium flex items-center gap-2">
-                <AlertCircle size={18} /> {activeNotes} tareas pendientes
-              </p>
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full mb-8">
+        <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-200 overflow-hidden">
+          <button 
+             onClick={() => setActiveAccordion(activeAccordion === 'ajustes' ? null : 'ajustes')}
+             className="w-full flex items-center justify-between p-8 sm:p-10 bg-white hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-4">
+              <AlertCircle className="text-[#00bc4c]" size={32} />
+              <div className="text-left">
+                 <h2 className="text-2xl font-bold text-[#002d14] tracking-tight">Registro de Ajustes y Mejoras</h2>
+                 <p className="text-gray-500 text-sm font-medium mt-1">{activeNotes} tareas pendientes</p>
+              </div>
             </div>
-            <Button onClick={() => setShowForm(!showForm)} variant="primary" className="rounded-full flex items-center gap-2 font-bold px-6 border-transparent">
-              {showForm ? "Cancelar" : <><Plus size={20} /> Nuevo Ajuste</>}
-            </Button>
-          </div>
-
-          <p className="text-sm text-gray-400 mb-8 max-w-2xl">
-            Registre solicitudes de revisión con precisión. Cada ajuste incluye un hilo de conversación para intercambiar respuestas hasta marcarlo como completado.
-          </p>
+            <ChevronDown className={`text-gray-400 transition-transform duration-300 ${activeAccordion === 'ajustes' ? 'rotate-180' : ''}`} size={24} />
+          </button>
+          
+          <AnimatePresence>
+            {activeAccordion === 'ajustes' && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                <div className="p-8 sm:p-10 pt-0 border-t border-gray-100 mt-2">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <p className="text-sm text-gray-400 max-w-xl">
+                      Registre solicitudes de revisión con precisión. Cada ajuste incluye un hilo de conversación para intercambiar respuestas.
+                    </p>
+                    <Button onClick={() => setShowForm(!showForm)} variant="primary" className="rounded-full flex items-center gap-2 font-bold px-6 border-transparent shrink-0">
+                      {showForm ? "Cancelar" : <><Plus size={20} /> Nuevo Ajuste</>}
+                    </Button>
+                  </div>
 
           {/* Formulario */}
           {showForm && (
@@ -382,10 +447,100 @@ export default function InformePage() {
             ))}
           </div>
 
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
-      {/* 4. Historial de Eliminados */}
+      {/* 4. Gestor de Casos de Éxito */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full mb-16">
+        <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-200 overflow-hidden">
+          <button 
+             onClick={() => setActiveAccordion(activeAccordion === 'testimonios' ? null : 'testimonios')}
+             className="w-full flex items-center justify-between p-8 sm:p-10 bg-white hover:bg-gray-50 transition-colors"
+          >
+            <div className="flex items-center gap-4">
+              <Star className="text-[#00bc4c]" size={32} />
+              <div className="text-left">
+                 <h2 className="text-2xl font-bold text-[#002d14] tracking-tight">Gestor de Casos de Éxito</h2>
+                 <p className="text-gray-500 text-sm font-medium mt-1">Control dinámico de referencias en Inicio</p>
+              </div>
+            </div>
+            <ChevronDown className={`text-gray-400 transition-transform duration-300 ${activeAccordion === 'testimonios' ? 'rotate-180' : ''}`} size={24} />
+          </button>
+          
+          <AnimatePresence>
+            {activeAccordion === 'testimonios' && (
+              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                <div className="p-8 sm:p-10 pt-0 border-t border-gray-100 mt-2">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                    <p className="text-sm text-gray-500 leading-relaxed max-w-xl">El testimonio central adopta automáticamente el fondo estético verde oscuro. Agregue o elimine libremente.</p>
+                    <Button onClick={() => setShowTestimonioForm(!showTestimonioForm)} variant="primary" className="rounded-full flex items-center shrink-0 gap-2 font-bold px-6 border-transparent">
+                      {showTestimonioForm ? "Cancelar" : <><Plus size={20} /> Nuevo Testimonio</>}
+                    </Button>
+                  </div>
+
+          {showTestimonioForm && (
+            <AnimatedSection className="bg-gray-50 p-8 rounded-2xl border border-gray-200 mb-8 shadow-inner">
+              <form onSubmit={handleAddTestimonio} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-widest">Autor</label>
+                    <input type="text" placeholder="Ej: Roberto Sánchez"
+                      className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00bc4c] bg-white text-gray-900 font-medium"
+                      value={newTestimonio.autor} onChange={e => setNewTestimonio({...newTestimonio, autor: e.target.value})} required />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-widest">Cargo e Institución</label>
+                    <input type="text" placeholder="Ej: Gerente General, Banco Central"
+                      className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00bc4c] bg-white text-gray-900 font-medium"
+                      value={newTestimonio.cargo} onChange={e => setNewTestimonio({...newTestimonio, cargo: e.target.value})} required />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-widest">Testimonio (Cita textual)</label>
+                  <textarea rows={3} placeholder="Escriba la reseña que aparecerá en la web..."
+                    className="w-full px-5 py-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00bc4c] bg-white text-gray-900 font-medium resize-none"
+                    value={newTestimonio.texto} onChange={e => setNewTestimonio({...newTestimonio, texto: e.target.value})} required />
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Button type="submit" variant="primary" size="lg" className="rounded-full shadow-lg font-bold px-10">Crear Testimonio</Button>
+                </div>
+              </form>
+            </AnimatedSection>
+          )}
+
+          <div className="space-y-4">
+            {testimonios.map((t, idx) => (
+              <div key={t.id} className="flex flex-col md:flex-row gap-4 items-center justify-between p-6 rounded-2xl border border-gray-100 bg-gray-50 hover:border-[#00bc4c]/30 hover:shadow-[0_4px_20px_rgba(0,188,76,0.1)] transition-all">
+                <div className="flex-1 w-full">
+                  <h4 className="font-bold text-[#002d14] text-lg flex items-center gap-2">
+                    {t.autor}
+                    {idx === Math.floor(testimonios.length / 2) && <span className="px-2 py-0.5 ml-2 bg-[#00bc4c] text-white text-[10px] uppercase font-bold tracking-widest rounded">Centro (Verde)</span>}
+                  </h4>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">{t.cargo}</p>
+                  <p className="text-sm text-gray-700 italic border-l-2 border-[#00bc4c] pl-3 py-1">"{t.texto}"</p>
+                </div>
+                <button onClick={() => deleteTestimonio(t.id)} className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm text-red-500 bg-white hover:bg-red-50 border border-red-100 hover:border-red-200 shadow-sm transition-all">
+                  <Trash2 size={16} /> Eliminar
+                </button>
+              </div>
+            ))}
+            {testimonios.length === 0 && (
+              <p className="text-center text-gray-400 py-8 border-2 border-dashed border-gray-200 rounded-2xl">No hay testimonios registrados. Crea uno nuevo para que aparezca en el inicio.</p>
+            )}
+          </div>
+
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* 5. Historial de Eliminados */}
       {deletedHistory.length > 0 && (
         <section className="max-w-4xl mx-auto px-4 sm:px-6 w-full mb-20">
           <div className="bg-white border border-gray-100 rounded-[2rem] shadow-[0_4px_20px_rgb(0,0,0,0.03)] overflow-hidden">

@@ -6,7 +6,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/Button';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { TrendingUp, PhoneCall, Users, Database, Play, X, ShieldCheck, Lock, Trophy, Building, Star, Quote, Handshake, Lightbulb, Scale, Briefcase, BarChart, DollarSign, Zap, Globe, Award, HeartHandshake, Banknote, Target, Rocket, UsersRound, HandCoins, CalendarDays, CheckCircle2, Activity } from 'lucide-react';
+import { TestimoniosCarousel } from '@/components/TestimoniosCarousel';
+import { TrendingUp, PhoneCall, Users, Database, Play, X, ShieldCheck, Lock, Trophy, Building, Star, Quote, Handshake, Lightbulb, Scale, Briefcase, BarChart, BarChart3, DollarSign, Zap, Globe, Award, HeartHandshake, Banknote, Target, Rocket, UsersRound, HandCoins, CalendarDays, CheckCircle2, Activity, Cloud } from 'lucide-react';
 
 export default function Home() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -34,11 +35,12 @@ export default function Home() {
         </div>
 
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <AnimatedSection className="max-w-4xl pt-10">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-white tracking-tight text-shadow-lg">
+          <AnimatedSection className="max-w-4xl pt-24 pb-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 text-white tracking-tight text-shadow-lg">
               Transformación Digital<br />
               en la Gestión Comercial<br />
-              para el Sector Financiero.
+              para las Instituciones<br />
+              del Sistema Financiero.
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-12 font-medium drop-shadow-md max-w-3xl">
               No solo contactamos socios; gestionamos operaciones listas para desembolso con tecnología de élite.
@@ -99,37 +101,37 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/70 z-10 pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-          <AnimatedSection className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Ecosistema Estratégico</h2>
+          <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[var(--color-accent)] mb-6 tracking-tight">
+              Ecosistema KREDITEC
+            </h2>
+            <p className="text-xl text-gray-300 font-medium">
+              ¿Por qué somos diferentes? Mientras otros llaman, nosotros construimos la operación
+            </p>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <AnimatedSection delay={0.1} className="h-full">
-               <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white/20 transition-colors duration-300">
-                  <TrendingUp className="text-[var(--color-accent)] mb-6" size={48} />
-                  <h3 className="text-2xl font-bold text-white mb-3">Gestión Comercial</h3>
-                  <p className="text-gray-300">Colocación proactiva de microcrédito y consumo.</p>
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300">
+                  <Briefcase className="text-[var(--color-accent)] mb-6 mx-auto md:mx-0 drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={56} />
+                  <h3 className="text-2xl font-bold text-white mb-3 text-center md:text-left">Ingeniería de Paquetes Crediticios</h3>
+                  <p className="text-gray-300 text-center md:text-left leading-relaxed">Perfilamiento integral y recolección de documentación.</p>
                </div>
             </AnimatedSection>
+
             <AnimatedSection delay={0.2} className="h-full">
-               <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white/20 transition-colors duration-300">
-                  <PhoneCall className="text-[var(--color-accent)] mb-6" size={48} />
-                  <h3 className="text-2xl font-bold text-white mb-3">Contactabilidad Global</h3>
-                  <p className="text-gray-300">Uso de herramientas de clase mundial (HubSpot y NUA Talker).</p>
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300">
+                  <Globe className="text-[var(--color-accent)] mb-6 mx-auto md:mx-0 drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={56} />
+                  <h3 className="text-2xl font-bold text-white mb-3 text-center md:text-left">Ecosistema 100% Digital</h3>
+                  <p className="text-gray-300 text-center md:text-left leading-relaxed">Acceso directo a sistemas de clientes para reducir la carga operativa institucional.</p>
                </div>
             </AnimatedSection>
+
             <AnimatedSection delay={0.3} className="h-full">
-               <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white/20 transition-colors duration-300">
-                  <Users className="text-[var(--color-accent)] mb-6" size={48} />
-                  <h3 className="text-2xl font-bold text-white mb-3">Captación de Leads</h3>
-                  <p className="text-gray-300">Bases de datos externas y marketing masivo.</p>
-               </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.4} className="h-full">
-               <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl hover:bg-white/20 transition-colors duration-300">
-                  <Database className="text-[var(--color-accent)] mb-6" size={48} />
-                  <h3 className="text-2xl font-bold text-white mb-3">Control & Trazabilidad</h3>
-                  <p className="text-gray-300">Grabación y seguimiento total del lead preaprobado.</p>
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300">
+                  <ShieldCheck className="text-[var(--color-accent)] mb-6 mx-auto md:mx-0 drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={56} />
+                  <h3 className="text-2xl font-bold text-white mb-3 text-center md:text-left">Mitigación de Riesgo</h3>
+                  <p className="text-gray-300 text-center md:text-left leading-relaxed">Validación técnica rigurosa para garantizar la calidad de la cartera y reducir la morosidad.</p>
                </div>
             </AnimatedSection>
           </div>
@@ -162,8 +164,8 @@ export default function Home() {
                <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-sm">
                   <Image src="/methodology-final.webp" alt="Apertura" fill className="object-cover" />
                </div>
-               <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">Disponibilidad 8/7</h3>
-               <p className="text-lg text-gray-600">Atención extendida con gestión automatizada.</p>
+               <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">Disponibilidad 8/5</h3>
+               <p className="text-lg text-gray-600">Atención extendida en horario de oficina, lunes a viernes de 08:00 am a 05:00 pm</p>
             </AnimatedSection>
 
             <AnimatedSection delay={0.2} className="flex flex-col items-center text-center">
@@ -247,45 +249,195 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. IMPACTO EN CIFRAS */}
-      <section className="relative py-20 bg-[#001108] border-y border-[var(--color-accent)]/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/hero-bg.png')] opacity-5 bg-cover bg-center mix-blend-overlay" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center">
-            
-            <AnimatedSection delay={0.1} className="pt-6 md:pt-0">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-6">
-                  <TrendingUp size={32} />
-                </div>
-                <h4 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter shadow-sm text-shadow-sm">+25</h4>
-                <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase text-sm mb-3">Años en el Mercado</p>
-                <p className="text-gray-400 max-w-xs mx-auto text-sm">De trayectoria impecable respaldando instituciones a nivel nacional.</p>
-              </div>
-            </AnimatedSection>
-            
-            <AnimatedSection delay={0.2} className="pt-10 md:pt-0">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-6">
-                  <Building size={32} />
-                </div>
-                <h4 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter shadow-sm text-shadow-sm">+500</h4>
-                <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase text-sm mb-3">Clientes Cooperativos</p>
-                <p className="text-gray-400 max-w-xs mx-auto text-sm">Empresas e instituciones confían la colocación de su cartera en nuestras operaciones.</p>
+      {/* ¿POR QUÉ KREDITEC? */}
+      <section 
+        className="py-32 relative bg-black overflow-hidden bg-fixed bg-[center_top] bg-cover"
+        style={{ backgroundImage: 'url(/services-bg.webp)' }}
+      >
+        <div className="absolute inset-0 bg-black/75 z-10 pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+          <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
+            <p className="text-xl text-[var(--color-accent)] font-bold mb-3">¿Por qué?</p>
+            <div className="relative w-48 sm:w-64 md:w-80 lg:w-96 h-16 sm:h-20 md:h-24 mx-auto">
+              <Image src="/logo-blanco.png" alt="KREDITEC" fill className="object-contain" />
+            </div>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <AnimatedSection delay={0.1} className="h-full">
+              <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                <PhoneCall className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={56} />
+                <h3 className="text-2xl font-bold text-white mb-3">Atención Multicanal</h3>
+                <p className="text-gray-300 leading-relaxed">Comunicación inmediata y eficiente donde el socio se encuentre.</p>
               </div>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.3} className="pt-10 md:pt-0">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-6">
-                  <Trophy size={32} />
-                </div>
-                <h4 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter shadow-sm text-shadow-sm">Top 5</h4>
-                <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase text-sm mb-3">Ranking Nacional</p>
-                <p className="text-gray-400 max-w-xs mx-auto text-sm">Reconocidos como uno de los centros de contacto de más alta efectividad en originación B2B.</p>
+            <AnimatedSection delay={0.2} className="h-full">
+              <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                <Zap className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={56} />
+                <h3 className="text-2xl font-bold text-white mb-3">Eficiencia Operativa</h3>
+                <p className="text-gray-300 leading-relaxed">Automatización de procesos repetitivos para acelerar el desembolso.</p>
               </div>
             </AnimatedSection>
 
+            <AnimatedSection delay={0.3} className="h-full">
+              <div className="h-full flex flex-col bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                <BarChart3 className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={56} />
+                <h3 className="text-2xl font-bold text-white mb-3">Análisis de Datos</h3>
+                <p className="text-gray-300 leading-relaxed">Dashboards de calidad, métricas de call center y reportes de estructura para una toma de decisiones informada.</p>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* SEGURIDAD Y CUMPLIMIENTO */}
+      <section className="py-24 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-6 tracking-tight">Seguridad y Cumplimiento</h2>
+            <p className="text-xl text-gray-500 font-medium">
+              Entendemos la sensibilidad de la información financiera. Nuestra arquitectura está diseñada bajo estándares internacionales.
+            </p>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <AnimatedSection delay={0.1} className="h-full">
+              <div className="h-full flex flex-col bg-[var(--color-accent)] p-8 rounded-[2rem] text-center hover:-translate-y-2 transition-all duration-300 shadow-lg">
+                <Lock className="text-white mb-6 mx-auto drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" size={56} />
+                <h3 className="text-2xl font-bold text-white mb-3">Conectividad Cifrada</h3>
+                <p className="text-white/90 leading-relaxed">Integración segura mediante túneles VPN y protocolos de cifrado de datos en tránsito y en reposo.</p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2} className="h-full">
+              <div className="h-full flex flex-col bg-[#002d14] p-8 rounded-[2rem] text-center hover:-translate-y-2 transition-all duration-300 shadow-lg">
+                <ShieldCheck className="text-white mb-6 mx-auto drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" size={56} />
+                <h3 className="text-2xl font-bold text-white mb-3">Trazabilidad y Auditoría</h3>
+                <p className="text-white/90 leading-relaxed">Registro inalterable de quién, cuándo y cómo se accedió a la información de cada socio.</p>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.3} className="h-full">
+              <div className="h-full flex flex-col bg-[#002d14] p-8 rounded-[2rem] text-center hover:-translate-y-2 transition-all duration-300 shadow-lg">
+                <Cloud className="text-white mb-6 mx-auto drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" size={56} />
+                <h3 className="text-2xl font-bold text-white mb-3">Alojamiento en la Nube</h3>
+                <p className="text-white/90 leading-relaxed">Infraestructura respaldada por servidores con certificaciones de seguridad global, garantizando disponibilidad 8/7 sin interrupciones.</p>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* PLAN DE IMPLEMENTACIÓN */}
+      <section className="py-24 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
+            <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Plan de implementación</p>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-[#002d14] tracking-tight">De 0 a Producción en 28 Días</h2>
+            <p className="text-xl text-gray-500 font-medium mt-6">
+              Nuestra infraestructura está diseñada para la transparencia y la escalabilidad:
+            </p>
+          </AnimatedSection>
+
+          <div className="max-w-3xl mx-auto space-y-10">
+            <AnimatedSection delay={0.1}>
+              <div>
+                <p className="text-lg font-bold text-[#002d14] mb-3">Semana 1: Infraestructura y Seguridad</p>
+                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-[#002d14] rounded-full" style={{ width: '100%' }} />
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2}>
+              <div>
+                <p className="text-lg font-bold text-[#002d14] mb-3">Semana 2: Integración y Calidad de Datos</p>
+                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-[#002d14] rounded-full" style={{ width: '100%' }} />
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.3}>
+              <div>
+                <p className="text-lg font-bold text-[#002d14] mb-3">Semana 3: Automatización y Marketing</p>
+                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-[#002d14] rounded-full" style={{ width: '100%' }} />
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.4}>
+              <div>
+                <p className="text-lg font-bold text-[#002d14] mb-3">Semana 4: Pruebas, Reportes y Salida a Producción</p>
+                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                  <div className="h-full bg-[var(--color-accent)] rounded-full" style={{ width: '100%' }} />
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+
+      {/* 4.6. ALCANCE DE NUESTROS SERVICIOS */}
+      <section 
+        className="py-32 relative bg-black overflow-hidden bg-fixed bg-[center_top] bg-cover"
+        style={{ backgroundImage: 'url(/services-bg.webp)' }}
+      >
+        <div className="absolute inset-0 bg-black/70 z-10 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+          <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
+            <h2 className="text-[var(--color-accent)] font-bold tracking-widest uppercase mb-4 text-sm md:text-base">
+              ALCANCE DE
+            </h2>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
+              Nuestros Servicios
+            </h3>
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            <AnimatedSection delay={0.1} className="h-full">
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                  <Briefcase className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={48} />
+                  <h3 className="text-xl font-bold text-white mb-3">Gestión Comercial</h3>
+                  <p className="text-gray-300 leading-relaxed text-[15px]">Colocación proactiva de microcrédito y consumo.</p>
+               </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.2} className="h-full">
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                  <Globe className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={48} />
+                  <h3 className="text-xl font-bold text-white mb-3">Contactabilidad Global</h3>
+                  <p className="text-gray-300 leading-relaxed text-[15px]">Uso de herramientas de clase mundial.</p>
+               </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.3} className="h-full">
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                  <Users className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={48} />
+                  <h3 className="text-xl font-bold text-white mb-3">Nuevos Leads</h3>
+                  <p className="text-gray-300 leading-relaxed text-[15px]">Captación y colocación mediante bases de datos externas y mensajes masivos/email.</p>
+               </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.4} className="h-full">
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                  <Database className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={48} />
+                  <h3 className="text-xl font-bold text-white mb-3">Control & Trazabilidad</h3>
+                  <p className="text-gray-300 leading-relaxed text-[15px]">Grabación, alojamiento y seguimiento total del lead preaprobado.</p>
+               </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.5} className="h-full">
+               <div className="h-full flex flex-col justify-center bg-white/10 backdrop-blur-md border border-white/20 px-6 py-8 rounded-[2rem] hover:bg-white/20 hover:-translate-y-2 transition-all duration-300 text-center">
+                  <Activity className="text-[var(--color-accent)] mb-6 mx-auto drop-shadow-[0_0_12px_rgba(0,188,76,0.6)]" size={48} />
+                  <h3 className="text-xl font-bold text-white mb-3">Disponibilidad 8/5</h3>
+                  <p className="text-gray-300 leading-relaxed text-[15px]">Atención extendida con gestión automatizada en tiempo real.</p>
+               </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -302,73 +454,7 @@ export default function Home() {
             <h3 className="text-4xl md:text-5xl font-extrabold text-[#002d14] tracking-tight">Lo que dicen nuestros clientes</h3>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Testimonio 1 */}
-            <AnimatedSection delay={0.1} className="bg-white p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-xl transition-shadow relative">
-              <Quote className="absolute top-8 right-8 text-gray-100" size={60} />
-              <div className="flex gap-1 text-[#00bc4c] mb-6">
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-              </div>
-              <p className="text-gray-700 leading-relaxed mb-8 relative z-10 italic">
-                "Desde que implementamos el ecosistema operativo de Kreditec, nuestra originación de crédito creció un 45% en el primer semestre. Su trazabilidad es invaluable."
-              </p>
-              <div className="flex items-center gap-4 border-t border-gray-100 pt-6">
-                <div className="w-12 h-12 rounded-full bg-[#002d14] flex items-center justify-center text-white font-bold shrink-0">CR</div>
-                <div>
-                  <h4 className="font-bold text-[#002d14]">Carlos Ramírez</h4>
-                  <p className="text-sm text-gray-500">Gerente Comercial, Cooperativa Progreso Solidario</p>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Testimonio 2 */}
-            <AnimatedSection delay={0.2} className="bg-[#002d14] p-10 rounded-3xl shadow-xl shadow-[#002d14]/20 border border-[#00bc4c]/20 relative transform md:-translate-y-4">
-              <Quote className="absolute top-8 right-8 text-white/5" size={60} />
-              <div className="flex gap-1 text-[#00bc4c] mb-6">
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-              </div>
-              <p className="text-white leading-relaxed mb-8 relative z-10 italic">
-                "La integración técnica fue rápida y sin fricción. No son un simple call center; son un brazo operativo estratégico que cuida celosamente los datos de nuestros socios."
-              </p>
-              <div className="flex items-center gap-4 border-t border-white/10 pt-6">
-                <div className="w-12 h-12 rounded-full border border-[var(--color-accent)] bg-white/10 flex items-center justify-center text-[var(--color-accent)] font-bold shrink-0">MT</div>
-                <div>
-                  <h4 className="font-bold text-white">Mónica Torres</h4>
-                  <p className="text-sm text-gray-300">Directora de Riesgos, Finanzas Activas</p>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* Testimonio 3 */}
-            <AnimatedSection delay={0.3} className="bg-white p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-xl transition-shadow relative">
-              <Quote className="absolute top-8 right-8 text-gray-100" size={60} />
-              <div className="flex gap-1 text-[#00bc4c] mb-6">
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-              </div>
-              <p className="text-gray-700 leading-relaxed mb-8 relative z-10 italic">
-                "Pasamos de tener procesos manuales a un embudo completamente digital. La gestión en tiempo real con HubSpot nos dio el control absoluto que buscábamos."
-              </p>
-              <div className="flex items-center gap-4 border-t border-gray-100 pt-6">
-                <div className="w-12 h-12 rounded-full bg-[#002d14] flex items-center justify-center text-white font-bold shrink-0">JV</div>
-                <div>
-                  <h4 className="font-bold text-[#002d14]">Javier Villalobos</h4>
-                  <p className="text-sm text-gray-500">VP de Operaciones B2B, Mutualista Trust</p>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
+          <TestimoniosCarousel />
         </div>
       </section>
 
@@ -377,16 +463,15 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center">
             <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-10">Aliados Estratégicos y Stack Tecnológico</h3>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-               {/* Logos representados en texto estético hasta tener SVGs externos oficiales */}
-               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded bg-[#ff7a59]" /> HubSpot
+            <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24">
+               <div className="relative w-48 h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+                  <Image src="/HubSpot_Logo.svg" alt="HubSpot" fill className="object-contain" />
                </div>
-               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full border-4 border-blue-500" /> NUA Talker
+               <div className="relative w-48 h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+                  <Image src="/nuatalker-logo.png" alt="NUA Talker" fill className="object-contain" />
                </div>
-               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                  <div className="w-8 h-8 rotate-45 bg-[#002d14]" /> Broker Institucional
+               <div className="relative w-48 h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+                  <Image src="/broker-institucional-logo.png" alt="Broker Institucional" fill className="object-contain" />
                </div>
             </div>
           </AnimatedSection>
@@ -437,7 +522,7 @@ export default function Home() {
                 controls
                 autoPlay
                 playsInline
-                src="/hero-video.mp4"
+                src="/hero-video-voz-femenina-sin-subtitulo-final.mp4"
                 title="Video Corporativo Kreditec"
               />
             </motion.div>

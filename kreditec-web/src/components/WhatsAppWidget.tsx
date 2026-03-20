@@ -5,10 +5,10 @@ import { X, Send, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const WHATSAPP_NUMBER = "593987471367";
-const AGENT_NAME = "Valentina Barrera";
-const AGENT_ROLE = "Gerente General · Kreditec";
+const AGENT_NAME = "Elena Montes";
+const AGENT_ROLE = "Asesora Estratégica · Kreditec";
 
-// Horario de atención: Lunes-Domingo 9:00–17:00 (hora Ecuador, UTC-5)
+// Horario de atención: Lunes-Viernes 8:00–17:00 (hora Ecuador, UTC-5)
 function isWithinBusinessHours(): boolean {
   const now = new Date();
   // Obtener hora local en Ecuador (UTC-5)
@@ -16,8 +16,9 @@ function isWithinBusinessHours(): boolean {
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
   const ecuadorTime = new Date(utc + ecuadorOffset * 60000);
   const hour = ecuadorTime.getHours();
-  // Lunes=1 ... Domingo=0; todos los días 9–17
-  return hour >= 9 && hour < 17;
+  const day = ecuadorTime.getDay();
+  // Lunes=1 ... Viernes=5; 8–17
+  return day >= 1 && day <= 5 && hour >= 8 && hour < 17;
 }
 
 export function WhatsAppWidget() {
@@ -75,8 +76,8 @@ export function WhatsAppWidget() {
             {/* Header */}
             <div className="bg-[#002d14] px-4 py-4 flex items-center gap-3">
               <div className="relative shrink-0">
-                <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-lg border-2 border-white/30">
-                  V
+                <div className="w-11 h-11 rounded-full border-2 border-white/30 overflow-hidden relative bg-white/10">
+                  <img src="/whatsapp_avatar.png" alt={AGENT_NAME} className="w-full h-full object-cover" />
                 </div>
                 {/* Indicador de estado dinámico */}
                 <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-[#002d14] ${online ? 'bg-[#00bc4c]' : 'bg-yellow-400'}`} />
@@ -88,7 +89,7 @@ export function WhatsAppWidget() {
                   {online ? (
                     <><span className="w-1.5 h-1.5 rounded-full bg-[#00bc4c] inline-block animate-pulse" /> En línea · Responde al instante</>
                   ) : (
-                    <><Clock size={11} /> Fuera de horario · Responde a partir de las 9am</>
+                    <><Clock size={11} /> Fuera de horario · Responde a las 8am</>
                   )}
                 </p>
               </div>
@@ -108,7 +109,9 @@ export function WhatsAppWidget() {
             >
               {/* Burbuja de saludo */}
               <div className="flex items-end gap-2 max-w-[88%]">
-                <div className="w-7 h-7 rounded-full bg-[#002d14] flex items-center justify-center text-white text-xs font-bold shrink-0 mb-1">V</div>
+                <div className="w-7 h-7 rounded-full bg-white/20 overflow-hidden shrink-0 mb-1 border border-white/50">
+                  <img src="/whatsapp_avatar.png" alt={AGENT_NAME} className="w-full h-full object-cover" />
+                </div>
                 <div className="bg-white rounded-xl rounded-tl-none px-4 py-3 shadow-sm">
                   <p className="text-gray-800 text-sm leading-relaxed">
                     👋 ¡Hola! Soy <strong>{AGENT_NAME}</strong>. ¿En qué puedo ayudarle hoy con su institución financiera?
@@ -123,7 +126,7 @@ export function WhatsAppWidget() {
                   <div className="w-7 h-7 shrink-0" />
                   <div className="bg-white/80 rounded-xl rounded-tl-none px-4 py-2.5 shadow-sm border-l-2 border-yellow-400">
                     <p className="text-gray-600 text-xs leading-relaxed">
-                      🕘 Atención disponible <strong>Lun–Dom, 9:00–17:00</strong>. Su mensaje llegará directo a mi WhatsApp y le responderé en cuanto esté en línea.
+                      🕘 Atención disponible <strong>Lun–Vie, 8:00–17:00</strong>. Su mensaje llegará directo a mi WhatsApp y le responderé en cuanto esté en línea.
                     </p>
                   </div>
                 </div>

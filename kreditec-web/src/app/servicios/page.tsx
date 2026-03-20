@@ -180,141 +180,21 @@ export default function ServiciosPage() {
         </section>
       </div>
 
-      {/* 5. IMPACTO EN CIFRAS */}
-      <section className="relative py-20 bg-[#001108] border-y border-[var(--color-accent)]/20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/hero-bg.png')] opacity-5 bg-cover bg-center mix-blend-overlay" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center">
-            
-            <AnimatedSection delay={0.1} className="pt-6 md:pt-0">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-6">
-                  <TrendingUp size={32} />
-                </div>
-                <h4 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter shadow-sm text-shadow-sm">+25</h4>
-                <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase text-sm mb-3">Años en el Mercado</p>
-                <p className="text-gray-400 max-w-xs mx-auto text-sm">De trayectoria impecable respaldando instituciones a nivel nacional.</p>
-              </div>
-            </AnimatedSection>
-            
-            <AnimatedSection delay={0.2} className="pt-10 md:pt-0">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-6">
-                  <Building size={32} />
-                </div>
-                <h4 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter shadow-sm text-shadow-sm">+500</h4>
-                <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase text-sm mb-3">Clientes Cooperativos</p>
-                <p className="text-gray-400 max-w-xs mx-auto text-sm">Empresas e instituciones confían la colocación de su cartera en nuestras operaciones.</p>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.3} className="pt-10 md:pt-0">
-              <div className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center mb-6">
-                  <Trophy size={32} />
-                </div>
-                <h4 className="text-5xl md:text-6xl font-black text-white mb-2 tracking-tighter shadow-sm text-shadow-sm">Top 5</h4>
-                <p className="text-[var(--color-accent)] font-bold tracking-widest uppercase text-sm mb-3">Ranking Nacional</p>
-                <p className="text-gray-400 max-w-xs mx-auto text-sm">Reconocidos como uno de los centros de contacto de más alta efectividad en originación B2B.</p>
-              </div>
-            </AnimatedSection>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 6. TESTIMONIOS */}
-      <section className="py-24 bg-gray-50 border-b border-gray-100 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-white to-transparent pointer-events-none z-10 hidden md:block" />
-        <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-white to-transparent pointer-events-none z-10 hidden md:block" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-0">
-          <AnimatedSection className="text-center mb-16">
-            <h2 className="text-[var(--color-accent)] font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Casos de Éxito</h2>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-[#002d14] tracking-tight">Lo que dicen nuestros clientes</h3>
-          </AnimatedSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <AnimatedSection delay={0.1} className="bg-white p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-xl transition-shadow relative">
-              <Quote className="absolute top-8 right-8 text-gray-100" size={60} />
-              <div className="flex gap-1 text-[#00bc4c] mb-6">
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-              </div>
-              <p className="text-gray-700 leading-relaxed mb-8 relative z-10 italic">
-                "Desde que implementamos el ecosistema operativo de Kreditec, nuestra originación de crédito creció un 45% en el primer semestre. Su trazabilidad es invaluable."
-              </p>
-              <div className="flex items-center gap-4 border-t border-gray-100 pt-6">
-                <div className="w-12 h-12 rounded-full bg-[#002d14] flex items-center justify-center text-white font-bold shrink-0">CR</div>
-                <div>
-                  <h4 className="font-bold text-[#002d14]">Carlos Ramírez</h4>
-                  <p className="text-sm text-gray-500">Gerente Comercial, Cooperativa Progreso Solidario</p>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.2} className="bg-[#002d14] p-10 rounded-3xl shadow-xl shadow-[#002d14]/20 border border-[#00bc4c]/20 relative transform md:-translate-y-4">
-              <Quote className="absolute top-8 right-8 text-white/5" size={60} />
-              <div className="flex gap-1 text-[#00bc4c] mb-6">
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-              </div>
-              <p className="text-white leading-relaxed mb-8 relative z-10 italic">
-                "La integración técnica fue rápida y sin fricción. No son un simple call center; son un brazo operativo estratégico que cuida celosamente los datos de nuestros socios."
-              </p>
-              <div className="flex items-center gap-4 border-t border-white/10 pt-6">
-                <div className="w-12 h-12 rounded-full border border-[var(--color-accent)] bg-white/10 flex items-center justify-center text-[var(--color-accent)] font-bold shrink-0">MT</div>
-                <div>
-                  <h4 className="font-bold text-white">Mónica Torres</h4>
-                  <p className="text-sm text-gray-300">Directora de Riesgos, Finanzas Activas</p>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.3} className="bg-white p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-xl transition-shadow relative">
-              <Quote className="absolute top-8 right-8 text-gray-100" size={60} />
-              <div className="flex gap-1 text-[#00bc4c] mb-6">
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-                <Star className="fill-current" size={20} />
-              </div>
-              <p className="text-gray-700 leading-relaxed mb-8 relative z-10 italic">
-                "Pasamos de tener procesos manuales a un embudo completamente digital. La gestión en tiempo real con HubSpot nos dio el control absoluto que buscábamos."
-              </p>
-              <div className="flex items-center gap-4 border-t border-gray-100 pt-6">
-                <div className="w-12 h-12 rounded-full bg-[#002d14] flex items-center justify-center text-white font-bold shrink-0">JV</div>
-                <div>
-                  <h4 className="font-bold text-[#002d14]">Javier Villalobos</h4>
-                  <p className="text-sm text-gray-500">VP de Operaciones B2B, Mutualista Trust</p>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
 
       {/* 7. ALIADOS (Fondo blanco limpio, logos corporativos) */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection className="text-center">
             <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-10">Aliados Estratégicos y Stack Tecnológico</h3>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded bg-[#ff7a59]" /> HubSpot
+            <div className="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-24">
+               <div className="relative w-48 h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+                  <Image src="/HubSpot_Logo.svg" alt="HubSpot" fill className="object-contain" />
                </div>
-               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full border-4 border-blue-500" /> NUA Talker
+               <div className="relative w-48 h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+                  <Image src="/nuatalker-logo.png" alt="NUA Talker" fill className="object-contain" />
                </div>
-               <div className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-                  <div className="w-8 h-8 rotate-45 bg-[#002d14]" /> Broker Institucional
+               <div className="relative w-48 h-12 md:h-14 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 cursor-pointer">
+                  <Image src="/broker-institucional-logo.png" alt="Broker Institucional" fill className="object-contain" />
                </div>
             </div>
           </AnimatedSection>

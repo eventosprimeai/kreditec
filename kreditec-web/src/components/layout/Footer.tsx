@@ -64,7 +64,7 @@ export function Footer() {
         
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} KREDITEC S.A. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} KREDITECONK S.A.S | Ruc: 1793235457001 | Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-6 text-sm text-gray-500">
              <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse" /> Ecosistema Operando</span>

@@ -1,0 +1,28 @@
+# Ignorar carpetas de diseño y recursos locales
+/Capturas/
+/Fase 1/
+/Recursos/
+
+# Ignorar archivos multimedia y documentos pesados en la raíz
+*.pdf
+*.docx
+*.zip
+*.psd
+*.mp4
+*.m4v
+*.mov
+*.wav
+*.mp3
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.txt
+
+# Excepciones (archivos txt que sí podrías querer subir, por ejemplo si hay notas de código o READMEs)
+!ajustes.txt
+!README.md
+!*.md
+
+# Excluir la carpeta web (esta tiene su propio gitignore más específico)
+# No marcamos kreditec-web porque es la que SÍ subimos

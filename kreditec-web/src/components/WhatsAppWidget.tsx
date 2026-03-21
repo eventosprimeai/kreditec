@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const WHATSAPP_NUMBER = "593987471367";
+const WHATSAPP_NUMBER = "593963413419";
 const AGENT_NAME = "Elena Montes";
 const AGENT_ROLE = "Asesora Estratégica · Kreditec";
 

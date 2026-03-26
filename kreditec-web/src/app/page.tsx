@@ -450,9 +450,8 @@ export default function Home() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-0">
           <AnimatedSection className="text-center mb-16">
-            <h2 className="text-[var(--color-accent)] font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Casos de Éxito</h2>
+            <h2 className="text-[var(--color-accent)] font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Lo que dicen nuestros aliados</h2>
             <h3 className="text-4xl md:text-5xl font-extrabold text-[#002d14] tracking-tight">
-              Lo que dicen nuestros aliados<br className="hidden md:block"/>
               Partners Estratégicos
             </h3>
           </AnimatedSection>

@@ -322,7 +322,7 @@ export default function Home() {
               <div className="h-full flex flex-col bg-[#002d14] p-8 rounded-[2rem] text-center hover:-translate-y-2 transition-all duration-300 shadow-lg">
                 <Cloud className="text-white mb-6 mx-auto drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" size={56} />
                 <h3 className="text-2xl font-bold text-white mb-3">Alojamiento en la Nube</h3>
-                <p className="text-white/90 leading-relaxed">Infraestructura respaldada por servidores con certificaciones de seguridad global, garantizando disponibilidad 8/7 sin interrupciones.</p>
+                <p className="text-white/90 leading-relaxed">Infraestructura respaldada por servidores con certificaciones de seguridad, garantizando disponibilidad 8/5 de lunes a viernes en horario de operaciones.</p>
               </div>
             </AnimatedSection>
           </div>

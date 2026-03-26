@@ -73,7 +73,7 @@ export default function ServiciosPage() {
           />
           <ServiceRow 
              id="contactabilidad"
-             title="Contactabilidad e Integración Global" 
+             title="Contactabilidad e Integración" 
              desc="Operamos nativamente con plataformas líderes como HubSpot y centrales NUA Talker. Esto asegura cero caídas, monitoreo garantizado y registros de cada interacción en la ficha del posible socio." 
              icon={<PhoneCall size={48} />}
              image="/tech-security.webp"

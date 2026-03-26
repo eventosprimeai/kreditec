@@ -84,7 +84,7 @@ export function TestimoniosCarousel() {
   if (data.length === 0) return null;
 
   return (
-    <div className="relative w-[100vw] left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden py-24 min-h-[650px] md:min-h-[600px] flex items-center justify-center carousel-infinite" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <div className="relative w-[100vw] left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden py-16 min-h-[500px] flex items-center justify-center carousel-infinite" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <style>{`
         .carousel-infinite {
           --item-width: 100vw;
@@ -110,7 +110,7 @@ export function TestimoniosCarousel() {
           </button>
       </div>
 
-      <div className="relative w-full h-[550px] md:h-[450px] flex items-center justify-center">
+      <div className="relative w-full h-[450px] flex items-center justify-center">
         {data.map((item, idx) => {
           const offset = getOffset(idx, activeIndex, data.length);
           const isActive = offset === 0;
@@ -178,17 +178,7 @@ export function TestimoniosCarousel() {
         })}
       </div>
       
-      {/* Indicadores de página */}
-      <div className="absolute bottom-4 md:bottom-8 left-0 right-0 flex justify-center gap-2 z-40">
-         {data.map((_, idx) => (
-            <button 
-              key={idx}
-              onClick={() => setActiveIndex(idx)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${idx === activeIndex ? 'bg-[#00bc4c] w-8' : 'bg-gray-300 hover:bg-gray-400'}`}
-              aria-label={`Ir al testimonio ${idx + 1}`}
-            />
-         ))}
-      </div>
+      
 
     </div>
   );

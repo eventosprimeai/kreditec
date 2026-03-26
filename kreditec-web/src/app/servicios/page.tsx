@@ -92,7 +92,7 @@ export default function ServiciosPage() {
              title="Reportes y Trazabilidad IAM" 
              desc="Transparencia absoluta en tiempo real. Proporcionamos tableros de control y reportes de auditoría tecnológica para que su equipo monitoree cada fase del embudo y el avance comercial de las campañas de forma corporativa." 
              icon={<Activity size={48} />}
-             image="/methodology-final.webp"
+             image="/metodologia.jpg"
              reverse={true}
           />
         </div>

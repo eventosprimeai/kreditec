@@ -162,7 +162,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <AnimatedSection delay={0.1} className="flex flex-col items-center text-center">
                <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-sm">
-                  <Image src="/methodology-final.webp" alt="Apertura" fill className="object-cover" />
+                  <Image src="/metodologia.jpg" alt="Apertura" fill className="object-cover" />
                </div>
                <h3 className="text-3xl font-extrabold text-[#002d14] mb-3">Disponibilidad 8/5</h3>
                <p className="text-lg text-gray-600">Atención extendida en horario de oficina, lunes a viernes de 08:00 am a 05:00 pm</p>

@@ -35,15 +35,15 @@ export default function Home() {
         </div>
 
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <AnimatedSection className="max-w-4xl pt-24 pb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 text-white tracking-tight text-shadow-lg">
+          <AnimatedSection className="max-w-4xl pt-32 pb-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] mb-6 text-white tracking-tight text-shadow-lg">
               Transformación Digital<br />
               en la Gestión Comercial<br />
               para las Instituciones<br />
               del Sistema Financiero.
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-12 font-medium drop-shadow-md max-w-3xl">
-              No solo contactamos socios; gestionamos operaciones listas para desembolso con tecnología de élite.
+              No solo contactamos socios; estructuramos, contactamos y gestionamos operaciones listas para desembolso.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 mt-8">
               <Link href="/contacto" className="w-full sm:w-auto">

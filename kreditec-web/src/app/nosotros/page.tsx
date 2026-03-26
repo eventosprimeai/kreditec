@@ -27,7 +27,7 @@ export default function NosotrosPage() {
               </h3>
               
               <p className="text-lg md:text-xl text-gray-700 leading-relaxed font-medium mb-8">
-                Diseñada para ser el motor de ventas de las Instituciones financieras en Ecuador. No solo contactamos socios; gestionamos operaciones listas para desembolso.
+                Diseñada para ser el motor de ventas de las Instituciones financieras en Ecuador. No solo contactamos socios; estructuramos, contactamos y gestionamos operaciones listas para desembolso.
               </p>
 
               <div className="border-l-4 border-[var(--color-accent)] pl-6 py-2">

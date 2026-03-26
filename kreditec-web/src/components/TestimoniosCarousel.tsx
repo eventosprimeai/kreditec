@@ -13,21 +13,21 @@ export interface Testimonio {
 export const defaultTestimonios: Testimonio[] = [
   {
     id: "1",
-    autor: "Carlos Ramírez",
-    cargo: "Gerente Comercial, Institución Financiera Progreso",
-    texto: "Desde que implementamos el ecosistema operativo de Kreditec, nuestra originación de crédito creció un 45% en el primer semestre. Su trazabilidad es invaluable."
+    autor: "Julio César Pazmiño Játiva",
+    cargo: "Gerente General, Broker de Seguros Pazmiño Játiva",
+    texto: "En Pazmiño Játiva valoramos los aliados que resuelven. Kreditec puso a salvo múltiples operaciones complejas gracias a su capacidad de respuesta inmediata y una gestión impecable. Destacamos la visión de su CEO, Valentina Barrera, quien ha logrado imprimir un sello de empatía y agilidad en cada proceso. Trabajar con ellos es sinónimo de eficiencia y tranquilidad financiera."
   },
   {
     id: "2",
-    autor: "Mónica Torres",
-    cargo: "Directora de Riesgos, Finanzas Activas",
-    texto: "La integración técnica fue rápida y sin fricción. No son un simple call center; son un brazo operativo estratégico que cuida celosamente los datos de nuestros socios."
+    autor: "Luis Maldonado",
+    cargo: "Gerente General, ASSISTCOM",
+    texto: "Assistcom identifica en Kreditec un aliado estratégico con el cual es posible construir una propuesta conjunta de valor en el mercado financiero. La integración de servicios asistenciales dentro de los productos de crédito permite diferenciar la oferta, mejorar la experiencia del cliente y fortalecer la relación con el usuario final. Más que una relación proveedor-cliente, se plantea un trabajo conjunto, enfocado en crecimiento, escalabilidad y generación de valor para ambas partes."
   },
   {
     id: "3",
-    autor: "Javier Villalobos",
-    cargo: "VP de Operaciones B2B, Mutualista Trust",
-    texto: "Pasamos de tener procesos manuales a un embudo completamente digital. La gestión en tiempo real con HubSpot nos dio el control absoluto que buscábamos."
+    autor: "Yeferson Torres",
+    cargo: "Gerente General, Tikee",
+    texto: "Como aliados en el sector tecnológico, en Tikee validamos y recomendamos la especialización de Kreditec. Su enfoque en la ingeniería de procesos eleva el estándar de las soluciones financieras actuales. La gestión comercial de Kreditec destaca por entender la complejidad técnica y transformarla en procesos ágiles, seguros y altamente efectivos."
   }
 ];
 

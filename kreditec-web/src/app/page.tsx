@@ -453,7 +453,7 @@ export default function Home() {
             <h2 className="text-[var(--color-accent)] font-bold tracking-widest uppercase mb-4 text-sm md:text-base">Casos de Éxito</h2>
             <h3 className="text-4xl md:text-5xl font-extrabold text-[#002d14] tracking-tight">
               Lo que dicen nuestros aliados<br className="hidden md:block"/>
-              partners estratégicos
+              Partners Estratégicos
             </h3>
           </AnimatedSection>
 

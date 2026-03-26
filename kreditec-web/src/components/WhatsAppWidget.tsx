@@ -5,8 +5,8 @@ import { X, Send, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const WHATSAPP_NUMBER = "593963413419";
-const AGENT_NAME = "Elena Montes";
-const AGENT_ROLE = "Asesora Estratégica · Kreditec";
+const AGENT_NAME = "Ana";
+const AGENT_ROLE = "Agente Virtual · Kreditec";
 
 // Horario de atención: Lunes-Viernes 8:00–17:00 (hora Ecuador, UTC-5)
 function isWithinBusinessHours(): boolean {

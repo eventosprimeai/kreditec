@@ -139,7 +139,7 @@ export function TestimoniosCarousel() {
               <div 
                 className={`w-full mx-4 md:mx-6 p-8 md:p-10 rounded-3xl transition-all duration-700 relative overflow-hidden group
                   ${isActive 
-                    ? 'bg-[#002d14] shadow-[0_20px_50px_rgba(0,45,20,0.4)] border border-[#00bc4c]/30 scale-100 md:scale-105 cursor-default' 
+                    ? 'bg-[#002d14] border border-[#00bc4c]/30 scale-100 md:scale-105 cursor-default' 
                     : 'bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 scale-95 opacity-60 hover:opacity-100 cursor-pointer pointer-events-auto'
                   }`}
               >

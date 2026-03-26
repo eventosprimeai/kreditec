@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Quote, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export interface Testimonio {
@@ -41,34 +41,8 @@ function getOffset(index: number, activeIndex: number, total: number) {
 }
 
 export function TestimoniosCarousel() {
-  const [data, setData] = useState<Testimonio[]>([]);
+  const data = defaultTestimonios;
   const [activeIndex, setActiveIndex] = useState(1);
-
-  useEffect(() => {
-    const load = () => {
-      const saved = localStorage.getItem('kreditec_testimonios');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (parsed.length > 0) {
-              setData(parsed);
-              return;
-          }
-        } catch(e) {}
-      }
-      setData(defaultTestimonios);
-      setActiveIndex(1);
-      localStorage.setItem('kreditec_testimonios', JSON.stringify(defaultTestimonios));
-    };
-    
-    load();
-    window.addEventListener('storage', load);
-    const interval = setInterval(load, 2000);
-    return () => {
-        window.removeEventListener('storage', load);
-        clearInterval(interval);
-    }
-  }, []);
 
   const handlePrev = () => setActiveIndex((prev) => (prev <= 0 ? data.length - 1 : prev - 1));
   const handleNext = () => setActiveIndex((prev) => (prev >= data.length - 1 ? 0 : prev + 1));

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/private/'],
     },
-    sitemap: 'https://kreditec.com.ec/sitemap.xml',
+    sitemap: 'https://kreditecsa.com/sitemap.xml',
   };
 }

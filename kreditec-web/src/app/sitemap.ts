@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://kreditec.com.ec'; // Placeholder real domain
+  const baseUrl = 'https://kreditecsa.com';
 
   return [
     {

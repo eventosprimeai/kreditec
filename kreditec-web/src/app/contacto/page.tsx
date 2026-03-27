@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import React, { useState } from 'react';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { Button } from '@/components/ui/Button';
@@ -30,14 +30,49 @@ export default function ContactoPage() {
       alert("Por favor acepte la Política de Privacidad para continuar.");
       return;
     }
-    
+
     setIsSubmitting(true);
-    // Simulación de llamada a API (Aquí se conectaría con SendGrid, Resend, o el CRM de HubSpot)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    // Limpiar formulario opcional, o dejar en Success
+
+    const HUBSPOT_PORTAL_ID = '51230243';
+    const HUBSPOT_FORM_ID   = '1524b956-8bf6-4d99-a447-d6a9e6dfa532';
+
+    // Separar nombre y apellido
+    const nameParts = formData.name.trim().split(' ');
+    const firstname = nameParts[0] || '';
+    const lastname  = nameParts.slice(1).join(' ') || '';
+
+    try {
+      const res = await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fields: [
+              { name: 'firstname',  value: firstname },
+              { name: 'lastname',   value: lastname  },
+              { name: 'email',      value: formData.email },
+              { name: 'company',    value: formData.institution },
+              { name: 'jobtitle',   value: formData.cargo },
+              { name: 'phone',      value: formData.telefono },
+              { name: 'subject',    value: formData.interes },
+              { name: 'message',    value: `Fecha preferida: ${formData.fecha}\n\n${formData.mensaje}` },
+            ],
+            context: {
+              pageUri: 'https://kreditecsa.com/contacto',
+              pageName: 'Contacto Estratégico – Kreditec',
+            },
+          }),
+        }
+      );
+
+      if (!res.ok) throw new Error('Error al enviar');
+      setIsSuccess(true);
+    } catch (err) {
+      alert('Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

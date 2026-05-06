@@ -1,79 +1,30 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { Button } from '@/components/ui/Button';
 
 export default function ContactoPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    institution: '',
-    cargo: '',
-    telefono: '',
-    interes: '',
-    fecha: '',
-    mensaje: '',
-    privacy: false
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
-  
-  const interesOptions = [
-    { value: "Informacion general de servicios", label: "Informacion general de servicios KREDITEC" },
-    { value: "Agendar una reunion virtual", label: "Agendar una reunion virtual" }
-  ];
+  useEffect(() => {
+    // Evitar cargar el script múltiples veces si el componente se re-renderiza
+    if (document.getElementById('hs-script-loader-contacto')) return;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.privacy) {
-      alert("Por favor acepte la Política de Privacidad para continuar.");
-      return;
-    }
+    const script = document.createElement('script');
+    script.src = 'https://js.hsforms.net/forms/embed/v2.js';
+    script.id = 'hs-script-loader-contacto';
+    script.charset = 'utf-8';
+    script.type = 'text/javascript';
+    document.body.appendChild(script);
 
-    setIsSubmitting(true);
-
-    const HUBSPOT_PORTAL_ID = '51230243';
-    const HUBSPOT_FORM_ID   = '9395a983-3bc8-42af-87e9-bc9d360361bc';
-
-    // Separar nombre y apellido
-    const nameParts = formData.name.trim().split(' ');
-    const firstname = nameParts[0] || '';
-    const lastname  = nameParts.slice(1).join(' ') || '';
-
-    try {
-      const res = await fetch(
-        `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields: [
-              { name: 'firstname',  value: firstname },
-              { name: 'lastname',   value: lastname  },
-              { name: 'email',      value: formData.email },
-              { name: 'company',    value: formData.institution },
-              { name: 'jobtitle',   value: formData.cargo },
-              { name: 'phone',      value: formData.telefono },
-              { name: 'subject',    value: formData.interes },
-              { name: 'message',    value: `Fecha preferida: ${formData.fecha}\n\n${formData.mensaje}` },
-            ],
-            context: {
-              pageUri: 'https://kreditecsa.com/contacto',
-              pageName: 'Contacto Estratégico – Kreditec',
-            },
-          }),
-        }
-      );
-
-      if (!res.ok) throw new Error('Error al enviar');
-      setIsSuccess(true);
-    } catch (err) {
-      alert('Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    script.addEventListener('load', () => {
+      if ((window as any).hbspt) {
+        (window as any).hbspt.forms.create({
+          region: "na1",
+          portalId: "51230243",
+          formId: "9395a983-3bc8-42af-87e9-bc9d360361bc",
+          target: '#hubspotFormContainer'
+        });
+      }
+    });
+  }, []);
 
   return (
     <div className="bg-white min-h-screen pt-32 pb-24 mt-10 md:mt-4">
@@ -87,107 +38,8 @@ export default function ContactoPage() {
         
         <div className="flex flex-col lg:flex-row gap-12">
            <AnimatedSection delay={0.1} className="flex-1 w-full order-2 lg:order-1">
-             <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
-                {isSuccess ? (
-                  <div className="flex flex-col items-center justify-center text-center py-10 h-full">
-                     <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                        <svg className="w-10 h-10 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                     </div>
-                     <h3 className="text-2xl font-bold text-[#002d14] mb-3">¡Solicitud Recibida!</h3>
-                     <p className="text-gray-600 text-lg mb-8">Nuestro equipo de ingeniería operativa evaluará su requerimiento y le contactaremos dentro de 24 horas hábiles.</p>
-                     <Button onClick={() => { setIsSuccess(false); setFormData({name: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false}) }}>Enviar Otro Mensaje</Button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                           <label className="block text-sm font-bold text-gray-700 mb-2">Nombre y Apellido <span className="text-red-500">*</span></label>
-                           <input required type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                        </div>
-                        <div>
-                           <label className="block text-sm font-bold text-gray-700 mb-2">Correo Electrónico Corporativo <span className="text-red-500">*</span></label>
-                           <input required type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                        </div>
-                        <div>
-                           <label className="block text-sm font-bold text-gray-700 mb-2">Nombre de la Institución</label>
-                           <input type="text" value={formData.institution} onChange={(e) => setFormData({...formData, institution: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                        </div>
-                        <div>
-                           <label className="block text-sm font-bold text-gray-700 mb-2">Cargo</label>
-                           <input type="text" value={formData.cargo} onChange={(e) => setFormData({...formData, cargo: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                        </div>
-                        <div>
-                           <label className="block text-sm font-bold text-gray-700 mb-2">Teléfono de Contacto <span className="text-red-500">*</span></label>
-                           <input required type="tel" value={formData.telefono} onChange={(e) => setFormData({...formData, telefono: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all" />
-                        </div>
-                        <div 
-                           className="relative" 
-                           tabIndex={0} 
-                           onBlur={(e) => {
-                             if (!e.currentTarget.contains(e.relatedTarget)) {
-                               setIsSelectOpen(false);
-                             }
-                           }}
-                        >
-                           <label className="block text-sm font-bold text-gray-700 mb-2">Interés Principal</label>
-                           <div 
-                             onClick={() => setIsSelectOpen(!isSelectOpen)}
-                             className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-white outline-none transition-all cursor-pointer flex justify-between items-center"
-                           >
-                             <span className={formData.interes ? "text-gray-900" : "text-gray-500"}>
-                               {formData.interes ? interesOptions.find(o => o.value === formData.interes)?.label || "Seleccione una opción" : "Seleccione una opción"}
-                             </span>
-                             <svg className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isSelectOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                           </div>
-                           
-                           {isSelectOpen && (
-                             <div className="absolute z-20 w-full mt-2 bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2">
-                               <div 
-                                 className={`px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between ${!formData.interes ? 'bg-green-50/50' : ''}`}
-                                 onClick={() => { setFormData({...formData, interes: ''}); setIsSelectOpen(false); }}
-                               >
-                                 <span className="text-gray-500">Seleccione una opción</span>
-                                 {!formData.interes && <svg className="w-4 h-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>}
-                               </div>
-                               {interesOptions.map((opt) => (
-                                 <div 
-                                   key={opt.value}
-                                   className={`px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between border-t border-gray-50 ${formData.interes === opt.value ? 'bg-green-50/50' : ''}`}
-                                   onClick={() => { setFormData({...formData, interes: opt.value}); setIsSelectOpen(false); }}
-                                 >
-                                   <span className="text-gray-700 font-medium">{opt.label}</span>
-                                   {formData.interes === opt.value && <svg className="w-4 h-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>}
-                                 </div>
-                               ))}
-                             </div>
-                           )}
-                        </div>
-                     </div>
-                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Fecha sugerida para reunión virtual</label>
-                        <input type="date" value={formData.fecha} onChange={(e) => setFormData({...formData, fecha: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all text-gray-700" />
-                     </div>
-                     <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">Mensaje</label>
-                        <textarea rows={4} placeholder="Cuéntenos sobre los desafíos de su operación actual..." value={formData.mensaje} onChange={(e) => setFormData({...formData, mensaje: e.target.value})} className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all resize-none placeholder-gray-400" />
-                     </div>
-                     
-                     <div className="flex flex-col gap-4 mt-8">
-                        <div className="flex items-start gap-4 p-5 bg-gray-50 rounded-xl border border-gray-100">
-                           <input type="checkbox" id="privacy" checked={formData.privacy} onChange={(e) => setFormData({...formData, privacy: e.target.checked})} className="mt-1 w-4 h-4 text-[var(--color-accent)] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer" />
-                           <label htmlFor="privacy" className="text-sm text-gray-600 font-medium leading-relaxed cursor-pointer">Acepto la <a href="/politica-de-privacidad" className="text-[var(--color-accent)] hover:underline font-bold">Política de Privacidad</a> y el tratamiento de datos para uso exclusivamente B2B (Notice at Collection).</label>
-                        </div>
-                        <div className="flex items-start gap-3 px-2">
-                           <div className="text-green-600 mt-0.5"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-                           <p className="text-xs text-gray-500 leading-relaxed font-medium"><strong>Su información está segura con nosotros.</strong> Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional para el manejo de información sensible.</p>
-                        </div>
-                     </div>
-                     
-                     <Button type="submit" disabled={isSubmitting} className={`w-full py-4 text-lg mt-8 shadow-lg shadow-[var(--color-accent)]/20 hover:-translate-y-1 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}>
-                       {isSubmitting ? 'Procesando Requerimiento...' : 'Optimice su colocación hoy mismo'}
-                     </Button>
-                  </form>
-                )}
+             <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden min-h-[600px]" id="hubspotFormContainer">
+                {/* El formulario de HubSpot se renderizará aquí automáticamente */}
              </div>
            </AnimatedSection>
            
@@ -228,11 +80,11 @@ export default function ContactoPage() {
              </div>
              
              {/* Google Maps Embed */}
-             <div className="flex-1 w-full rounded-3xl overflow-hidden shadow-xl border border-gray-200 min-h-[350px]">
+             <div className="flex-1 w-full rounded-3xl overflow-hidden shadow-xl border border-gray-200">
                 <iframe 
                   src="https://maps.google.com/maps?hl=es&q=Edificio%20Zyra,%20Quito,%20Ecuador&t=&z=16&ie=UTF8&iwloc=B&output=embed" 
                   width="100%" 
-                  height="100%" 
+                  height="400" 
                   style={{ border: 0 }} 
                   allowFullScreen={true} 
                   loading="lazy" 

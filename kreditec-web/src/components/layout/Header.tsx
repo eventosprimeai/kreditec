@@ -28,7 +28,6 @@ export function Header() {
              <NavItem href="/">Inicio</NavItem>
              <NavItem href="/nosotros">Nosotros</NavItem>
              <NavItem href="/servicios">Servicios</NavItem>
-             <NavItem href="/informe">Informe</NavItem>
           </nav>
           <div className="hidden md:flex">
              <Link href="/contacto">
@@ -50,7 +49,6 @@ export function Header() {
             <Link href="/" onClick={() => setIsOpen(false)} className="block text-[#002d14] font-bold text-xl hover:text-[var(--color-accent)] transition-colors">Inicio</Link>
             <Link href="/nosotros" onClick={() => setIsOpen(false)} className="block text-[#002d14] font-bold text-xl hover:text-[var(--color-accent)] transition-colors">Nosotros</Link>
             <Link href="/servicios" onClick={() => setIsOpen(false)} className="block text-[#002d14] font-bold text-xl hover:text-[var(--color-accent)] transition-colors">Servicios</Link>
-            <Link href="/informe" onClick={() => setIsOpen(false)} className="block text-[#002d14] font-bold text-xl hover:text-[var(--color-accent)] transition-colors">Informe</Link>
             <div className="w-full pt-6">
                <Link href="/contacto" onClick={() => setIsOpen(false)} className="block w-full">
                   <Button className="w-full justify-center py-4 text-lg">Contacto Rápido</Button>

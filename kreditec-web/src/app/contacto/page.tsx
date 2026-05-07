@@ -57,10 +57,7 @@ export default function ContactoPage() {
               { name: 'lastname',   value: lastname  },
               { name: 'email',      value: formData.email },
               { name: 'company',    value: formData.institution },
-              { name: 'jobtitle',   value: formData.cargo },
               { name: 'phone',      value: formData.telefono },
-              { name: 'subject',    value: formData.interes },
-              { name: 'message',    value: `Fecha preferida: ${formData.fecha}\n\n${formData.mensaje}` },
             ],
             context: {
               pageUri: 'https://kreditecsa.com/contacto',

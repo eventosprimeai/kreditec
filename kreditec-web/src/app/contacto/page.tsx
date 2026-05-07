@@ -38,7 +38,7 @@ export default function ContactoPage() {
 
     setIsSubmitting(true);
 
-    const HUBSPOT_PORTAL_ID = '51230243';
+    const HUBSPOT_PORTAL_ID = '51170037';
     const HUBSPOT_FORM_ID   = '9395a983-3bc8-42af-87e9-bc9d360361bc';
 
     const nameParts = formData.name.trim().split(' ');

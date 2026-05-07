@@ -70,9 +70,14 @@ export default function ContactoPage() {
         }
       );
 
-      if (!res.ok) throw new Error('Error al enviar');
+      if (!res.ok) {
+        const errorBody = await res.text();
+        console.error('HubSpot error:', res.status, errorBody);
+        throw new Error(`HubSpot ${res.status}: ${errorBody}`);
+      }
       setIsSuccess(true);
-    } catch {
+    } catch (err) {
+      console.error('Form submission error:', err);
       alert('Ocurrió un error al enviar el formulario. Por favor intente nuevamente.');
     } finally {
       setIsSubmitting(false);

@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; frame-src 'self' https://www.google.com https://maps.google.com;"
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.hsforms.net https://*.hsforms.com https://*.hubspot.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://*.hsforms.com https://*.hubspot.com; font-src 'self'; connect-src 'self' https://api.hsforms.com https://forms.hsforms.com https://*.hubspot.com; frame-ancestors 'none'; frame-src 'self' https://www.google.com https://maps.google.com;"
           }
         ]
       }

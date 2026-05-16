@@ -14,7 +14,7 @@ export function Footer() {
       
       <div className="absolute inset-0 bg-black/40 pointer-events-none" /> {/* Overlay para mantener legibilidad */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 mb-16">
           <div className="md:col-span-1 border-gray-800">
              <div className="mb-6">
                 <Image src="/logo-blanco.png" alt="Kreditec Logo" width={200} height={45} className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity" />
@@ -50,15 +50,51 @@ export function Footer() {
                 <li><Link href="/servicios#trazabilidad" className="hover:text-[var(--color-accent)] transition-colors block py-0.5">Reportes y Trazabilidad IAM</Link></li>
              </ul>
           </div>
-          
-          <div>
-             <h4 className="text-white font-bold mb-4 tracking-wider uppercase text-sm">Privacidad Corporativa</h4>
-             <ul className="space-y-3 text-gray-400 text-sm font-medium">
-                <li><Link href="/politica-de-privacidad" className="hover:text-[var(--color-accent)] transition-colors">Política de Privacidad</Link></li>
-                <li><Link href="/terminos-y-condiciones" className="hover:text-[var(--color-accent)] transition-colors">Normas de Cumplimiento</Link></li>
-                <li><Link href="/politica-de-cookies" className="hover:text-[var(--color-accent)] transition-colors">Acerca de las Cookies</Link></li>
-                <li><button onClick={() => window.dispatchEvent(new Event('open_cookie_banner'))} className="hover:text-[var(--color-accent)] transition-colors border-b border-gray-600 hover:border-[var(--color-accent)] pb-0.5 outline-none cursor-pointer">Reabrir Panel de Cookies</button></li>
-             </ul>
+
+          {/* Columna legal — dos sub-grupos */}
+          <div className="md:col-span-2">
+            <h4 className="text-white font-bold mb-4 tracking-wider uppercase text-sm">Marco Legal</h4>
+            <ul className="space-y-2.5 text-gray-400 text-sm font-medium mb-6">
+              <li>
+                <Link href="/politica-de-privacidad" className="hover:text-[var(--color-accent)] transition-colors block py-0.5 leading-tight">
+                  Política de Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-general-de-datos" className="hover:text-[var(--color-accent)] transition-colors block py-0.5 leading-tight">
+                  Política General de Protección de Datos
+                </Link>
+              </li>
+              <li>
+                <Link href="/tratamiento-datos" className="hover:text-[var(--color-accent)] transition-colors block py-0.5 leading-tight">
+                  Información sobre el Tratamiento de Datos
+                </Link>
+              </li>
+            </ul>
+
+            <h4 className="text-white font-bold mb-4 tracking-wider uppercase text-sm">Términos de Uso</h4>
+            <ul className="space-y-2.5 text-gray-400 text-sm font-medium">
+              <li>
+                <Link href="/terminos-y-condiciones" className="hover:text-[var(--color-accent)] transition-colors block py-0.5 leading-tight">
+                  Términos y Condiciones del Sitio Web
+                </Link>
+              </li>
+              <li>
+                <Link href="/terminos-redes-sociales" className="hover:text-[var(--color-accent)] transition-colors block py-0.5 leading-tight">
+                  Términos y Condiciones de Redes Sociales
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-de-cookies" className="hover:text-[var(--color-accent)] transition-colors block py-0.5 leading-tight">
+                  Política de Cookies
+                </Link>
+              </li>
+              <li>
+                <button onClick={() => window.dispatchEvent(new Event('open_cookie_banner'))} className="text-gray-500 hover:text-[var(--color-accent)] transition-colors border-b border-gray-700 hover:border-[var(--color-accent)] pb-0.5 outline-none cursor-pointer text-xs mt-1">
+                  Reabrir Panel de Cookies
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
         

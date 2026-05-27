@@ -18,7 +18,8 @@ export default function ContactoPage() {
     interes: '',
     fecha: '',
     mensaje: '',
-    privacy: false
+    privacy: false,
+    privacyDatos: false
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -31,8 +32,8 @@ export default function ContactoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.privacy) {
-      alert("Por favor acepte la Política de Privacidad para continuar.");
+    if (!formData.privacy || !formData.privacyDatos) {
+      alert("Por favor acepte ambas casillas de verificación para continuar.");
       return;
     }
 
@@ -108,7 +109,7 @@ export default function ContactoPage() {
                   </p>
                   <Button onClick={() => {
                     setIsSuccess(false);
-                    setFormData({ name: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false });
+                    setFormData({ name: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false, privacyDatos: false });
                   }}>
                     Enviar Otro Mensaje
                   </Button>
@@ -262,26 +263,56 @@ export default function ContactoPage() {
                   </div>
 
                   {/* Privacidad */}
-                  <div className="flex flex-col gap-4 mt-8">
-                    <div className="flex items-start gap-4 p-5 bg-gray-50 rounded-xl border border-gray-100">
+                  <div className="flex flex-col gap-3 mt-8">
+
+                    {/* Checkbox 1 — T&C + Política de Privacidad */}
+                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[var(--color-accent)]/30 transition-colors">
                       <input
                         type="checkbox"
                         id="privacy"
+                        required
                         checked={formData.privacy}
                         onChange={(e) => setFormData({ ...formData, privacy: e.target.checked })}
-                        className="mt-1 w-4 h-4 text-[var(--color-accent)] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer"
+                        className="mt-0.5 w-4 h-4 accent-[#00bc4c] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer flex-shrink-0"
                       />
                       <label htmlFor="privacy" className="text-sm text-gray-600 font-medium leading-relaxed cursor-pointer">
-                        Acepto la{' '}
-                        <a href="/politica-de-privacidad" className="text-[var(--color-accent)] hover:underline font-bold">
+                        He leído y acepto los{' '}
+                        <a href="/terminos-y-condiciones" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+                          Términos y Condiciones de Uso del Sitio Web
+                        </a>{' '}y la{' '}
+                        <a href="/politica-de-privacidad" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
                           Política de Privacidad
-                        </a>{' '}
-                        y el tratamiento de datos para uso exclusivamente B2B (Notice at Collection).
+                        </a>.
+                        {' '}<span className="text-red-500 font-bold">*</span>
                       </label>
                     </div>
-                    <div className="flex items-start gap-3 px-2">
-                      <div className="text-green-600 mt-0.5">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+
+                    {/* Checkbox 2 — Política General de Datos + Tratamiento */}
+                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[var(--color-accent)]/30 transition-colors">
+                      <input
+                        type="checkbox"
+                        id="privacyDatos"
+                        required
+                        checked={formData.privacyDatos}
+                        onChange={(e) => setFormData({ ...formData, privacyDatos: e.target.checked })}
+                        className="mt-0.5 w-4 h-4 accent-[#00bc4c] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer flex-shrink-0"
+                      />
+                      <label htmlFor="privacyDatos" className="text-sm text-gray-600 font-medium leading-relaxed cursor-pointer">
+                        Acepto la{' '}
+                        <a href="/politica-general-de-datos" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+                          Política General de Protección de Datos
+                        </a>{' '}e{' '}
+                        <a href="/tratamiento-datos" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+                          Información sobre el Tratamiento de Datos
+                        </a>{' '}para uso exclusivamente B2B.
+                        {' '}<span className="text-red-500 font-bold">*</span>
+                      </label>
+                    </div>
+
+                    {/* Nota de seguridad */}
+                    <div className="flex items-start gap-3 px-2 pt-1">
+                      <div className="text-green-600 mt-0.5 flex-shrink-0">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
                       </div>
@@ -309,10 +340,7 @@ export default function ContactoPage() {
               <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--color-accent)] opacity-[0.04] rounded-bl-full group-hover:scale-125 transition-transform duration-700 pointer-events-none" />
               <h3 className="text-2xl font-bold mb-8 relative z-10">Información de Operaciones</h3>
               <div className="space-y-6 text-gray-300 relative z-10">
-                <div>
-                  <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Responsable</span>
-                  <p className="text-lg text-white font-medium">Valentina Barrera – Gerente General</p>
-                </div>
+
                 <div>
                   <span className="block text-sm text-[var(--color-accent)] font-bold uppercase tracking-widest mb-1">Línea Corporativa</span>
                   <a href="tel:+59324529357" className="text-lg text-white font-medium hover:underline">+593 2 452 9357</a>

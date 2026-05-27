@@ -25,11 +25,7 @@ export function CookieBanner() {
     window.dispatchEvent(new Event('cookie_consent_updated'));
   };
 
-  const handleOnlyNecessary = () => {
-    localStorage.setItem('kreditec_cookie_consent', 'necessary');
-    setIsVisible(false);
-    window.dispatchEvent(new Event('cookie_consent_updated'));
-  };
+
 
   if (!isVisible) return null;
 
@@ -45,7 +41,6 @@ export function CookieBanner() {
         </div>
         <div className="flex flex-col flex-wrap sm:flex-row w-full md:w-auto gap-3 shrink-0">
           <Button variant="ghost" onClick={() => setIsVisible(false)} className="px-6 py-2 border-gray-200 border">Ignorar</Button>
-          <Button variant="outline" onClick={handleOnlyNecessary} className="px-6 py-2">Solo Necesarias</Button>
           <Button onClick={handleAcceptAll} className="px-6 py-2 shadow-lg shadow-[var(--color-accent)]/20 hover:-translate-y-1 transition-transform">Aceptar Todo</Button>
         </div>
       </div>

@@ -378,10 +378,9 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/80 z-10 pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
           <AnimatedSection className="text-center mb-16 max-w-4xl mx-auto">
-             <div className="relative w-48 sm:w-64 md:w-80 h-16 sm:h-20 mx-auto mb-6">
+             <div className="relative w-48 sm:w-64 md:w-80 h-16 sm:h-20 mx-auto mb-2">
                 <Image src="/logo-blanco.png" alt="KREDITEC" fill className="object-contain" />
              </div>
-             <p className="text-xl text-[var(--color-accent)] font-bold mb-3">Narrativa Institucional Fintech</p>
           </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${montserrat.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${montserrat.variable} antialiased min-h-screen flex flex-col overflow-x-hidden`}>
         <MaintenanceGuard 
           LayoutWrapper={
             <>

@@ -284,7 +284,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-white mb-2">Omnicanalidad Inteligente de Datos</h4>
-                    <p className="text-gray-400">Conexión tecnológica entre el motor de enriquecimiento de 45 datos, automatizaciones asincrónicas de HubSpot (mailing masivo, mensajería) y el marcador predictivo de Nuatalker para agentes virtuales y humanos.</p>
+                    <p className="text-gray-400">Conexión tecnológica entre el motor de enriquecimiento de 45 datos, automatizaciones asincrónicas (mailing masivo, mensajería) y el marcador predictivo para agentes virtuales y humanos.</p>
                   </div>
                 </div>
 
@@ -654,7 +654,7 @@ export default function Home() {
                     <div className="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] bg-white/5 border border-white/10 p-6 rounded-2xl">
                       <h3 className="text-xl font-bold text-white mb-4">Automatización y Canales</h3>
                       <ul className="space-y-3 text-sm text-gray-400">
-                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 15-19:</strong> Configuración de Pipelines, mensajería inteligente masiva y marcador predictivo en HubSpot y Nuatalker.</span></li>
+                        <li className="flex gap-3"><CheckCircle2 className="text-[var(--color-accent)] shrink-0 mt-0.5" size={16} /><span><strong className="text-gray-200">Día 15-19:</strong> Configuración de Pipelines, mensajería inteligente masiva y marcador predictivo corporativo.</span></li>
                       </ul>
                     </div>
                   </div>

@@ -109,7 +109,7 @@ export default function ContactoPage() {
             ],
             context: {
               pageUri: 'https://kreditecsa.com/contacto',
-              pageName: 'Contacto Estratégico – Kreditec',
+              pageName: 'KREDITEC – Formulario de solicitud y captación de datos',
             },
           }),
         }
@@ -133,15 +133,15 @@ export default function ContactoPage() {
     <div className="bg-white min-h-screen pt-32 pb-24 mt-10 md:mt-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-4 tracking-tight">Contacto Estratégico</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-4 tracking-tight">KREDITEC</h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
-            Hablemos sobre su infraestructura comercial. Agende una reunión con nuestro equipo de ingeniería operativa.
+            Formulario de solicitud y captación de datos
           </p>
         </AnimatedSection>
 
         <div className="flex flex-col lg:flex-row gap-12">
           {/* ── FORMULARIO ── */}
-          <AnimatedSection delay={0.1} className="flex-1 w-full order-2 lg:order-1">
+          <AnimatedSection delay={0.1} className="flex-1 w-full order-1 lg:order-1">
             <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center text-center py-10 h-full">
@@ -658,7 +658,7 @@ export default function ContactoPage() {
           </AnimatedSection>
 
           {/* ── INFO + MAPA ── */}
-          <AnimatedSection delay={0.2} className="flex-1 flex flex-col gap-8 order-1 lg:order-2">
+          <AnimatedSection delay={0.2} className="flex-1 flex flex-col gap-8 order-2 lg:order-2">
             <div className="bg-[#001f0e] rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--color-accent)] opacity-[0.04] rounded-bl-full group-hover:scale-125 transition-transform duration-700 pointer-events-none" />
               <h3 className="text-2xl font-bold mb-8 relative z-10">Información de Operaciones</h3>

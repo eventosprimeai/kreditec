@@ -495,7 +495,7 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con selectores 
           </label>
           <textarea
             required
-            rows={2}
+            rows={3}
             placeholder="Ej. Comerciante informal, consultor independiente, etc."
             value={formData.situacionLaboralOtro}
             onChange={(e) => setFormData({ ...formData, situacionLaboralOtro: e.target.value })}

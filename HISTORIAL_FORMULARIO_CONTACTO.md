@@ -365,28 +365,31 @@ En el formulario original se utilizaban 3 campos genéricos de consulta empresar
 
 ---
 
-### 3.2. Estado Actual (Bloque 3 Implementado)
-Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desplegables institucionales homogéneos (`<select>`), eliminando por completo cualquier cúmulo de botones flotantes que desordenaban la interfaz en PC o sobrecargaban la pantalla en móviles.
+### 3.2. Estado Actual (Bloque 3 Implementado y Optimizado)
+Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con selectores optimizados (`selectClass`) que garantizan que ningún texto se corte o trunque en celulares o pantallas medianas, integrando especificación dinámica para la opción «Otro» y reconociéndola en el payload del CRM.
 
 #### Nuevos Campos y Comportamientos:
 1. **`Monto de Ingresos Mensuales Aproximado ($) *`**:
-   - Menú select estilizado corporativo (`<select>` con flecha personalizada chevron), que en móvil despliega el selector nativo (iOS Wheel / Android Sheet) y en PC encaja simétricamente con el resto del formulario.
-   - Opciones: *Menos de $500*, *Entre $500 - $800*, *Entre $801 - $1,200*, *Más de $1,200*.
-   - Subtexto: *Indique el valor promedio de sus ingresos mensuales en dólares americanos.*
+   - Menú select corporativo con tipografía balanceada y espacio garantizado antes del icono (`pl-3.5 pr-8 py-3 text-sm sm:text-base`).
+   - Opciones concisas que evitan truncados: *Menos de $500*, *$500 - $800*, *$801 - $1,200*, *Más de $1,200*.
+   - Placeholder conciso: *Seleccione un rango*.
 2. **`¿Cómo trabajas actualmente? (Situación Laboral) *`**:
-   - Menú select estilizado corporativo que reemplaza los 5 botones desalineados previos:
-     *Dependiente (Bajo relación de dependencia)*, *Independiente (Servicios profesionales / Freelance)*, *Emprendedor (Negocio propio / Comercio)*, *Jubilado*, *Otro*.
-3. **`Escoge la opción que requieras (Tipo de Crédito) *`**:
-   - Menú select corporativo ordenado sin botones confusos:
-     *Crédito de consumo (Personal o familiar)* o *Microcrédito (Negocio o comercio)*.
-4. **`¿Qué monto de crédito necesitas? ($ USD) *`**:
-   - Entrada numérica monetaria con prefijo `$ USD` y filtrado que admite únicamente números.
-5. **`Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? *`**:
+   - Menú select estilizado con opciones limpias: *Dependiente*, *Independiente*, *Emprendedor*, *Jubilado*, *Otro*.
+   - Placeholder conciso: *Seleccione una opción*.
+3. **`Especificación dinámica si selecciona "Otro" *`**:
+   - **Despliegue reactivo condicional:** Si el usuario elige *Otro*, se abre automáticamente un campo de texto: *«Especifique su actividad laboral *»*.
+   - **Integración de envío:** Al despachar el formulario, se mapea como `Otro: [descripción]` dentro de la síntesis del formulario enviada a HubSpot CRM.
+4. **`Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? *`**:
    - **Despliegue reactivo condicional:** Aparece en un contenedor destacado únicamente si la situación laboral es `Dependiente`. Selector desplegable: *Menos de 1 año* o *Más de 1 año*.
+5. **`Escoge la opción que requieras (Tipo de Crédito) *`**:
+   - Menú select ordenado con opciones concisas: *Crédito de consumo* o *Microcrédito*.
+   - Subtexto aclaratorio: *Crédito de consumo (personal/familiar) o microcrédito (negocio).*
 6. **`Despliegue condicional de RUC (13 dígitos) *`**:
    - **Despliegue reactivo:** Se activa únicamente al seleccionar *Microcrédito*.
    - Validación de 13 dígitos numéricos (`inputMode="numeric"`, `maxLength={13}`).
    - Contador en vivo con check verde al completar los 13 dígitos.
+7. **`¿Qué monto de crédito necesitas? ($ USD) *`**:
+   - Entrada numérica monetaria con prefijo `$ USD` y filtrado que admite únicamente números.
 
 #### Código Actual en JSX:
 ```tsx
@@ -409,16 +412,16 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desp
           required
           value={formData.ingresosMensuales}
           onChange={(e) => setFormData({ ...formData, ingresosMensuales: e.target.value })}
-          className={inputClass + " appearance-none cursor-pointer pr-10"}
+          className={selectClass}
         >
-          <option value="" disabled>Seleccione un rango promedio</option>
+          <option value="" disabled>Seleccione un rango</option>
           <option value="Menos de $500">Menos de $500</option>
-          <option value="Entre $500 - $800">Entre $500 - $800</option>
-          <option value="Entre $801 - $1,200">Entre $801 - $1,200</option>
+          <option value="$500 - $800">$500 - $800</option>
+          <option value="$801 - $1,200">$801 - $1,200</option>
           <option value="Más de $1,200">Más de $1,200</option>
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
         </div>
       </div>
       <span className="text-xs text-gray-500 italic mt-1.5 block">Indique el valor promedio de sus ingresos mensuales en dólares americanos.</span>
@@ -435,22 +438,27 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desp
           value={formData.situacionLaboral}
           onChange={(e) => {
             const val = e.target.value;
-            setFormData({ ...formData, situacionLaboral: val, tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : '' });
+            setFormData({
+              ...formData,
+              situacionLaboral: val,
+              tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : '',
+              situacionLaboralOtro: val === 'Otro' ? formData.situacionLaboralOtro : ''
+            });
           }}
-          className={inputClass + " appearance-none cursor-pointer pr-10"}
+          className={selectClass}
         >
-          <option value="" disabled>Seleccione su modalidad laboral</option>
-          <option value="Dependiente">Dependiente (Bajo relación de dependencia)</option>
-          <option value="Independiente">Independiente (Servicios profesionales / Freelance)</option>
-          <option value="Emprendedor">Emprendedor (Negocio propio / Comercio)</option>
+          <option value="" disabled>Seleccione una opción</option>
+          <option value="Dependiente">Dependiente</option>
+          <option value="Independiente">Independiente</option>
+          <option value="Emprendedor">Emprendedor</option>
           <option value="Jubilado">Jubilado</option>
           <option value="Otro">Otro</option>
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
         </div>
       </div>
-      <span className="text-xs text-gray-500 italic mt-1.5 block">Actividad económica o modalidad de trabajo principal.</span>
+      <span className="text-xs text-gray-500 italic mt-1.5 block">Dependiente, independiente, emprendedor, jubilado u otro.</span>
     </div>
 
     {/* 3. Escoge la opción que requieras (Tipo de crédito) */}
@@ -466,17 +474,17 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desp
             const val = e.target.value;
             setFormData({ ...formData, tipoCredito: val, ruc: val === 'Microcrédito' ? formData.ruc : '' });
           }}
-          className={inputClass + " appearance-none cursor-pointer pr-10"}
+          className={selectClass}
         >
-          <option value="" disabled>Seleccione el tipo de crédito</option>
-          <option value="Crédito de consumo">Crédito de consumo (Personal o familiar)</option>
-          <option value="Microcrédito">Microcrédito (Negocio o comercio)</option>
+          <option value="" disabled>Seleccione el tipo</option>
+          <option value="Crédito de consumo">Crédito de consumo</option>
+          <option value="Microcrédito">Microcrédito</option>
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
         </div>
       </div>
-      <span className="text-xs text-gray-500 italic mt-1.5 block">Crédito para gastos personales/familiares o inversión en negocio.</span>
+      <span className="text-xs text-gray-500 italic mt-1.5 block">Crédito de consumo (personal/familiar) o microcrédito (negocio).</span>
     </div>
 
     {/* 4. ¿Qué monto de crédito necesitas? */}
@@ -502,7 +510,7 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desp
       <span className="text-xs text-gray-400 mt-1.5 block">Indique el valor solicitado en dólares americanos (solo números).</span>
     </div>
 
-    {/* 5. Despliegue condicional si es dependiente */}
+    {/* 5. Despliegue condicional si es dependiente: Tiempo de empleo */}
     {formData.situacionLaboral === 'Dependiente' && (
       <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
         <label className="block text-sm font-bold text-[#002d14] mb-2">
@@ -513,21 +521,39 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desp
             required
             value={formData.tiempoEmpleo}
             onChange={(e) => setFormData({ ...formData, tiempoEmpleo: e.target.value })}
-            className={inputClass + " appearance-none cursor-pointer pr-10 bg-white"}
+            className={selectClass + " bg-white"}
           >
-            <option value="" disabled>Seleccione tiempo en su empleo</option>
+            <option value="" disabled>Seleccione tiempo</option>
             <option value="Menos de 1 año">Menos de 1 año</option>
             <option value="Más de 1 año">Más de 1 año</option>
           </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
           </div>
         </div>
         <span className="text-xs text-gray-500 italic mt-1.5 block">Requisito para validar estabilidad con las entidades financieras.</span>
       </div>
     )}
 
-    {/* 6. Despliegue condicional si escoge Microcrédito: RUC */}
+    {/* 6. Despliegue condicional si selecciona "Otro": Especificar actividad */}
+    {formData.situacionLaboral === 'Otro' && (
+      <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+        <label className="block text-sm font-bold text-[#002d14] mb-2">
+          Especifique su actividad laboral <span className="text-red-500">*</span>
+        </label>
+        <input
+          required
+          type="text"
+          placeholder="Ej. Comerciante informal, consultor, freelance, etc."
+          value={formData.situacionLaboralOtro}
+          onChange={(e) => setFormData({ ...formData, situacionLaboralOtro: e.target.value })}
+          className={inputClass + " bg-white"}
+        />
+        <span className="text-xs text-gray-500 italic mt-1.5 block">Indique brevemente en qué consiste su actividad económica u ocupación.</span>
+      </div>
+    )}
+
+    {/* 7. Despliegue condicional si escoge Microcrédito: RUC */}
     {formData.tipoCredito === 'Microcrédito' && (
       <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
         <label className="block text-sm font-bold text-[#002d14] mb-1">

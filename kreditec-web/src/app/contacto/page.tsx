@@ -8,6 +8,11 @@ const inputClass =
   "w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-[#002d14] placeholder-gray-400 font-medium " +
   "focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all";
 
+// Estilo optimizado para selects desplegables (evita truncado de texto y asegura espacio con la flecha)
+const selectClass =
+  "w-full pl-3.5 pr-8 py-3 rounded-xl bg-gray-50 border border-gray-200 text-[#002d14] font-medium text-sm sm:text-base " +
+  "focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all cursor-pointer appearance-none";
+
 // Validador de cédula ecuatoriana según algoritmo de módulo 10 (Luhn)
 function validarCedulaEcuador(cedula: string): boolean {
   if (cedula.length !== 10) return false;
@@ -36,6 +41,7 @@ export default function ContactoPage() {
     telefono: '',
     ingresosMensuales: '',
     situacionLaboral: '',
+    situacionLaboralOtro: '',
     tiempoEmpleo: '',
     tipoCredito: '',
     ruc: '',
@@ -71,6 +77,22 @@ export default function ContactoPage() {
     const firstname = formData.nombres.trim();
     const lastname  = formData.apellidos.trim();
 
+    // Consolidación de situación laboral (especificación si marcó "Otro")
+    const situacionLaboralFinal = formData.situacionLaboral === 'Otro'
+      ? `Otro: ${formData.situacionLaboralOtro.trim()}`
+      : formData.situacionLaboral;
+
+    const resumenSolicitud = [
+      `Cédula: ${formData.cedula}`,
+      `Fecha Nacimiento: ${formData.fechaNacimiento}`,
+      `Ingresos Mensuales: ${formData.ingresosMensuales}`,
+      `Situación Laboral: ${situacionLaboralFinal}`,
+      formData.tiempoEmpleo ? `Tiempo Empleo: ${formData.tiempoEmpleo}` : null,
+      `Tipo de Crédito: ${formData.tipoCredito}`,
+      formData.ruc ? `RUC: ${formData.ruc}` : null,
+      `Monto Solicitado: $${formData.montoCredito} USD`
+    ].filter(Boolean).join(' | ');
+
     try {
       const res = await fetch(
         `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
@@ -83,6 +105,7 @@ export default function ContactoPage() {
               { name: 'lastname',   value: lastname  },
               { name: 'email',      value: formData.email },
               { name: 'phone',      value: formData.telefono },
+              { name: 'message',    value: resumenSolicitud },
             ],
             context: {
               pageUri: 'https://kreditecsa.com/contacto',
@@ -142,6 +165,7 @@ export default function ContactoPage() {
                       telefono: '',
                       ingresosMensuales: '',
                       situacionLaboral: '',
+                      situacionLaboralOtro: '',
                       tiempoEmpleo: '',
                       tipoCredito: '',
                       ruc: '',
@@ -352,16 +376,16 @@ export default function ContactoPage() {
                             required
                             value={formData.ingresosMensuales}
                             onChange={(e) => setFormData({ ...formData, ingresosMensuales: e.target.value })}
-                            className={inputClass + " appearance-none cursor-pointer pr-10"}
+                            className={selectClass}
                           >
-                            <option value="" disabled>Seleccione un rango promedio</option>
+                            <option value="" disabled>Seleccione un rango</option>
                             <option value="Menos de $500">Menos de $500</option>
-                            <option value="Entre $500 - $800">Entre $500 - $800</option>
-                            <option value="Entre $801 - $1,200">Entre $801 - $1,200</option>
+                            <option value="$500 - $800">$500 - $800</option>
+                            <option value="$801 - $1,200">$801 - $1,200</option>
                             <option value="Más de $1,200">Más de $1,200</option>
                           </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                           </div>
@@ -385,26 +409,27 @@ export default function ContactoPage() {
                               setFormData({
                                 ...formData,
                                 situacionLaboral: val,
-                                tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : ''
+                                tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : '',
+                                situacionLaboralOtro: val === 'Otro' ? formData.situacionLaboralOtro : ''
                               });
                             }}
-                            className={inputClass + " appearance-none cursor-pointer pr-10"}
+                            className={selectClass}
                           >
-                            <option value="" disabled>Seleccione su modalidad laboral</option>
-                            <option value="Dependiente">Dependiente (Bajo relación de dependencia)</option>
-                            <option value="Independiente">Independiente (Servicios profesionales / Freelance)</option>
-                            <option value="Emprendedor">Emprendedor (Negocio propio / Comercio)</option>
+                            <option value="" disabled>Seleccione una opción</option>
+                            <option value="Dependiente">Dependiente</option>
+                            <option value="Independiente">Independiente</option>
+                            <option value="Emprendedor">Emprendedor</option>
                             <option value="Jubilado">Jubilado</option>
                             <option value="Otro">Otro</option>
                           </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                           </div>
                         </div>
                         <span className="text-xs text-gray-500 italic mt-1.5 block">
-                          Actividad económica o modalidad de trabajo principal.
+                          Dependiente, independiente, emprendedor, jubilado u otro.
                         </span>
                       </div>
 
@@ -425,20 +450,20 @@ export default function ContactoPage() {
                                 ruc: val === 'Microcrédito' ? formData.ruc : ''
                               });
                             }}
-                            className={inputClass + " appearance-none cursor-pointer pr-10"}
+                            className={selectClass}
                           >
-                            <option value="" disabled>Seleccione el tipo de crédito</option>
-                            <option value="Crédito de consumo">Crédito de consumo (Personal o familiar)</option>
-                            <option value="Microcrédito">Microcrédito (Negocio o comercio)</option>
+                            <option value="" disabled>Seleccione el tipo</option>
+                            <option value="Crédito de consumo">Crédito de consumo</option>
+                            <option value="Microcrédito">Microcrédito</option>
                           </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                           </div>
                         </div>
                         <span className="text-xs text-gray-500 italic mt-1.5 block">
-                          Crédito para gastos personales/familiares o inversión en negocio.
+                          Crédito de consumo (personal/familiar) o microcrédito (negocio).
                         </span>
                       </div>
 
@@ -467,7 +492,7 @@ export default function ContactoPage() {
                         </span>
                       </div>
 
-                      {/* 5. Despliegue condicional si es dependiente */}
+                      {/* 5. Despliegue condicional si es dependiente: Tiempo de empleo */}
                       {formData.situacionLaboral === 'Dependiente' && (
                         <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
                           <label className="block text-sm font-bold text-[#002d14] mb-2">
@@ -478,14 +503,14 @@ export default function ContactoPage() {
                               required
                               value={formData.tiempoEmpleo}
                               onChange={(e) => setFormData({ ...formData, tiempoEmpleo: e.target.value })}
-                              className={inputClass + " appearance-none cursor-pointer pr-10 bg-white"}
+                              className={selectClass + " bg-white"}
                             >
-                              <option value="" disabled>Seleccione tiempo en su empleo</option>
+                              <option value="" disabled>Seleccione tiempo</option>
                               <option value="Menos de 1 año">Menos de 1 año</option>
                               <option value="Más de 1 año">Más de 1 año</option>
                             </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                               </svg>
                             </div>
@@ -496,7 +521,27 @@ export default function ContactoPage() {
                         </div>
                       )}
 
-                      {/* 6. Despliegue condicional si escoge Microcrédito: RUC */}
+                      {/* 6. Despliegue condicional si selecciona "Otro": Especificar actividad */}
+                      {formData.situacionLaboral === 'Otro' && (
+                        <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+                          <label className="block text-sm font-bold text-[#002d14] mb-2">
+                            Especifique su actividad laboral <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            placeholder="Ej. Comerciante informal, consultor, freelance, etc."
+                            value={formData.situacionLaboralOtro}
+                            onChange={(e) => setFormData({ ...formData, situacionLaboralOtro: e.target.value })}
+                            className={inputClass + " bg-white"}
+                          />
+                          <span className="text-xs text-gray-500 italic mt-1.5 block">
+                            Indique brevemente en qué consiste su actividad económica u ocupación.
+                          </span>
+                        </div>
+                      )}
+
+                      {/* 7. Despliegue condicional si escoge Microcrédito: RUC */}
                       {formData.tipoCredito === 'Microcrédito' && (
                         <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
                           <label className="block text-sm font-bold text-[#002d14] mb-1">

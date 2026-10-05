@@ -717,7 +717,148 @@ En caso de requerir volver al estado previo:
 ---
 
 ## Bloque 5: Autorización para el Tratamiento de Datos (LOPDP)
-*(En espera de definición y aplicación incremental)*
+
+### 5.1. Estado Previo
+- **Campos en el formulario original:**
+  - Checkbox de Términos y Condiciones y Política de Privacidad (`privacy: false`).
+  - Checkbox de Política General de Protección de Datos e Información de Tratamiento B2B (`privacyDatos: false`).
+  - Nota de seguridad de cifrado VPN y protocolos internacionales.
+- **Definición en Excel (`KREDITEC_Formulario Captacion.xlsx`):**
+  - Fila 35: `5. AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS (LOPDP)`
+  - Fila 36: Checkbox con texto legal explícito de intermediación crediticia:
+    > *"Autorizo a KREDITECONK S.A.S. (KREDITEC) a tratar mis datos personales (incluyendo ingresos e información laboral) y a comunicarlos/transferirlos a instituciones financieras aliadas con la finalidad de evaluar, tramitar y presentar mi solicitud de crédito, así como a contactarme por teléfono, WhatsApp o correo electrónico. Conozco que puedo ejercer mis derechos conforme a la LOPDP."*
+
+### 5.2. Estado Actual Implementado
+
+#### Código Actual en `formData`:
+```tsx
+const [formData, setFormData] = useState({
+  // Bloque 1: Identificación
+  nombres: '',
+  apellidos: '',
+  cedula: '',
+  fechaNacimiento: '',
+  // Bloque 2: Contacto
+  email: '',
+  telefono: '',
+  // Bloque 3: Económica
+  ingresosMensuales: '',
+  situacionLaboral: '',
+  situacionLaboralOtro: '',
+  tiempoEmpleo: '',
+  tipoCredito: '',
+  ruc: '',
+  montoCredito: '',
+  // Bloque 4: Domicilio
+  ciudad: '',
+  domicilio: '',
+  // Bloque 5: Autorización LOPDP & Privacidad
+  autorizacionLopdp: false,
+  privacy: false,
+  privacyDatos: false,
+  // Seguridad Anti-Bot
+  honeypot: ''
+});
+```
+
+#### Código Actual en JSX:
+```tsx
+{/* ── 5. AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS (LOPDP) ── */}
+<div className="space-y-6">
+  <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+    <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+      5. AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS (LOPDP)
+    </h2>
+  </div>
+
+  <div className="flex flex-col gap-3">
+    {/* Checkbox Principal LOPDP Crédito */}
+    <div className="flex items-start gap-3 p-4 bg-[#f0f7f3] rounded-2xl border border-[#00bc4c]/40 hover:border-[#00bc4c] transition-colors">
+      <input
+        type="checkbox"
+        id="autorizacionLopdp"
+        required
+        checked={formData.autorizacionLopdp}
+        onChange={(e) => setFormData({ ...formData, autorizacionLopdp: e.target.checked })}
+        className="mt-1 w-4 h-4 accent-[#00bc4c] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer flex-shrink-0"
+      />
+      <label htmlFor="autorizacionLopdp" className="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed cursor-pointer">
+        Autorizo a <strong className="text-[#002d14]">KREDITECONK S.A.S. (KREDITEC)</strong> a tratar mis datos personales (incluyendo ingresos e información laboral) y a comunicarlos/transferirlos a instituciones financieras aliadas con la finalidad de evaluar, tramitar y presentar mi solicitud de crédito, así como a contactarme por teléfono, WhatsApp o correo electrónico. Conozco que puedo ejercer mis derechos conforme a la LOPDP. <span className="text-red-500 font-bold">*</span>
+      </label>
+    </div>
+
+    {/* Checkbox 1 — T&C + Política de Privacidad (Conservado) */}
+    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[var(--color-accent)]/30 transition-colors">
+      <input
+        type="checkbox"
+        id="privacy"
+        required
+        checked={formData.privacy}
+        onChange={(e) => setFormData({ ...formData, privacy: e.target.checked })}
+        className="mt-0.5 w-4 h-4 accent-[#00bc4c] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer flex-shrink-0"
+      />
+      <label htmlFor="privacy" className="text-sm text-gray-600 font-medium leading-relaxed cursor-pointer">
+        He leído y acepto los{' '}
+        <a href="/terminos-y-condiciones" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+          Términos y Condiciones de Uso del Sitio Web
+        </a>{' '}y la{' '}
+        <a href="/politica-de-privacidad" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+          Política de Privacidad
+        </a>.
+        {' '}<span className="text-red-500 font-bold">*</span>
+      </label>
+    </div>
+
+    {/* Checkbox 2 — Política General de Datos + Tratamiento (Conservado) */}
+    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-[var(--color-accent)]/30 transition-colors">
+      <input
+        type="checkbox"
+        id="privacyDatos"
+        required
+        checked={formData.privacyDatos}
+        onChange={(e) => setFormData({ ...formData, privacyDatos: e.target.checked })}
+        className="mt-0.5 w-4 h-4 accent-[#00bc4c] border-gray-300 rounded focus:ring-[var(--color-accent)] cursor-pointer flex-shrink-0"
+      />
+      <label htmlFor="privacyDatos" className="text-sm text-gray-600 font-medium leading-relaxed cursor-pointer">
+        Acepto la{' '}
+        <a href="/politica-general-de-datos" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+          Política General de Protección de Datos
+        </a>{' '}e{' '}
+        <a href="/tratamiento-datos" target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline font-bold">
+          Información sobre el Tratamiento de Datos
+        </a>{' '}para uso exclusivamente B2B.
+        {' '}<span className="text-red-500 font-bold">*</span>
+      </label>
+    </div>
+
+    {/* Nota de seguridad (Conservada) */}
+    <div className="flex items-start gap-3 px-2 pt-1">
+      <div className="text-green-600 mt-0.5 flex-shrink-0">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </div>
+      <p className="text-xs text-gray-500 leading-relaxed font-medium">
+        <strong>Su información está segura con nosotros.</strong> Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional para el manejo de información sensible.
+      </p>
+    </div>
+  </div>
+</div>
+```
+
+#### Validación e Integración en Payload:
+```tsx
+if (!formData.autorizacionLopdp || !formData.privacy || !formData.privacyDatos) {
+  alert("Por favor acepte todas las casillas de autorización y privacidad para continuar.");
+  return;
+}
+```
+
+### 5.3. Procedimiento de Rollback (Bloque 5)
+En caso de requerir volver al estado previo:
+1. Eliminar `autorizacionLopdp: false` del estado `formData`.
+2. Restaurar la validación a `!formData.privacy || !formData.privacyDatos`.
+3. Retirar el encabezado `5. AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS (LOPDP)` y el checkbox específico de intermediación crediticia, conservando únicamente las dos casillas originales.
 
 ---
 

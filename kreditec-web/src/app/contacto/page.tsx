@@ -34,21 +34,18 @@ export default function ContactoPage() {
     fechaNacimiento: '',
     email: '',
     telefono: '',
-    interes: '',
-    fecha: '',
-    mensaje: '',
+    ingresosMensuales: '',
+    situacionLaboral: '',
+    tiempoEmpleo: '',
+    tipoCredito: '',
+    ruc: '',
+    montoCredito: '',
     honeypot: '',
     privacy: false,
     privacyDatos: false
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
-
-  const interesOptions = [
-    { value: "Informacion general de servicios", label: "Información general de servicios KREDITEC" },
-    { value: "Agendar una reunion virtual", label: "Agendar una reunión virtual" }
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,7 +133,23 @@ export default function ContactoPage() {
                   </p>
                   <Button onClick={() => {
                     setIsSuccess(false);
-                    setFormData({ nombres: '', apellidos: '', cedula: '', fechaNacimiento: '', email: '', telefono: '', interes: '', fecha: '', mensaje: '', honeypot: '', privacy: false, privacyDatos: false });
+                    setFormData({
+                      nombres: '',
+                      apellidos: '',
+                      cedula: '',
+                      fechaNacimiento: '',
+                      email: '',
+                      telefono: '',
+                      ingresosMensuales: '',
+                      situacionLaboral: '',
+                      tiempoEmpleo: '',
+                      tipoCredito: '',
+                      ruc: '',
+                      montoCredito: '',
+                      honeypot: '',
+                      privacy: false,
+                      privacyDatos: false
+                    });
                   }}>
                     Enviar Otro Mensaje
                   </Button>
@@ -320,79 +333,197 @@ export default function ContactoPage() {
                     </div>
                   </div>
 
-                    {/* Select personalizado - Interés */}
-                    <div
-                      className="relative"
-                      tabIndex={0}
-                      onBlur={(e) => {
-                        if (!e.currentTarget.contains(e.relatedTarget)) setIsSelectOpen(false);
-                      }}
-                    >
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Interés Principal</label>
-                      <div
-                        onClick={() => setIsSelectOpen(!isSelectOpen)}
-                        className="w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 hover:bg-white outline-none transition-all cursor-pointer flex justify-between items-center"
-                      >
-                        <span className={`font-medium ${formData.interes ? 'text-[#002d14]' : 'text-gray-400'}`}>
-                          {formData.interes
-                            ? interesOptions.find((o) => o.value === formData.interes)?.label
-                            : 'Seleccione una opción'}
-                        </span>
-                        <svg
-                          className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isSelectOpen ? 'rotate-180' : ''}`}
-                          fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                  {/* ── 3. INFORMACIÓN ECONÓMICA ── */}
+                  <div className="space-y-6">
+                    <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+                      <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+                        3. INFORMACIÓN ECONÓMICA
+                      </h2>
+                    </div>
+
+                    {/* Monto de Ingresos Mensuales Aproximado ($) * */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">
+                        Monto de Ingresos Mensuales Aproximado ($) <span className="text-red-500">*</span>
+                      </label>
+                      <p className="text-xs text-gray-500 italic mb-3">
+                        Indique el valor promedio de sus ingresos mensuales en dólares americanos.
+                      </p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {[
+                          { id: 'menos-500', label: 'Menos de $500' },
+                          { id: '500-800', label: 'Entre $500 - $800' },
+                          { id: '801-1200', label: 'Entre $801 - $1,200' },
+                          { id: 'mas-1200', label: 'Más de $1,200' }
+                        ].map((rango) => (
+                          <button
+                            key={rango.id}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, ingresosMensuales: rango.label })}
+                            className={`px-3 py-3 rounded-xl border text-sm font-semibold transition-all text-center flex items-center justify-center ${
+                              formData.ingresosMensuales === rango.label
+                                ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
+                                : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
+                            }`}
+                          >
+                            {rango.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                      {/* Situación Laboral */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          ¿Trabajas como dependiente, independiente, emprendedor, jubilado u otro? <span className="text-red-500">*</span>
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {['Dependiente', 'Independiente', 'Emprendedor', 'Jubilado', 'Otro'].map((sit) => (
+                            <button
+                              key={sit}
+                              type="button"
+                              onClick={() => {
+                                setFormData({
+                                  ...formData,
+                                  situacionLaboral: sit,
+                                  tiempoEmpleo: sit === 'Dependiente' ? formData.tiempoEmpleo : ''
+                                });
+                              }}
+                              className={`px-3.5 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                                formData.situacionLaboral === sit
+                                  ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
+                                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
+                              }`}
+                            >
+                              {sit}
+                            </button>
+                          ))}
+                        </div>
                       </div>
 
-                      {isSelectOpen && (
-                        <div className="absolute z-20 w-full mt-2 bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 overflow-hidden">
-                          <div
-                            className={`px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between ${!formData.interes ? 'bg-green-50/50' : ''}`}
-                            onClick={() => { setFormData({ ...formData, interes: '' }); setIsSelectOpen(false); }}
-                          >
-                            <span className="text-gray-400">Seleccione una opción</span>
-                          </div>
-                          {interesOptions.map((opt) => (
-                            <div
-                              key={opt.value}
-                              className={`px-5 py-3 hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between border-t border-gray-50 ${formData.interes === opt.value ? 'bg-green-50/50' : ''}`}
-                              onClick={() => { setFormData({ ...formData, interes: opt.value }); setIsSelectOpen(false); }}
+                      {/* Escoge la opción que requieras */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Escoge la opción que requieras <span className="text-red-500">*</span>
+                        </label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {[
+                            { id: 'consumo', label: 'Crédito de consumo', desc: 'Personal o familiar' },
+                            { id: 'microcredito', label: 'Microcrédito', desc: 'Negocio o comercio' }
+                          ].map((tipo) => (
+                            <button
+                              key={tipo.id}
+                              type="button"
+                              onClick={() => setFormData({ ...formData, tipoCredito: tipo.label })}
+                              className={`p-3 rounded-xl border text-left transition-all ${
+                                formData.tipoCredito === tipo.label
+                                  ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
+                                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
+                              }`}
                             >
-                              <span className="text-[#002d14] font-medium">{opt.label}</span>
-                              {formData.interes === opt.value && (
-                                <svg className="w-4 h-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <div className="font-bold text-sm">{tipo.label}</div>
+                              <div className={`text-xs mt-0.5 ${formData.tipoCredito === tipo.label ? 'text-green-300' : 'text-gray-400'}`}>
+                                {tipo.desc}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Despliegues condicionales según selección */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? */}
+                      {formData.situacionLaboral === 'Dependiente' && (
+                        <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+                          <label className="block text-sm font-bold text-[#002d14] mb-2">
+                            Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? <span className="text-red-500">*</span>
+                          </label>
+                          <div className="grid grid-cols-2 gap-3 mt-2">
+                            {['Menos de 1 año', 'Más de 1 año'].map((tiempo) => (
+                              <button
+                                key={tiempo}
+                                type="button"
+                                onClick={() => setFormData({ ...formData, tiempoEmpleo: tiempo })}
+                                className={`py-2.5 px-3 rounded-xl border text-sm font-semibold transition-all text-center ${
+                                  formData.tiempoEmpleo === tiempo
+                                    ? 'bg-[#002d14] text-white border-[#002d14] shadow'
+                                    : 'bg-white text-gray-700 border-gray-200 hover:border-[#00bc4c]'
+                                }`}
+                              >
+                                {tiempo}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Si escoge Microcrédito: que se despliegue RUC */}
+                      {formData.tipoCredito === 'Microcrédito' && (
+                        <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+                          <label className="block text-sm font-bold text-[#002d14] mb-1">
+                            RUC (13 dígitos) <span className="text-red-500">*</span>
+                          </label>
+                          <p className="text-xs text-gray-500 italic mb-2">
+                            Ingrese su RUC de 13 dígitos para la evaluación del microcrédito.
+                          </p>
+                          <input
+                            required
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]{13}"
+                            maxLength={13}
+                            placeholder="Ej. 1712345678001"
+                            value={formData.ruc}
+                            onChange={(e) => {
+                              const val = e.target.value.replace(/\D/g, '').slice(0, 13);
+                              setFormData({ ...formData, ruc: val });
+                            }}
+                            className={inputClass + " bg-white"}
+                          />
+                          <div className="flex justify-between items-center mt-1.5">
+                            <span className="text-xs text-gray-400">13 dígitos numéricos</span>
+                            {formData.ruc && formData.ruc.length < 13 && (
+                              <span className="text-xs text-amber-600 font-medium">
+                                {formData.ruc.length}/13 dígitos
+                              </span>
+                            )}
+                            {formData.ruc && formData.ruc.length === 13 && (
+                              <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                 </svg>
-                              )}
-                            </div>
-                          ))}
+                                RUC completo
+                              </span>
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>
 
-                  {/* Fecha */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Fecha sugerida para reunión virtual</label>
-                    <input
-                      type="date"
-                      value={formData.fecha}
-                      onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
-                      className={inputClass}
-                    />
-                  </div>
-
-                  {/* Mensaje */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Mensaje</label>
-                    <textarea
-                      rows={4}
-                      placeholder="Cuéntenos sobre los desafíos de su operación actual..."
-                      value={formData.mensaje}
-                      onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                      className={inputClass + " resize-none"}
-                    />
+                    {/* ¿Qué monto de crédito necesitas? */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">
+                        ¿Qué monto de crédito necesitas? <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+                        <input
+                          required
+                          type="tel"
+                          inputMode="numeric"
+                          placeholder="Ej. 3500"
+                          value={formData.montoCredito}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '');
+                            setFormData({ ...formData, montoCredito: val });
+                          }}
+                          className={inputClass + " pl-9"}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-400 mt-1.5 block">Indique el valor solicitado en dólares americanos (solo números).</span>
+                    </div>
                   </div>
 
                   {/* Privacidad */}

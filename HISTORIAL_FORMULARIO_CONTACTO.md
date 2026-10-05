@@ -11,7 +11,7 @@
 
 - [Bloque 1: Datos de Identificación](#bloque-1-datos-de-identificación) *(Implementado)*
 - [Bloque 2: Datos de Contacto](#bloque-2-datos-de-contacto) *(Implementado)*
-- [Bloque 3: Información Económica](#bloque-3-información-económica) *(Pendiente)*
+- [Bloque 3: Información Económica](#bloque-3-información-económica) *(Implementado)*
 - [Bloque 4: Dirección de Domicilio](#bloque-4-dirección-de-domicilio) *(Pendiente)*
 - [Bloque 5: Autorización para el Tratamiento de Datos (LOPDP)](#bloque-5-autorización-para-el-tratamiento-de-datos-lopdp) *(Pendiente)*
 - [Auditoría Técnica: Escalabilidad y Seguridad](#auditoría-técnica-escalabilidad-y-seguridad)
@@ -335,7 +335,184 @@ En caso de requerir volver al estado previo:
 ---
 
 ## Bloque 3: Información Económica
-*(En espera de definición y aplicación incremental)*
+
+### 3.1. Estado Anterior (Original)
+En el formulario original se utilizaban 3 campos genéricos de consulta empresarial:
+- `Interés Principal` (Selector dropdown desplegable: Información general o Agendar reunión virtual).
+- `Fecha sugerida para reunión virtual` (Input date).
+- `Mensaje` (Textarea libre de 4 filas).
+
+#### Código Anterior en JSX:
+```tsx
+{/* Select personalizado - Interés */}
+<div className="relative" tabIndex={0} ...>
+  <label className="block text-sm font-bold text-gray-700 mb-2">Interés Principal</label>
+  {/* Dropdown con opciones de reunión */}
+</div>
+
+{/* Fecha */}
+<div>
+  <label className="block text-sm font-bold text-gray-700 mb-2">Fecha sugerida para reunión virtual</label>
+  <input type="date" value={formData.fecha} onChange={(e) => setFormData({ ...formData, fecha: e.target.value })} className={inputClass} />
+</div>
+
+{/* Mensaje */}
+<div>
+  <label className="block text-sm font-bold text-gray-700 mb-2">Mensaje</label>
+  <textarea rows={4} placeholder="Cuéntenos sobre los desafíos de su operación actual..." value={formData.mensaje} onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })} className={inputClass + " resize-none"} />
+</div>
+```
+
+---
+
+### 3.2. Estado Actual (Bloque 3 Implementado)
+Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con lógica condicional reactiva de evaluación financiera.
+
+#### Nuevos Campos y Comportamientos:
+1. **`Monto de Ingresos Mensuales Aproximado ($) *`**:
+   - Selector interactivo de botones tipo píldora (*Menos de $500*, *Entre $500 - $800*, *Entre $801 - $1,200*, *Más de $1,200*).
+   - Subtexto: *Indique el valor promedio de sus ingresos mensuales en dólares americanos.*
+2. **`Situación Laboral *`**:
+   - Botones de selección rápida (*Dependiente*, *Independiente*, *Emprendedor*, *Jubilado*, *Otro*).
+3. **`Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? *`**:
+   - **Despliegue reactivo:** Solo visible cuando se selecciona `Dependiente`.
+   - Opciones: *Menos de 1 año* o *Más de 1 año*.
+4. **`Escoge la opción que requieras *`**:
+   - Tarjetas interactivas: *Crédito de consumo* (Personal o familiar) o *Microcrédito* (Negocio o comercio).
+5. **`Despliegue condicional de RUC (13 dígitos) *`**:
+   - **Despliegue reactivo:** Se activa automáticamente al hacer clic en *Microcrédito*.
+   - Validación de 13 dígitos numéricos (`inputMode="numeric"`, `maxLength={13}`).
+   - Contador en vivo con check verde al completar los 13 dígitos.
+6. **`¿Qué monto de crédito necesitas? *`**:
+   - Entrada numérica monetaria con prefijo `$ USD` y filtrado para admitir únicamente números.
+
+#### Código Actual en JSX:
+```tsx
+{/* ── 3. INFORMACIÓN ECONÓMICA ── */}
+<div className="space-y-6">
+  <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+    <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+      3. INFORMACIÓN ECONÓMICA
+    </h2>
+  </div>
+
+  {/* Monto de Ingresos Mensuales Aproximado ($) * */}
+  <div>
+    <label className="block text-sm font-bold text-gray-700 mb-1">
+      Monto de Ingresos Mensuales Aproximado ($) <span className="text-red-500">*</span>
+    </label>
+    <p className="text-xs text-gray-500 italic mb-3">
+      Indique el valor promedio de sus ingresos mensuales en dólares americanos.
+    </p>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {['Menos de $500', 'Entre $500 - $800', 'Entre $801 - $1,200', 'Más de $1,200'].map((rango) => (
+        <button
+          key={rango}
+          type="button"
+          onClick={() => setFormData({ ...formData, ingresosMensuales: rango })}
+          className={`px-3 py-3 rounded-xl border text-sm font-semibold transition-all text-center flex items-center justify-center ${
+            formData.ingresosMensuales === rango
+              ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
+              : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
+          }`}
+        >
+          {rango}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+    {/* Situación Laboral */}
+    <div>
+      <label className="block text-sm font-bold text-gray-700 mb-2">
+        ¿Trabajas como dependiente, independiente, emprendedor, jubilado u otro? <span className="text-red-500">*</span>
+      </label>
+      <div className="flex flex-wrap gap-2">
+        {['Dependiente', 'Independiente', 'Emprendedor', 'Jubilado', 'Otro'].map((sit) => (
+          <button
+            key={sit}
+            type="button"
+            onClick={() => setFormData({ ...formData, situacionLaboral: sit, tiempoEmpleo: sit === 'Dependiente' ? formData.tiempoEmpleo : '' })}
+            className={`px-3.5 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+              formData.situacionLaboral === sit ? 'bg-[#002d14] text-white border-[#002d14]' : 'bg-gray-50 text-gray-700 border-gray-200'
+            }`}
+          >
+            {sit}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* Tipo de Crédito */}
+    <div>
+      <label className="block text-sm font-bold text-gray-700 mb-2">
+        Escoge la opción que requieras <span className="text-red-500">*</span>
+      </label>
+      <div className="grid grid-cols-2 gap-3">
+        {[{ id: 'consumo', label: 'Crédito de consumo', desc: 'Personal o familiar' }, { id: 'microcredito', label: 'Microcrédito', desc: 'Negocio o comercio' }].map((tipo) => (
+          <button
+            key={tipo.id}
+            type="button"
+            onClick={() => setFormData({ ...formData, tipoCredito: tipo.label })}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              formData.tipoCredito === tipo.label ? 'bg-[#002d14] text-white border-[#002d14]' : 'bg-gray-50 text-gray-700 border-gray-200'
+            }`}
+          >
+            <div className="font-bold text-sm">{tipo.label}</div>
+            <div className={`text-xs mt-0.5 ${formData.tipoCredito === tipo.label ? 'text-green-300' : 'text-gray-400'}`}>{tipo.desc}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Despliegues condicionales */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {formData.situacionLaboral === 'Dependiente' && (
+      <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+        <label className="block text-sm font-bold text-[#002d14] mb-2">
+          Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? <span className="text-red-500">*</span>
+        </label>
+        <div className="grid grid-cols-2 gap-3 mt-2">
+          {['Menos de 1 año', 'Más de 1 año'].map((tiempo) => (
+            <button key={tiempo} type="button" onClick={() => setFormData({ ...formData, tiempoEmpleo: tiempo })} className={`py-2.5 px-3 rounded-xl border text-sm font-semibold transition-all ${formData.tiempoEmpleo === tiempo ? 'bg-[#002d14] text-white border-[#002d14]' : 'bg-white text-gray-700 border-gray-200'}`}>
+              {tiempo}
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {formData.tipoCredito === 'Microcrédito' && (
+      <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+        <label className="block text-sm font-bold text-[#002d14] mb-1">
+          RUC (13 dígitos) <span className="text-red-500">*</span>
+        </label>
+        <p className="text-xs text-gray-500 italic mb-2">Ingrese su RUC de 13 dígitos para la evaluación del microcrédito.</p>
+        <input required type="tel" inputMode="numeric" pattern="[0-9]{13}" maxLength={13} placeholder="Ej. 1712345678001" value={formData.ruc} onChange={(e) => setFormData({ ...formData, ruc: e.target.value.replace(/\D/g, '').slice(0, 13) })} className={inputClass + " bg-white"} />
+      </div>
+    )}
+  </div>
+
+  {/* Monto solicitado */}
+  <div>
+    <label className="block text-sm font-bold text-gray-700 mb-2">
+      ¿Qué monto de crédito necesitas? <span className="text-red-500">*</span>
+    </label>
+    <div className="relative">
+      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+      <input required type="tel" inputMode="numeric" placeholder="Ej. 3500" value={formData.montoCredito} onChange={(e) => setFormData({ ...formData, montoCredito: e.target.value.replace(/\D/g, '') })} className={inputClass + " pl-9"} />
+    </div>
+  </div>
+</div>
+```
+
+### 3.3. Procedimiento de Rollback (Bloque 3)
+En caso de requerir volver al estado previo:
+1. Reincorporar `interes: ''`, `fecha: ''` y `mensaje: ''` en `formData`.
+2. Restaurar el selector `Interés Principal`, el campo `Fecha sugerida` y el textarea `Mensaje`.
+3. Eliminar los campos de `ingresosMensuales`, `situacionLaboral`, `tiempoEmpleo`, `tipoCredito`, `ruc` y `montoCredito`.
 
 ---
 

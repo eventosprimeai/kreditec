@@ -365,7 +365,7 @@ export default function ContactoPage() {
                       </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                       {/* 1. Monto de Ingresos Mensuales Aproximado */}
                       <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -396,75 +396,170 @@ export default function ContactoPage() {
                       </div>
 
                       {/* 2. Situación Laboral */}
-                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">
-                          ¿Cómo trabajas actualmente? <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                          <select
-                            required
-                            value={formData.situacionLaboral}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setFormData({
-                                ...formData,
-                                situacionLaboral: val,
-                                tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : '',
-                                situacionLaboralOtro: val === 'Otro' ? formData.situacionLaboralOtro : ''
-                              });
-                            }}
-                            className={selectClass}
-                          >
-                            <option value="" disabled>Seleccione una opción</option>
-                            <option value="Dependiente">Dependiente</option>
-                            <option value="Independiente">Independiente</option>
-                            <option value="Emprendedor">Emprendedor</option>
-                            <option value="Jubilado">Jubilado</option>
-                            <option value="Otro">Otro</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                            </svg>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">
+                            ¿Cómo trabajas actualmente? <span className="text-red-500">*</span>
+                          </label>
+                          <div className="relative">
+                            <select
+                              required
+                              value={formData.situacionLaboral}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setFormData({
+                                  ...formData,
+                                  situacionLaboral: val,
+                                  tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : '',
+                                  situacionLaboralOtro: val === 'Otro' ? formData.situacionLaboralOtro : ''
+                                });
+                              }}
+                              className={selectClass}
+                            >
+                              <option value="" disabled>Seleccione una opción</option>
+                              <option value="Dependiente">Dependiente</option>
+                              <option value="Independiente">Independiente</option>
+                              <option value="Emprendedor">Emprendedor</option>
+                              <option value="Jubilado">Jubilado</option>
+                              <option value="Otro">Otro</option>
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </div>
                           </div>
+                          <span className="text-xs text-gray-500 italic mt-1.5 block">
+                            Dependiente, independiente, emprendedor, jubilado u otro.
+                          </span>
                         </div>
-                        <span className="text-xs text-gray-500 italic mt-1.5 block">
-                          Dependiente, independiente, emprendedor, jubilado u otro.
-                        </span>
+
+                        {/* Despliegue condicional inmediato si es dependiente: Tiempo de empleo */}
+                        {formData.situacionLaboral === 'Dependiente' && (
+                          <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+                            <label className="block text-sm font-bold text-[#002d14] mb-2">
+                              Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? <span className="text-red-500">*</span>
+                            </label>
+                            <div className="relative">
+                              <select
+                                required
+                                value={formData.tiempoEmpleo}
+                                onChange={(e) => setFormData({ ...formData, tiempoEmpleo: e.target.value })}
+                                className={selectClass + " bg-white"}
+                              >
+                                <option value="" disabled>Seleccione tiempo</option>
+                                <option value="Menos de 1 año">Menos de 1 año</option>
+                                <option value="Más de 1 año">Más de 1 año</option>
+                              </select>
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </div>
+                            </div>
+                            <span className="text-xs text-gray-500 italic mt-1.5 block">
+                              Requisito para validar estabilidad con las entidades financieras.
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Despliegue condicional inmediato si selecciona "Otro": Especificar actividad */}
+                        {formData.situacionLaboral === 'Otro' && (
+                          <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+                            <label className="block text-sm font-bold text-[#002d14] mb-2">
+                              Especifique su actividad laboral <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                              required
+                              type="text"
+                              placeholder="Ej. Comerciante informal, consultor, freelance, etc."
+                              value={formData.situacionLaboralOtro}
+                              onChange={(e) => setFormData({ ...formData, situacionLaboralOtro: e.target.value })}
+                              className={inputClass + " bg-white"}
+                            />
+                            <span className="text-xs text-gray-500 italic mt-1.5 block">
+                              Indique brevemente en qué consiste su actividad económica u ocupación.
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* 3. Escoge la opción que requieras (Tipo de crédito) */}
-                      <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-2">
-                          Escoge la opción que requieras <span className="text-red-500">*</span>
-                        </label>
-                        <div className="relative">
-                          <select
-                            required
-                            value={formData.tipoCredito}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setFormData({
-                                ...formData,
-                                tipoCredito: val,
-                                ruc: val === 'Microcrédito' ? formData.ruc : ''
-                              });
-                            }}
-                            className={selectClass}
-                          >
-                            <option value="" disabled>Seleccione el tipo</option>
-                            <option value="Crédito de consumo">Crédito de consumo</option>
-                            <option value="Microcrédito">Microcrédito</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                            </svg>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-bold text-gray-700 mb-2">
+                            Escoge la opción que requieras <span className="text-red-500">*</span>
+                          </label>
+                          <div className="relative">
+                            <select
+                              required
+                              value={formData.tipoCredito}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                setFormData({
+                                  ...formData,
+                                  tipoCredito: val,
+                                  ruc: val === 'Microcrédito' ? formData.ruc : ''
+                                });
+                              }}
+                              className={selectClass}
+                            >
+                              <option value="" disabled>Seleccione el tipo</option>
+                              <option value="Crédito de consumo">Crédito de consumo</option>
+                              <option value="Microcrédito">Microcrédito</option>
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </div>
                           </div>
+                          <span className="text-xs text-gray-500 italic mt-1.5 block">
+                            Crédito de consumo (personal/familiar) o microcrédito (negocio).
+                          </span>
                         </div>
-                        <span className="text-xs text-gray-500 italic mt-1.5 block">
-                          Crédito de consumo (personal/familiar) o microcrédito (negocio).
-                        </span>
+
+                        {/* Despliegue condicional inmediato si escoge Microcrédito: RUC */}
+                        {formData.tipoCredito === 'Microcrédito' && (
+                          <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
+                            <label className="block text-sm font-bold text-[#002d14] mb-1">
+                              RUC del negocio (13 dígitos) <span className="text-red-500">*</span>
+                            </label>
+                            <p className="text-xs text-gray-500 italic mb-2">
+                              Ingrese su RUC de 13 dígitos para la evaluación del microcrédito.
+                            </p>
+                            <input
+                              required
+                              type="tel"
+                              inputMode="numeric"
+                              pattern="[0-9]{13}"
+                              maxLength={13}
+                              placeholder="Ej. 1712345678001"
+                              value={formData.ruc}
+                              onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '').slice(0, 13);
+                                setFormData({ ...formData, ruc: val });
+                              }}
+                              className={inputClass + " bg-white"}
+                            />
+                            <div className="flex justify-between items-center mt-1.5">
+                              <span className="text-xs text-gray-400">13 dígitos numéricos</span>
+                              {formData.ruc && formData.ruc.length < 13 && (
+                                <span className="text-xs text-amber-600 font-medium">
+                                  {formData.ruc.length}/13 dígitos
+                                </span>
+                              )}
+                              {formData.ruc && formData.ruc.length === 13 && (
+                                <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
+                                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                  </svg>
+                                  RUC completo
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* 4. ¿Qué monto de crédito necesitas? */}
@@ -491,97 +586,6 @@ export default function ContactoPage() {
                           Indique el valor solicitado en dólares americanos (solo números).
                         </span>
                       </div>
-
-                      {/* 5. Despliegue condicional si es dependiente: Tiempo de empleo */}
-                      {formData.situacionLaboral === 'Dependiente' && (
-                        <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
-                          <label className="block text-sm font-bold text-[#002d14] mb-2">
-                            Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? <span className="text-red-500">*</span>
-                          </label>
-                          <div className="relative">
-                            <select
-                              required
-                              value={formData.tiempoEmpleo}
-                              onChange={(e) => setFormData({ ...formData, tiempoEmpleo: e.target.value })}
-                              className={selectClass + " bg-white"}
-                            >
-                              <option value="" disabled>Seleccione tiempo</option>
-                              <option value="Menos de 1 año">Menos de 1 año</option>
-                              <option value="Más de 1 año">Más de 1 año</option>
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </div>
-                          </div>
-                          <span className="text-xs text-gray-500 italic mt-1.5 block">
-                            Requisito para validar estabilidad con las entidades financieras.
-                          </span>
-                        </div>
-                      )}
-
-                      {/* 6. Despliegue condicional si selecciona "Otro": Especificar actividad */}
-                      {formData.situacionLaboral === 'Otro' && (
-                        <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
-                          <label className="block text-sm font-bold text-[#002d14] mb-2">
-                            Especifique su actividad laboral <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            required
-                            type="text"
-                            placeholder="Ej. Comerciante informal, consultor, freelance, etc."
-                            value={formData.situacionLaboralOtro}
-                            onChange={(e) => setFormData({ ...formData, situacionLaboralOtro: e.target.value })}
-                            className={inputClass + " bg-white"}
-                          />
-                          <span className="text-xs text-gray-500 italic mt-1.5 block">
-                            Indique brevemente en qué consiste su actividad económica u ocupación.
-                          </span>
-                        </div>
-                      )}
-
-                      {/* 7. Despliegue condicional si escoge Microcrédito: RUC */}
-                      {formData.tipoCredito === 'Microcrédito' && (
-                        <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
-                          <label className="block text-sm font-bold text-[#002d14] mb-1">
-                            RUC del negocio (13 dígitos) <span className="text-red-500">*</span>
-                          </label>
-                          <p className="text-xs text-gray-500 italic mb-2">
-                            Ingrese su RUC de 13 dígitos para la evaluación del microcrédito.
-                          </p>
-                          <input
-                            required
-                            type="tel"
-                            inputMode="numeric"
-                            pattern="[0-9]{13}"
-                            maxLength={13}
-                            placeholder="Ej. 1712345678001"
-                            value={formData.ruc}
-                            onChange={(e) => {
-                              const val = e.target.value.replace(/\D/g, '').slice(0, 13);
-                              setFormData({ ...formData, ruc: val });
-                            }}
-                            className={inputClass + " bg-white"}
-                          />
-                          <div className="flex justify-between items-center mt-1.5">
-                            <span className="text-xs text-gray-400">13 dígitos numéricos</span>
-                            {formData.ruc && formData.ruc.length < 13 && (
-                              <span className="text-xs text-amber-600 font-medium">
-                                {formData.ruc.length}/13 dígitos
-                              </span>
-                            )}
-                            {formData.ruc && formData.ruc.length === 13 && (
-                              <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                                RUC completo
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </div>
 

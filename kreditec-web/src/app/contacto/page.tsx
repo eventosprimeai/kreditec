@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { Button } from '@/components/ui/Button';
 
@@ -130,19 +131,33 @@ export default function ContactoPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-32 pb-24 mt-10 md:mt-4">
+    <div className="bg-white min-h-screen pt-24 md:pt-32 pb-20 md:pb-24 mt-2 md:mt-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-4 tracking-tight">KREDITEC</h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="text-center mb-8 md:mb-14"
+        >
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#002d14] mb-3 tracking-tight">KREDITEC</h1>
+          <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
             Formulario de solicitud y captación de datos
           </p>
-        </AnimatedSection>
+        </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-12">
-          {/* ── FORMULARIO ── */}
-          <AnimatedSection delay={0.1} className="flex-1 w-full order-1 lg:order-1">
-            <div className="bg-white border border-gray-100 rounded-3xl p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
+          {/* ── FORMULARIO: Animación de entrada automática sin esperar scroll ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.75,
+              delay: 0.4,
+              ease: [0.16, 1, 0.3, 1]
+            }}
+            className="flex-1 w-full order-1 lg:order-1"
+          >
+            <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center text-center py-10 h-full">
                   <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
@@ -659,10 +674,16 @@ export default function ContactoPage() {
                 </form>
               )}
             </div>
-          </AnimatedSection>
+          </motion.div>
 
           {/* ── INFO + MAPA ── */}
-          <AnimatedSection delay={0.2} className="flex-1 flex flex-col gap-8 order-2 lg:order-2">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 flex flex-col gap-8 order-2 lg:order-2"
+          >
             <div className="bg-[#001f0e] rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-48 h-48 bg-[var(--color-accent)] opacity-[0.04] rounded-bl-full group-hover:scale-125 transition-transform duration-700 pointer-events-none" />
               <h3 className="text-2xl font-bold mb-8 relative z-10">Información de Operaciones</h3>
@@ -710,7 +731,7 @@ export default function ContactoPage() {
                 title="Kreditec Ubicación"
               />
             </div>
-          </AnimatedSection>
+          </motion.div>
         </div>
       </div>
     </div>

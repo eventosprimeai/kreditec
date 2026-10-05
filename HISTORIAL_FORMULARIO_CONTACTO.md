@@ -596,7 +596,12 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con selectores 
 </div>
 ```
 
-### 3.3. Procedimiento de Rollback (Bloque 3)
+### 3.3. Optimización UX Mobile: Animación de Entrada Automática (Sin Esperar Scroll)
+- **Problema Detectado:** Al entrar en la página desde celulares, `whileInView` con umbral de visibilidad ocultaba el formulario con `opacity: 0` hasta que el usuario hacía scroll de ~400px, generando incertidumbre y sensación de carga congelada.
+- **Solución Implementada:** Se desvinculó la animación del scroll para el formulario principal y se configuró con `animate={{ opacity: 1, y: 0 }}` activándose automáticamente a los 0.40s (`delay: 0.4`, duración `0.75s`, curva `ease: [0.16, 1, 0.3, 1]`).
+- **Resultado:** Tras mostrar el título y subtítulo, el formulario entra deslizándose suavemente sin que el usuario tenga que interactuar ni hacer scroll.
+
+### 3.4. Procedimiento de Rollback (Bloque 3)
 En caso de requerir volver al estado previo:
 1. Reincorporar `interes: ''`, `fecha: ''` y `mensaje: ''` en `formData`.
 2. Restaurar el selector `Interés Principal`, el campo `Fecha sugerida` y el textarea `Mensaje`.

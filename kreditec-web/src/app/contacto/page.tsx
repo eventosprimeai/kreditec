@@ -47,6 +47,8 @@ export default function ContactoPage() {
     tipoCredito: '',
     ruc: '',
     montoCredito: '',
+    ciudad: '',
+    domicilio: '',
     honeypot: '',
     privacy: false,
     privacyDatos: false
@@ -91,7 +93,9 @@ export default function ContactoPage() {
       formData.tiempoEmpleo ? `Tiempo Empleo: ${formData.tiempoEmpleo}` : null,
       `Tipo de Crédito: ${formData.tipoCredito}`,
       formData.ruc ? `RUC: ${formData.ruc}` : null,
-      `Monto Solicitado: $${formData.montoCredito} USD`
+      `Monto Solicitado: $${formData.montoCredito} USD`,
+      formData.ciudad ? `Ciudad: ${formData.ciudad.trim()}` : null,
+      formData.domicilio ? `Domicilio: ${formData.domicilio.trim()}` : null,
     ].filter(Boolean).join(' | ');
 
     try {
@@ -185,6 +189,8 @@ export default function ContactoPage() {
                       tipoCredito: '',
                       ruc: '',
                       montoCredito: '',
+                      ciudad: '',
+                      domicilio: '',
                       honeypot: '',
                       privacy: false,
                       privacyDatos: false
@@ -599,6 +605,53 @@ export default function ContactoPage() {
                         </div>
                         <span className="text-xs text-gray-500 italic mt-1.5 block">
                           Indique el valor solicitado en dólares americanos (solo números).
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── 4. DIRECCIÓN DE DOMICILIO ── */}
+                  <div className="space-y-6">
+                    <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+                      <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+                        4. DIRECCIÓN DE DOMICILIO
+                      </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                      {/* Ciudad */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Ciudad <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          placeholder="Ej. Quito"
+                          value={formData.ciudad}
+                          onChange={(e) => setFormData({ ...formData, ciudad: e.target.value })}
+                          className={inputClass}
+                        />
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Ciudad de residencia actual.
+                        </span>
+                      </div>
+
+                      {/* Domicilio */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Domicilio <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          placeholder="Ej. Av. 6 de Diciembre y Portugal"
+                          value={formData.domicilio}
+                          onChange={(e) => setFormData({ ...formData, domicilio: e.target.value })}
+                          className={inputClass}
+                        />
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Calle principal, numeración y referencia de su domicilio.
                         </span>
                       </div>
                     </div>

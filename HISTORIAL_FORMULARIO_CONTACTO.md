@@ -610,7 +610,109 @@ En caso de requerir volver al estado previo:
 ---
 
 ## Bloque 4: Dirección de Domicilio
-*(En espera de definición y aplicación incremental)*
+
+### 4.1. Estado Previo
+- **Campos en el formulario original:** No existían campos para la captura de dirección domiciliaria en la versión previa del sitio.
+- **Definición en Excel (`KREDITEC_Formulario Captacion.xlsx`):**
+  - Fila 30: `4. DIRECCIÓN DE DOMICILIO`
+  - Fila 31: `Ciudad` (tipo `texto`)
+  - Fila 49 (Notas finales de datos faltantes): `Domicilio`
+
+### 4.2. Estado Actual Implementado
+
+#### Código Actual en `formData`:
+```tsx
+const [formData, setFormData] = useState({
+  // Bloque 1
+  nombres: '',
+  apellidos: '',
+  cedula: '',
+  fechaNacimiento: '',
+  // Bloque 2
+  email: '',
+  telefono: '',
+  // Bloque 3
+  ingresosMensuales: '',
+  situacionLaboral: '',
+  situacionLaboralOtro: '',
+  tiempoEmpleo: '',
+  tipoCredito: '',
+  ruc: '',
+  montoCredito: '',
+  // Bloque 4: DIRECCIÓN DE DOMICILIO
+  ciudad: '',
+  domicilio: '',
+  // Seguridad & Consentimiento
+  honeypot: '',
+  privacy: false,
+  privacyDatos: false
+});
+```
+
+#### Código Actual en JSX:
+```tsx
+{/* ── 4. DIRECCIÓN DE DOMICILIO ── */}
+<div className="space-y-6">
+  <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+    <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+      4. DIRECCIÓN DE DOMICILIO
+    </h2>
+  </div>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+    {/* Ciudad */}
+    <div>
+      <label className="block text-sm font-bold text-gray-700 mb-2">
+        Ciudad <span className="text-red-500">*</span>
+      </label>
+      <input
+        required
+        type="text"
+        placeholder="Ej. Quito"
+        value={formData.ciudad}
+        onChange={(e) => setFormData({ ...formData, ciudad: e.target.value })}
+        className={inputClass}
+      />
+      <span className="text-xs text-gray-500 italic mt-1.5 block">
+        Ciudad de residencia actual.
+      </span>
+    </div>
+
+    {/* Domicilio */}
+    <div>
+      <label className="block text-sm font-bold text-gray-700 mb-2">
+        Domicilio <span className="text-red-500">*</span>
+      </label>
+      <input
+        required
+        type="text"
+        placeholder="Ej. Av. 6 de Diciembre y Portugal"
+        value={formData.domicilio}
+        onChange={(e) => setFormData({ ...formData, domicilio: e.target.value })}
+        className={inputClass}
+      />
+      <span className="text-xs text-gray-500 italic mt-1.5 block">
+        Calle principal, numeración y referencia de su domicilio.
+      </span>
+    </div>
+  </div>
+</div>
+```
+
+#### Integración en el Payload HubSpot:
+```tsx
+const resumenSolicitud = [
+  // ... bloques 1, 2, 3 ...
+  formData.ciudad ? `Ciudad: ${formData.ciudad.trim()}` : null,
+  formData.domicilio ? `Domicilio: ${formData.domicilio.trim()}` : null,
+].filter(Boolean).join(' | ');
+```
+
+### 4.3. Procedimiento de Rollback (Bloque 4)
+En caso de requerir volver al estado previo:
+1. Eliminar `ciudad: ''` y `domicilio: ''` del estado `formData`.
+2. Remover las referencias en `resumenSolicitud` y en el reset de `isSuccess`.
+3. Retirar el contenedor JSX `{/* ── 4. DIRECCIÓN DE DOMICILIO ── */}` del formulario.
 
 ---
 

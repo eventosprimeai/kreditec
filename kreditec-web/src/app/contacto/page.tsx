@@ -469,13 +469,13 @@ export default function ContactoPage() {
                             <label className="block text-sm font-bold text-[#002d14] mb-2">
                               Especifique su actividad laboral <span className="text-red-500">*</span>
                             </label>
-                            <input
+                            <textarea
                               required
-                              type="text"
-                              placeholder="Ej. Comerciante informal, consultor, freelance, etc."
+                              rows={2}
+                              placeholder="Ej. Comerciante informal, consultor independiente, etc."
                               value={formData.situacionLaboralOtro}
                               onChange={(e) => setFormData({ ...formData, situacionLaboralOtro: e.target.value })}
-                              className={inputClass + " bg-white"}
+                              className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-gray-800 text-sm sm:text-base font-normal bg-white focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all resize-none leading-relaxed"
                             />
                             <span className="text-xs text-gray-500 italic mt-1.5 block">
                               Indique brevemente en qué consiste su actividad económica u ocupación.

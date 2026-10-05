@@ -23,6 +23,7 @@
 !ajustes.txt
 !README.md
 !*.md
+!kreditec-web/public/**
 
 # Excluir la carpeta web (esta tiene su propio gitignore más específico)
 # No marcamos kreditec-web porque es la que SÍ subimos

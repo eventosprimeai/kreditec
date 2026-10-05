@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { Button } from '@/components/ui/Button';
+import { generateSolicitudPdf, SolicitudPdfData } from '@/lib/generateSolicitudPdf';
+import { SignaturePad } from '@/components/ui/SignaturePad';
 
 // Estilos de input centralizados para garantizar texto verde oscuro visible
 const inputClass =
@@ -50,12 +52,14 @@ export default function ContactoPage() {
     ciudad: '',
     domicilio: '',
     autorizacionLopdp: false,
+    firmaDigital: '',
     honeypot: '',
     privacy: false,
     privacyDatos: false
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submittedData, setSubmittedData] = useState<SolicitudPdfData | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +102,36 @@ export default function ContactoPage() {
       formData.ciudad ? `Ciudad: ${formData.ciudad.trim()}` : null,
       formData.domicilio ? `Domicilio: ${formData.domicilio.trim()}` : null,
       formData.autorizacionLopdp ? 'Autorización LOPDP Crédito: Aceptada' : null,
+      formData.firmaDigital ? 'Firma Digital: Registrada' : 'Firma Digital: No capturada',
     ].filter(Boolean).join(' | ');
+
+    const folio = `KRD-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    const fechaEmision =
+      new Date().toLocaleDateString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric' }) +
+      ' ' +
+      new Date().toLocaleTimeString('es-EC', { hour: '2-digit', minute: '2-digit' });
+
+    setSubmittedData({
+      folio,
+      fechaEmision,
+      nombres: formData.nombres,
+      apellidos: formData.apellidos,
+      cedula: formData.cedula,
+      fechaNacimiento: formData.fechaNacimiento,
+      email: formData.email,
+      telefono: formData.telefono,
+      ingresosMensuales: formData.ingresosMensuales,
+      situacionLaboral: formData.situacionLaboral,
+      situacionLaboralOtro: formData.situacionLaboralOtro,
+      tiempoEmpleo: formData.tiempoEmpleo,
+      tipoCredito: formData.tipoCredito,
+      ruc: formData.ruc,
+      montoCredito: formData.montoCredito,
+      ciudad: formData.ciudad,
+      domicilio: formData.domicilio,
+      autorizacionLopdp: formData.autorizacionLopdp,
+      firmaDigitalUrl: formData.firmaDigital
+    });
 
     try {
       const res = await fetch(
@@ -165,42 +198,100 @@ export default function ContactoPage() {
           >
             <div className="bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative overflow-hidden">
               {isSuccess ? (
-                <div className="flex flex-col items-center justify-center text-center py-10 h-full">
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                    <svg className="w-10 h-10 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
+                <div className="flex flex-col items-center justify-center text-center py-4">
+                  {/* Banner Corporativo Fintech */}
+                  <div className="relative h-44 sm:h-52 w-full rounded-2xl overflow-hidden mb-6 shadow-md border border-gray-100">
+                    <img
+                      src="/solicitud-banner.jpg"
+                      alt="Kreditec Confirmación"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#001f0e]/85 via-[#001f0e]/30 to-transparent flex items-end p-5">
+                      <span className="inline-flex items-center gap-2 bg-[#00bc4c]/20 backdrop-blur-md border border-[#00bc4c]/40 text-white font-bold text-xs uppercase tracking-widest px-3 py-1 rounded-full">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00bc4c] opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00bc4c]"></span>
+                        </span>
+                        Solicitud Radicada Exitosamente
+                      </span>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-[#002d14] mb-3">¡Solicitud Recibida!</h3>
-                  <p className="text-gray-600 text-lg mb-8">
-                    Nuestro equipo de ingeniería operativa evaluará su requerimiento y le contactaremos dentro de 24 horas hábiles.
+
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[#002d14] mb-2 tracking-tight">
+                    ¡Felicidades, {submittedData?.nombres || 'Cliente'}!
+                  </h3>
+                  <p className="text-gray-600 text-sm sm:text-base max-w-lg mb-6 leading-relaxed">
+                    Su solicitud de captación crediticia ha sido radicada formalmente bajo el Folio{' '}
+                    <strong className="text-[#002d14]">#{submittedData?.folio}</strong>. Nuestro equipo de ingeniería operativa evaluará su perfil y le contactará dentro de las próximas 24 horas hábiles.
                   </p>
-                  <Button onClick={() => {
-                    setIsSuccess(false);
-                    setFormData({
-                      nombres: '',
-                      apellidos: '',
-                      cedula: '',
-                      fechaNacimiento: '',
-                      email: '',
-                      telefono: '',
-                      ingresosMensuales: '',
-                      situacionLaboral: '',
-                      situacionLaboralOtro: '',
-                      tiempoEmpleo: '',
-                      tipoCredito: '',
-                      ruc: '',
-                      montoCredito: '',
-                      ciudad: '',
-                      domicilio: '',
-                      autorizacionLopdp: false,
-                      honeypot: '',
-                      privacy: false,
-                      privacyDatos: false
-                    });
-                  }}>
-                    Enviar Otro Mensaje
-                  </Button>
+
+                  {/* Resumen de Solicitud */}
+                  <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 bg-gray-50 border border-gray-200/80 rounded-2xl p-4 mb-8 text-left">
+                    <div>
+                      <span className="block text-[11px] text-gray-400 font-bold uppercase">Folio</span>
+                      <span className="text-xs sm:text-sm font-extrabold text-[#002d14]">#{submittedData?.folio}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[11px] text-gray-400 font-bold uppercase">Cédula</span>
+                      <span className="text-xs sm:text-sm font-semibold text-gray-800">{submittedData?.cedula}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[11px] text-gray-400 font-bold uppercase">Crédito</span>
+                      <span className="text-xs sm:text-sm font-semibold text-gray-800">{submittedData?.tipoCredito}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[11px] text-gray-400 font-bold uppercase">Monto</span>
+                      <span className="text-xs sm:text-sm font-bold text-[#00bc4c]">${submittedData?.montoCredito} USD</span>
+                    </div>
+                  </div>
+
+                  {/* Botones de Acción */}
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                    <button
+                      type="button"
+                      onClick={() => submittedData && generateSolicitudPdf(submittedData)}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#002d14] text-white font-bold text-sm sm:text-base hover:bg-[#003819] shadow-lg shadow-[#002d14]/20 hover:-translate-y-0.5 transition-all cursor-pointer"
+                    >
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00bc4c] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00bc4c]"></span>
+                      </span>
+                      Descargar mi solicitud en PDF
+                    </button>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setIsSuccess(false);
+                        setFormData({
+                          nombres: '',
+                          apellidos: '',
+                          cedula: '',
+                          fechaNacimiento: '',
+                          email: '',
+                          telefono: '',
+                          ingresosMensuales: '',
+                          situacionLaboral: '',
+                          situacionLaboralOtro: '',
+                          tiempoEmpleo: '',
+                          tipoCredito: '',
+                          ruc: '',
+                          montoCredito: '',
+                          ciudad: '',
+                          domicilio: '',
+                          autorizacionLopdp: false,
+                          firmaDigital: '',
+                          honeypot: '',
+                          privacy: false,
+                          privacyDatos: false
+                        });
+                        setSubmittedData(null);
+                      }}
+                      className="w-full sm:w-auto"
+                    >
+                      Enviar Otro Mensaje
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
@@ -739,7 +830,49 @@ export default function ContactoPage() {
                           <strong>Su información está segura con nosotros.</strong> Implementamos conectividad cifrada mediante túneles VPN y protocolos de seguridad de grado internacional para el manejo de información sensible.
                         </p>
                       </div>
+
+                      {/* Firma del Solicitante (Pad Táctil y Mouse) */}
+                      <div className="pt-2">
+                        <SignaturePad
+                          onChange={(sigUrl) => setFormData((prev) => ({ ...prev, firmaDigital: sigUrl }))}
+                        />
+                      </div>
+
+                      {/* Fecha de solicitud automática */}
+                      <div className="flex items-center justify-between p-3.5 bg-gray-50 rounded-xl border border-gray-200 text-xs sm:text-sm text-gray-600 mt-2">
+                        <div className="flex items-center gap-2">
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00bc4c] opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00bc4c]"></span>
+                          </span>
+                          <span className="font-semibold text-gray-700">Fecha de solicitud:</span>
+                          <span className="font-bold text-[#002d14]">
+                            {new Date().toLocaleDateString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                          </span>
+                        </div>
+                        <span className="text-[11px] text-gray-400 italic hidden sm:inline">
+                          Generada automáticamente por el sistema
+                        </span>
+                      </div>
                     </div>
+                  </div>
+
+                  {/* Descarga de Planilla Oficial en Blanco */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-gray-100">
+                    <button
+                      type="button"
+                      onClick={() => generateSolicitudPdf()}
+                      className="inline-flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-gray-700 hover:text-[#002d14] bg-[#f8faf9] hover:bg-[#e8f5ed] border border-gray-200 hover:border-[#00bc4c]/40 rounded-xl px-4 py-2.5 transition-all shadow-sm cursor-pointer"
+                    >
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00bc4c] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00bc4c]"></span>
+                      </span>
+                      Descargar Planilla Oficial en Blanco (PDF)
+                    </button>
+                    <span className="text-xs text-gray-400 italic">
+                      Formato imprimible para trámite presencial o archivo físico
+                    </span>
                   </div>
 
                   <Button

@@ -862,6 +862,66 @@ En caso de requerir volver al estado previo:
 
 ---
 
+## Bloque 6: Firma del Solicitante, Fecha de Emisión y Generación de Planilla PDF
+
+### 6.1. Marco Legal y Requerimientos en Ecuador
+En el diseño y captura de solicitudes de intermediación crediticia en el Ecuador, el cierre del formulario físico de captación (`KREDITEC_Formulario Captacion.xlsx`) contempla dos requisitos formales indispensables:
+1. **Firma del Solicitante**
+2. **Fecha de Emisión (DD/MM/AAAA)**
+
+Para transformar este proceso en una experiencia digital Fintech de alto impacto, se implementó una solución híbrida (Opción 1 + Opción 2) alineada a:
+- **Ley de Comercio Electrónico, Firmas Electrónicas y Mensajes de Datos (Registro Oficial Suplemento 557):** Reconocimiento de los mensajes de datos y voluntades expresas mediante consentimiento digital y rúbrica electrónica, vinculados al registro de auditoría del envío.
+- **Ley Orgánica de Protección de Datos Personales (LOPDP Art. 8):** Consentimiento inequívoco, explícito e informado para la transferencia de información financiera hacia instituciones aliadas.
+
+---
+
+### 6.2. Componentes y Arquitectura Frontend Implementada
+
+#### 1. Pad de Firma Digital y Táctil (`SignaturePad.tsx`)
+- **Ubicación:** `kreditec-web/src/components/ui/SignaturePad.tsx`
+- **Capacidades táctiles y desktop:** Diseñado específicamente para pantallas táctiles (smartphones y tablets) utilizando eventos de Pointer (`onPointerDown`, `onPointerMove`, `onPointerUp`).
+- **Prevención de Scroll Involuntario (`touch-action: none`):** Evita que el usuario desplace accidentalmente la página mientras traza su rúbrica con el dedo o lápiz óptico.
+- **Calidad de Trazo Retina / HiDPI:** Detección de `window.devicePixelRatio` para escalar internamente el lienzo `HTMLCanvasElement`, garantizando trazos suaves y sin pixelación.
+- **Exportación Base64:** Función reactiva que emite una cadena `image/png` para ser incrustada directamente en el documento PDF y reportada en el payload de HubSpot.
+- **Acción de Limpieza:** Botón secundario para reiniciar el trazo en caso de error.
+
+#### 2. Detección Automática de Fecha de Emisión
+- En lugar de forzar al cliente a ingresar la fecha manualmente o lidiar con discrepancias cronológicas, el sistema computa reactivamente la fecha oficial del sistema al momento de firmar y emitir la solicitud (ej. *05 de Octubre de 2026*).
+- Se muestra visualmente en el bloque de firma con un indicador de tiempo real y se sella de forma inmutable en el PDF y en el registro HubSpot.
+
+#### 3. Motor de Generación de Planillas PDF (`generateSolicitudPdf.ts`)
+- **Ubicación:** `kreditec-web/src/lib/generateSolicitudPdf.ts`
+- **Tecnología:** `jspdf` del lado del cliente (*Client-Side Memory Rendering*).
+- **Rendimiento e Inmunidad a Caídas:** Todo el proceso de dibujo vectorial, diagramación institucional y conversión a bytes ocurre en la memoria del navegador del usuario. El servidor VPS no procesa renderizados gráficos pesados, garantizando capacidad para soportar miles de descargas concurrentes sin degradación de CPU ni RAM.
+- **Dos Modalidades de Emisión:**
+  1. **Descarga de Planilla Oficial en Blanco:** Diseñada para uso operativo en sucursales físicas de Kreditec o para clientes que prefieran la consignación presencial. Muestra casillas estructuradas y la línea de firma física con su respectivo código legal.
+  2. **Descarga de Solicitud Diligenciada:** Tras el envío exitoso, genera el documento final con todos los datos suministrados en los 5 bloques, sello de folio único (`#KRD-2026-XXXX`), fecha de emisión, traza de auditoría LOPDP y la rúbrica del solicitante incrustada en alta resolución.
+
+#### 4. Descarga de Planilla en Blanco (Antes del Envío)
+- Ubicada al final del formulario mediante un botón de diseño corporativo:
+  - Estilizado acorde a la línea gráfica de Kreditec.
+  - **Identidad Visual Oficial:** Prescinde de iconos convencionales o genéricos; incorpora el punto luminoso verde esmeralda con halo pulsante (`animate-ping`) característico de la plataforma.
+  - Texto de acción: `Descargar Planilla Oficial en Blanco (PDF)`.
+
+#### 5. Pantalla de Confirmación y Éxito Post-Envío (`isSuccess`)
+- **Cabecera Visual de Alto Nivel:** Banner panorámico institucional (`solicitud-banner.jpg`) integrado con la paleta esmeralda profundo (`#001f0e`) y detalles geométricos de seguridad bancaria.
+- **Mensaje Personalizado:** Felicitación al cliente utilizando su primer nombre (`¡Felicitaciones, [Nombre]!`) y confirmando la recepción formal de su solicitud.
+- **Tarjeta de Resumen y Folio:** Muestra el número de trámite oficial asignado, fecha de registro y un resumen de contacto.
+- **Botón de Descarga:**
+  - Texto exacto: `Descargar mi solicitud en PDF`.
+  - Distintivo visual: Punto verde esmeralda pulsante sincronizado con la estética de KREDITEC.
+- **Botón para Nueva Solicitud:** Permite reiniciar el formulario para ingresar un nuevo trámite sin recargar la página.
+
+---
+
+### 6.3. Procedimiento de Rollback (Bloque 6)
+En caso de requerir prescindir de la firma táctil o de la generación de PDF:
+1. Eliminar `firmaDigital: ''` del estado `formData`.
+2. En `kreditec-web/src/app/contacto/page.tsx`, retirar el componente `<SignaturePad />` y los botones de invocación a `generateSolicitudPdf()`.
+3. Restaurar la pantalla de éxito previa simplificada con el icono de check verde estático.
+
+---
+
 ## Auditoría Técnica: Escalabilidad y Seguridad
 
 ### 1. Resistencia a Altos Picos de Tráfico (High Traffic / Scalability)

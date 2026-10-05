@@ -8,6 +8,24 @@ const inputClass =
   "w-full px-5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-[#002d14] placeholder-gray-400 font-medium " +
   "focus:bg-white focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent outline-none transition-all";
 
+// Validador de cédula ecuatoriana según algoritmo de módulo 10 (Luhn)
+function validarCedulaEcuador(cedula: string): boolean {
+  if (cedula.length !== 10) return false;
+  const provincia = parseInt(cedula.substring(0, 2), 10);
+  if ((provincia < 1 || provincia > 24) && provincia !== 30) return false;
+  const tercerDigito = parseInt(cedula[2], 10);
+  if (tercerDigito >= 6) return false;
+  const coeficientes = [2, 1, 2, 1, 2, 1, 2, 1, 2];
+  let suma = 0;
+  for (let i = 0; i < 9; i++) {
+    let valor = parseInt(cedula[i], 10) * coeficientes[i];
+    if (valor >= 10) valor -= 9;
+    suma += valor;
+  }
+  const digitoVerificador = (10 - (suma % 10)) % 10;
+  return digitoVerificador === parseInt(cedula[9], 10);
+}
+
 export default function ContactoPage() {
   const [formData, setFormData] = useState({
     nombres: '',
@@ -15,12 +33,11 @@ export default function ContactoPage() {
     cedula: '',
     fechaNacimiento: '',
     email: '',
-    institution: '',
-    cargo: '',
     telefono: '',
     interes: '',
     fecha: '',
     mensaje: '',
+    honeypot: '',
     privacy: false,
     privacyDatos: false
   });
@@ -35,6 +52,15 @@ export default function ContactoPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Filtro silencioso Anti-Bot (Honeypot)
+    if (formData.honeypot) {
+      console.warn("Bot submission detectada y descartada.");
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      return;
+    }
+
     if (!formData.privacy || !formData.privacyDatos) {
       alert("Por favor acepte ambas casillas de verificación para continuar.");
       return;
@@ -59,7 +85,6 @@ export default function ContactoPage() {
               { name: 'firstname',  value: firstname },
               { name: 'lastname',   value: lastname  },
               { name: 'email',      value: formData.email },
-              { name: 'company',    value: formData.institution },
               { name: 'phone',      value: formData.telefono },
             ],
             context: {
@@ -111,13 +136,27 @@ export default function ContactoPage() {
                   </p>
                   <Button onClick={() => {
                     setIsSuccess(false);
-                    setFormData({ nombres: '', apellidos: '', cedula: '', fechaNacimiento: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false, privacyDatos: false });
+                    setFormData({ nombres: '', apellidos: '', cedula: '', fechaNacimiento: '', email: '', telefono: '', interes: '', fecha: '', mensaje: '', honeypot: '', privacy: false, privacyDatos: false });
                   }}>
                     Enviar Otro Mensaje
                   </Button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                  {/* Honeypot invisible contra bots y spam al CRM */}
+                  <div className="absolute opacity-0 -z-10 select-none pointer-events-none h-0 w-0 overflow-hidden" aria-hidden="true">
+                    <label htmlFor="b_company_website">Website</label>
+                    <input
+                      id="b_company_website"
+                      type="text"
+                      name="b_company_website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.honeypot}
+                      onChange={(e) => setFormData({ ...formData, honeypot: e.target.value })}
+                    />
+                  </div>
+
                   {/* ── 1. DATOS DE IDENTIFICACIÓN ── */}
                   <div className="space-y-6">
                     <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
@@ -186,11 +225,11 @@ export default function ContactoPage() {
                             </span>
                           )}
                           {formData.cedula && formData.cedula.length === 10 && (
-                            <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
+                            <span className={`text-xs font-semibold flex items-center gap-1 ${validarCedulaEcuador(formData.cedula) ? 'text-green-600' : 'text-amber-600'}`}>
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                               </svg>
-                              10 dígitos completos
+                              {validarCedulaEcuador(formData.cedula) ? 'Cédula válida' : '10 dígitos (revisar número)'}
                             </span>
                           )}
                         </div>
@@ -214,61 +253,72 @@ export default function ContactoPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-
-                    {/* Email */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">
-                        Correo Electrónico Corporativo <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        required
-                        type="email"
-                        placeholder="correo@empresa.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className={inputClass}
-                      />
+                  {/* ── 2. DATOS DE CONTACTO ── */}
+                  <div className="space-y-6">
+                    <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+                      <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+                        2. DATOS DE CONTACTO
+                      </h2>
                     </div>
 
-                    {/* Institución */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Nombre de la Institución</label>
-                      <input
-                        type="text"
-                        placeholder="Ej. Banco Nacional"
-                        value={formData.institution}
-                        onChange={(e) => setFormData({ ...formData, institution: e.target.value })}
-                        className={inputClass}
-                      />
-                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Cargo */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">Cargo</label>
-                      <input
-                        type="text"
-                        placeholder="Ej. Gerente de Riesgo"
-                        value={formData.cargo}
-                        onChange={(e) => setFormData({ ...formData, cargo: e.target.value })}
-                        className={inputClass}
-                      />
-                    </div>
+                      {/* Celular / WhatsApp */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Número de Celular / WhatsApp <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9]{10}"
+                          maxLength={10}
+                          placeholder="Ej. 0991234567"
+                          value={formData.telefono}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({ ...formData, telefono: val });
+                          }}
+                          className={inputClass}
+                        />
+                        <div className="flex justify-between items-center mt-1.5">
+                          <span className="text-xs text-gray-500 italic">Clave para contactarle con la entidad.</span>
+                          {formData.telefono && formData.telefono.length < 10 && (
+                            <span className="text-xs text-amber-600 font-medium">
+                              {formData.telefono.length}/10 dígitos
+                            </span>
+                          )}
+                          {formData.telefono && formData.telefono.length === 10 && (
+                            <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                              </svg>
+                              {formData.telefono.startsWith('09') ? 'Móvil Ecuador (09)' : '10 dígitos'}
+                            </span>
+                          )}
+                        </div>
+                      </div>
 
-                    {/* Teléfono */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">
-                        Teléfono de Contacto <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        required
-                        type="tel"
-                        placeholder="+593 99 000 0000"
-                        value={formData.telefono}
-                        onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                        className={inputClass}
-                      />
+                      {/* Correo Electrónico */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Correo Electrónico <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="email"
+                          placeholder="ejemplo@correo.com"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value.trim().toLowerCase() })}
+                          className={inputClass}
+                        />
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Para notificaciones del estado del trámite.
+                        </span>
+                      </div>
                     </div>
+                  </div>
 
                     {/* Select personalizado - Interés */}
                     <div
@@ -321,7 +371,6 @@ export default function ContactoPage() {
                         </div>
                       )}
                     </div>
-                  </div>
 
                   {/* Fecha */}
                   <div>

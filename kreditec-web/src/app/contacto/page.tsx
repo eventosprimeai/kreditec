@@ -341,129 +341,166 @@ export default function ContactoPage() {
                       </h2>
                     </div>
 
-                    {/* Monto de Ingresos Mensuales Aproximado ($) * */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-1">
-                        Monto de Ingresos Mensuales Aproximado ($) <span className="text-red-500">*</span>
-                      </label>
-                      <p className="text-xs text-gray-500 italic mb-3">
-                        Indique el valor promedio de sus ingresos mensuales en dólares americanos.
-                      </p>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {[
-                          { id: 'menos-500', label: 'Menos de $500' },
-                          { id: '500-800', label: 'Entre $500 - $800' },
-                          { id: '801-1200', label: 'Entre $801 - $1,200' },
-                          { id: 'mas-1200', label: 'Más de $1,200' }
-                        ].map((rango) => (
-                          <button
-                            key={rango.id}
-                            type="button"
-                            onClick={() => setFormData({ ...formData, ingresosMensuales: rango.label })}
-                            className={`px-3 py-3 rounded-xl border text-sm font-semibold transition-all text-center flex items-center justify-center ${
-                              formData.ingresosMensuales === rango.label
-                                ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
-                                : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
-                            }`}
-                          >
-                            {rango.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                      {/* Situación Laboral */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* 1. Monto de Ingresos Mensuales Aproximado */}
                       <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">
-                          ¿Trabajas como dependiente, independiente, emprendedor, jubilado u otro? <span className="text-red-500">*</span>
+                          Monto de Ingresos Mensuales Aproximado ($) <span className="text-red-500">*</span>
                         </label>
-                        <div className="flex flex-wrap gap-2">
-                          {['Dependiente', 'Independiente', 'Emprendedor', 'Jubilado', 'Otro'].map((sit) => (
-                            <button
-                              key={sit}
-                              type="button"
-                              onClick={() => {
-                                setFormData({
-                                  ...formData,
-                                  situacionLaboral: sit,
-                                  tiempoEmpleo: sit === 'Dependiente' ? formData.tiempoEmpleo : ''
-                                });
-                              }}
-                              className={`px-3.5 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
-                                formData.situacionLaboral === sit
-                                  ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
-                                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
-                              }`}
-                            >
-                              {sit}
-                            </button>
-                          ))}
+                        <div className="relative">
+                          <select
+                            required
+                            value={formData.ingresosMensuales}
+                            onChange={(e) => setFormData({ ...formData, ingresosMensuales: e.target.value })}
+                            className={inputClass + " appearance-none cursor-pointer pr-10"}
+                          >
+                            <option value="" disabled>Seleccione un rango promedio</option>
+                            <option value="Menos de $500">Menos de $500</option>
+                            <option value="Entre $500 - $800">Entre $500 - $800</option>
+                            <option value="Entre $801 - $1,200">Entre $801 - $1,200</option>
+                            <option value="Más de $1,200">Más de $1,200</option>
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
                         </div>
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Indique el valor promedio de sus ingresos mensuales en dólares americanos.
+                        </span>
                       </div>
 
-                      {/* Escoge la opción que requieras */}
+                      {/* 2. Situación Laboral */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          ¿Cómo trabajas actualmente? <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            required
+                            value={formData.situacionLaboral}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData({
+                                ...formData,
+                                situacionLaboral: val,
+                                tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : ''
+                              });
+                            }}
+                            className={inputClass + " appearance-none cursor-pointer pr-10"}
+                          >
+                            <option value="" disabled>Seleccione su modalidad laboral</option>
+                            <option value="Dependiente">Dependiente (Bajo relación de dependencia)</option>
+                            <option value="Independiente">Independiente (Servicios profesionales / Freelance)</option>
+                            <option value="Emprendedor">Emprendedor (Negocio propio / Comercio)</option>
+                            <option value="Jubilado">Jubilado</option>
+                            <option value="Otro">Otro</option>
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </div>
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Actividad económica o modalidad de trabajo principal.
+                        </span>
+                      </div>
+
+                      {/* 3. Escoge la opción que requieras (Tipo de crédito) */}
                       <div>
                         <label className="block text-sm font-bold text-gray-700 mb-2">
                           Escoge la opción que requieras <span className="text-red-500">*</span>
                         </label>
-                        <div className="grid grid-cols-2 gap-3">
-                          {[
-                            { id: 'consumo', label: 'Crédito de consumo', desc: 'Personal o familiar' },
-                            { id: 'microcredito', label: 'Microcrédito', desc: 'Negocio o comercio' }
-                          ].map((tipo) => (
-                            <button
-                              key={tipo.id}
-                              type="button"
-                              onClick={() => setFormData({ ...formData, tipoCredito: tipo.label })}
-                              className={`p-3 rounded-xl border text-left transition-all ${
-                                formData.tipoCredito === tipo.label
-                                  ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
-                                  : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
-                              }`}
-                            >
-                              <div className="font-bold text-sm">{tipo.label}</div>
-                              <div className={`text-xs mt-0.5 ${formData.tipoCredito === tipo.label ? 'text-green-300' : 'text-gray-400'}`}>
-                                {tipo.desc}
-                              </div>
-                            </button>
-                          ))}
+                        <div className="relative">
+                          <select
+                            required
+                            value={formData.tipoCredito}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData({
+                                ...formData,
+                                tipoCredito: val,
+                                ruc: val === 'Microcrédito' ? formData.ruc : ''
+                              });
+                            }}
+                            className={inputClass + " appearance-none cursor-pointer pr-10"}
+                          >
+                            <option value="" disabled>Seleccione el tipo de crédito</option>
+                            <option value="Crédito de consumo">Crédito de consumo (Personal o familiar)</option>
+                            <option value="Microcrédito">Microcrédito (Negocio o comercio)</option>
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
                         </div>
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Crédito para gastos personales/familiares o inversión en negocio.
+                        </span>
                       </div>
-                    </div>
 
-                    {/* Despliegues condicionales según selección */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {/* Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? */}
+                      {/* 4. ¿Qué monto de crédito necesitas? */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          ¿Qué monto de crédito necesitas? ($ USD) <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+                          <input
+                            required
+                            type="tel"
+                            inputMode="numeric"
+                            placeholder="Ej. 3500"
+                            value={formData.montoCredito}
+                            onChange={(e) => {
+                              const val = e.target.value.replace(/\D/g, '');
+                              setFormData({ ...formData, montoCredito: val });
+                            }}
+                            className={inputClass + " pl-9"}
+                          />
+                        </div>
+                        <span className="text-xs text-gray-500 italic mt-1.5 block">
+                          Indique el valor solicitado en dólares americanos (solo números).
+                        </span>
+                      </div>
+
+                      {/* 5. Despliegue condicional si es dependiente */}
                       {formData.situacionLaboral === 'Dependiente' && (
                         <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
                           <label className="block text-sm font-bold text-[#002d14] mb-2">
                             Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? <span className="text-red-500">*</span>
                           </label>
-                          <div className="grid grid-cols-2 gap-3 mt-2">
-                            {['Menos de 1 año', 'Más de 1 año'].map((tiempo) => (
-                              <button
-                                key={tiempo}
-                                type="button"
-                                onClick={() => setFormData({ ...formData, tiempoEmpleo: tiempo })}
-                                className={`py-2.5 px-3 rounded-xl border text-sm font-semibold transition-all text-center ${
-                                  formData.tiempoEmpleo === tiempo
-                                    ? 'bg-[#002d14] text-white border-[#002d14] shadow'
-                                    : 'bg-white text-gray-700 border-gray-200 hover:border-[#00bc4c]'
-                                }`}
-                              >
-                                {tiempo}
-                              </button>
-                            ))}
+                          <div className="relative">
+                            <select
+                              required
+                              value={formData.tiempoEmpleo}
+                              onChange={(e) => setFormData({ ...formData, tiempoEmpleo: e.target.value })}
+                              className={inputClass + " appearance-none cursor-pointer pr-10 bg-white"}
+                            >
+                              <option value="" disabled>Seleccione tiempo en su empleo</option>
+                              <option value="Menos de 1 año">Menos de 1 año</option>
+                              <option value="Más de 1 año">Más de 1 año</option>
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </div>
                           </div>
+                          <span className="text-xs text-gray-500 italic mt-1.5 block">
+                            Requisito para validar estabilidad con las entidades financieras.
+                          </span>
                         </div>
                       )}
 
-                      {/* Si escoge Microcrédito: que se despliegue RUC */}
+                      {/* 6. Despliegue condicional si escoge Microcrédito: RUC */}
                       {formData.tipoCredito === 'Microcrédito' && (
                         <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
                           <label className="block text-sm font-bold text-[#002d14] mb-1">
-                            RUC (13 dígitos) <span className="text-red-500">*</span>
+                            RUC del negocio (13 dígitos) <span className="text-red-500">*</span>
                           </label>
                           <p className="text-xs text-gray-500 italic mb-2">
                             Ingrese su RUC de 13 dígitos para la evaluación del microcrédito.
@@ -500,29 +537,6 @@ export default function ContactoPage() {
                           </div>
                         </div>
                       )}
-                    </div>
-
-                    {/* ¿Qué monto de crédito necesitas? */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">
-                        ¿Qué monto de crédito necesitas? <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
-                        <input
-                          required
-                          type="tel"
-                          inputMode="numeric"
-                          placeholder="Ej. 3500"
-                          value={formData.montoCredito}
-                          onChange={(e) => {
-                            const val = e.target.value.replace(/\D/g, '');
-                            setFormData({ ...formData, montoCredito: val });
-                          }}
-                          className={inputClass + " pl-9"}
-                        />
-                      </div>
-                      <span className="text-xs text-gray-400 mt-1.5 block">Indique el valor solicitado en dólares americanos (solo números).</span>
                     </div>
                   </div>
 

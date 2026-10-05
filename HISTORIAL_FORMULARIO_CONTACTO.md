@@ -366,25 +366,27 @@ En el formulario original se utilizaban 3 campos genéricos de consulta empresar
 ---
 
 ### 3.2. Estado Actual (Bloque 3 Implementado)
-Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con lógica condicional reactiva de evaluación financiera.
+Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con menús desplegables institucionales homogéneos (`<select>`), eliminando por completo cualquier cúmulo de botones flotantes que desordenaban la interfaz en PC o sobrecargaban la pantalla en móviles.
 
 #### Nuevos Campos y Comportamientos:
 1. **`Monto de Ingresos Mensuales Aproximado ($) *`**:
-   - Selector interactivo de botones tipo píldora (*Menos de $500*, *Entre $500 - $800*, *Entre $801 - $1,200*, *Más de $1,200*).
+   - Menú select estilizado corporativo (`<select>` con flecha personalizada chevron), que en móvil despliega el selector nativo (iOS Wheel / Android Sheet) y en PC encaja simétricamente con el resto del formulario.
+   - Opciones: *Menos de $500*, *Entre $500 - $800*, *Entre $801 - $1,200*, *Más de $1,200*.
    - Subtexto: *Indique el valor promedio de sus ingresos mensuales en dólares americanos.*
-2. **`Situación Laboral *`**:
-   - Botones de selección rápida (*Dependiente*, *Independiente*, *Emprendedor*, *Jubilado*, *Otro*).
-3. **`Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? *`**:
-   - **Despliegue reactivo:** Solo visible cuando se selecciona `Dependiente`.
-   - Opciones: *Menos de 1 año* o *Más de 1 año*.
-4. **`Escoge la opción que requieras *`**:
-   - Tarjetas interactivas: *Crédito de consumo* (Personal o familiar) o *Microcrédito* (Negocio o comercio).
-5. **`Despliegue condicional de RUC (13 dígitos) *`**:
-   - **Despliegue reactivo:** Se activa automáticamente al hacer clic en *Microcrédito*.
+2. **`¿Cómo trabajas actualmente? (Situación Laboral) *`**:
+   - Menú select estilizado corporativo que reemplaza los 5 botones desalineados previos:
+     *Dependiente (Bajo relación de dependencia)*, *Independiente (Servicios profesionales / Freelance)*, *Emprendedor (Negocio propio / Comercio)*, *Jubilado*, *Otro*.
+3. **`Escoge la opción que requieras (Tipo de Crédito) *`**:
+   - Menú select corporativo ordenado sin botones confusos:
+     *Crédito de consumo (Personal o familiar)* o *Microcrédito (Negocio o comercio)*.
+4. **`¿Qué monto de crédito necesitas? ($ USD) *`**:
+   - Entrada numérica monetaria con prefijo `$ USD` y filtrado que admite únicamente números.
+5. **`Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? *`**:
+   - **Despliegue reactivo condicional:** Aparece en un contenedor destacado únicamente si la situación laboral es `Dependiente`. Selector desplegable: *Menos de 1 año* o *Más de 1 año*.
+6. **`Despliegue condicional de RUC (13 dígitos) *`**:
+   - **Despliegue reactivo:** Se activa únicamente al seleccionar *Microcrédito*.
    - Validación de 13 dígitos numéricos (`inputMode="numeric"`, `maxLength={13}`).
    - Contador en vivo con check verde al completar los 13 dígitos.
-6. **`¿Qué monto de crédito necesitas? *`**:
-   - Entrada numérica monetaria con prefijo `$ USD` y filtrado para admitir únicamente números.
 
 #### Código Actual en JSX:
 ```tsx
@@ -396,114 +398,170 @@ Se estructuró la sección formal **3. INFORMACIÓN ECONÓMICA** con lógica con
     </h2>
   </div>
 
-  {/* Monto de Ingresos Mensuales Aproximado ($) * */}
-  <div>
-    <label className="block text-sm font-bold text-gray-700 mb-1">
-      Monto de Ingresos Mensuales Aproximado ($) <span className="text-red-500">*</span>
-    </label>
-    <p className="text-xs text-gray-500 italic mb-3">
-      Indique el valor promedio de sus ingresos mensuales en dólares americanos.
-    </p>
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {['Menos de $500', 'Entre $500 - $800', 'Entre $801 - $1,200', 'Más de $1,200'].map((rango) => (
-        <button
-          key={rango}
-          type="button"
-          onClick={() => setFormData({ ...formData, ingresosMensuales: rango })}
-          className={`px-3 py-3 rounded-xl border text-sm font-semibold transition-all text-center flex items-center justify-center ${
-            formData.ingresosMensuales === rango
-              ? 'bg-[#002d14] text-white border-[#002d14] shadow-md shadow-[#002d14]/20'
-              : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-white hover:border-[#00bc4c]/40'
-          }`}
-        >
-          {rango}
-        </button>
-      ))}
-    </div>
-  </div>
-
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-    {/* Situación Laboral */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* 1. Monto de Ingresos Mensuales Aproximado */}
     <div>
       <label className="block text-sm font-bold text-gray-700 mb-2">
-        ¿Trabajas como dependiente, independiente, emprendedor, jubilado u otro? <span className="text-red-500">*</span>
+        Monto de Ingresos Mensuales Aproximado ($) <span className="text-red-500">*</span>
       </label>
-      <div className="flex flex-wrap gap-2">
-        {['Dependiente', 'Independiente', 'Emprendedor', 'Jubilado', 'Otro'].map((sit) => (
-          <button
-            key={sit}
-            type="button"
-            onClick={() => setFormData({ ...formData, situacionLaboral: sit, tiempoEmpleo: sit === 'Dependiente' ? formData.tiempoEmpleo : '' })}
-            className={`px-3.5 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
-              formData.situacionLaboral === sit ? 'bg-[#002d14] text-white border-[#002d14]' : 'bg-gray-50 text-gray-700 border-gray-200'
-            }`}
-          >
-            {sit}
-          </button>
-        ))}
+      <div className="relative">
+        <select
+          required
+          value={formData.ingresosMensuales}
+          onChange={(e) => setFormData({ ...formData, ingresosMensuales: e.target.value })}
+          className={inputClass + " appearance-none cursor-pointer pr-10"}
+        >
+          <option value="" disabled>Seleccione un rango promedio</option>
+          <option value="Menos de $500">Menos de $500</option>
+          <option value="Entre $500 - $800">Entre $500 - $800</option>
+          <option value="Entre $801 - $1,200">Entre $801 - $1,200</option>
+          <option value="Más de $1,200">Más de $1,200</option>
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
       </div>
+      <span className="text-xs text-gray-500 italic mt-1.5 block">Indique el valor promedio de sus ingresos mensuales en dólares americanos.</span>
     </div>
 
-    {/* Tipo de Crédito */}
+    {/* 2. Situación Laboral */}
+    <div>
+      <label className="block text-sm font-bold text-gray-700 mb-2">
+        ¿Cómo trabajas actualmente? <span className="text-red-500">*</span>
+      </label>
+      <div className="relative">
+        <select
+          required
+          value={formData.situacionLaboral}
+          onChange={(e) => {
+            const val = e.target.value;
+            setFormData({ ...formData, situacionLaboral: val, tiempoEmpleo: val === 'Dependiente' ? formData.tiempoEmpleo : '' });
+          }}
+          className={inputClass + " appearance-none cursor-pointer pr-10"}
+        >
+          <option value="" disabled>Seleccione su modalidad laboral</option>
+          <option value="Dependiente">Dependiente (Bajo relación de dependencia)</option>
+          <option value="Independiente">Independiente (Servicios profesionales / Freelance)</option>
+          <option value="Emprendedor">Emprendedor (Negocio propio / Comercio)</option>
+          <option value="Jubilado">Jubilado</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
+      </div>
+      <span className="text-xs text-gray-500 italic mt-1.5 block">Actividad económica o modalidad de trabajo principal.</span>
+    </div>
+
+    {/* 3. Escoge la opción que requieras (Tipo de crédito) */}
     <div>
       <label className="block text-sm font-bold text-gray-700 mb-2">
         Escoge la opción que requieras <span className="text-red-500">*</span>
       </label>
-      <div className="grid grid-cols-2 gap-3">
-        {[{ id: 'consumo', label: 'Crédito de consumo', desc: 'Personal o familiar' }, { id: 'microcredito', label: 'Microcrédito', desc: 'Negocio o comercio' }].map((tipo) => (
-          <button
-            key={tipo.id}
-            type="button"
-            onClick={() => setFormData({ ...formData, tipoCredito: tipo.label })}
-            className={`p-3 rounded-xl border text-left transition-all ${
-              formData.tipoCredito === tipo.label ? 'bg-[#002d14] text-white border-[#002d14]' : 'bg-gray-50 text-gray-700 border-gray-200'
-            }`}
-          >
-            <div className="font-bold text-sm">{tipo.label}</div>
-            <div className={`text-xs mt-0.5 ${formData.tipoCredito === tipo.label ? 'text-green-300' : 'text-gray-400'}`}>{tipo.desc}</div>
-          </button>
-        ))}
+      <div className="relative">
+        <select
+          required
+          value={formData.tipoCredito}
+          onChange={(e) => {
+            const val = e.target.value;
+            setFormData({ ...formData, tipoCredito: val, ruc: val === 'Microcrédito' ? formData.ruc : '' });
+          }}
+          className={inputClass + " appearance-none cursor-pointer pr-10"}
+        >
+          <option value="" disabled>Seleccione el tipo de crédito</option>
+          <option value="Crédito de consumo">Crédito de consumo (Personal o familiar)</option>
+          <option value="Microcrédito">Microcrédito (Negocio o comercio)</option>
+        </select>
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+        </div>
       </div>
+      <span className="text-xs text-gray-500 italic mt-1.5 block">Crédito para gastos personales/familiares o inversión en negocio.</span>
     </div>
-  </div>
 
-  {/* Despliegues condicionales */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* 4. ¿Qué monto de crédito necesitas? */}
+    <div>
+      <label className="block text-sm font-bold text-gray-700 mb-2">
+        ¿Qué monto de crédito necesitas? ($ USD) <span className="text-red-500">*</span>
+      </label>
+      <div className="relative">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
+        <input
+          required
+          type="tel"
+          inputMode="numeric"
+          placeholder="Ej. 3500"
+          value={formData.montoCredito}
+          onChange={(e) => {
+            const val = e.target.value.replace(/\D/g, '');
+            setFormData({ ...formData, montoCredito: val });
+          }}
+          className={inputClass + " pl-9"}
+        />
+      </div>
+      <span className="text-xs text-gray-400 mt-1.5 block">Indique el valor solicitado en dólares americanos (solo números).</span>
+    </div>
+
+    {/* 5. Despliegue condicional si es dependiente */}
     {formData.situacionLaboral === 'Dependiente' && (
       <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
         <label className="block text-sm font-bold text-[#002d14] mb-2">
           Si es dependiente: ¿cuánto tiempo llevas en tu empleo actual? <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-2 gap-3 mt-2">
-          {['Menos de 1 año', 'Más de 1 año'].map((tiempo) => (
-            <button key={tiempo} type="button" onClick={() => setFormData({ ...formData, tiempoEmpleo: tiempo })} className={`py-2.5 px-3 rounded-xl border text-sm font-semibold transition-all ${formData.tiempoEmpleo === tiempo ? 'bg-[#002d14] text-white border-[#002d14]' : 'bg-white text-gray-700 border-gray-200'}`}>
-              {tiempo}
-            </button>
-          ))}
+        <div className="relative">
+          <select
+            required
+            value={formData.tiempoEmpleo}
+            onChange={(e) => setFormData({ ...formData, tiempoEmpleo: e.target.value })}
+            className={inputClass + " appearance-none cursor-pointer pr-10 bg-white"}
+          >
+            <option value="" disabled>Seleccione tiempo en su empleo</option>
+            <option value="Menos de 1 año">Menos de 1 año</option>
+            <option value="Más de 1 año">Más de 1 año</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+          </div>
         </div>
+        <span className="text-xs text-gray-500 italic mt-1.5 block">Requisito para validar estabilidad con las entidades financieras.</span>
       </div>
     )}
 
+    {/* 6. Despliegue condicional si escoge Microcrédito: RUC */}
     {formData.tipoCredito === 'Microcrédito' && (
       <div className="bg-[#f0f7f3] border border-[#00bc4c]/30 rounded-2xl p-4 transition-all">
         <label className="block text-sm font-bold text-[#002d14] mb-1">
-          RUC (13 dígitos) <span className="text-red-500">*</span>
+          RUC del negocio (13 dígitos) <span className="text-red-500">*</span>
         </label>
         <p className="text-xs text-gray-500 italic mb-2">Ingrese su RUC de 13 dígitos para la evaluación del microcrédito.</p>
-        <input required type="tel" inputMode="numeric" pattern="[0-9]{13}" maxLength={13} placeholder="Ej. 1712345678001" value={formData.ruc} onChange={(e) => setFormData({ ...formData, ruc: e.target.value.replace(/\D/g, '').slice(0, 13) })} className={inputClass + " bg-white"} />
+        <input
+          required
+          type="tel"
+          inputMode="numeric"
+          pattern="[0-9]{13}"
+          maxLength={13}
+          placeholder="Ej. 1712345678001"
+          value={formData.ruc}
+          onChange={(e) => {
+            const val = e.target.value.replace(/\D/g, '').slice(0, 13);
+            setFormData({ ...formData, ruc: val });
+          }}
+          className={inputClass + " bg-white"}
+        />
+        <div className="flex justify-between items-center mt-1.5">
+          <span className="text-xs text-gray-400">13 dígitos numéricos</span>
+          {formData.ruc && formData.ruc.length < 13 && (
+            <span className="text-xs text-amber-600 font-medium">{formData.ruc.length}/13 dígitos</span>
+          )}
+          {formData.ruc && formData.ruc.length === 13 && (
+            <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
+              RUC completo
+            </span>
+          )}
+        </div>
       </div>
     )}
-  </div>
-
-  {/* Monto solicitado */}
-  <div>
-    <label className="block text-sm font-bold text-gray-700 mb-2">
-      ¿Qué monto de crédito necesitas? <span className="text-red-500">*</span>
-    </label>
-    <div className="relative">
-      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>
-      <input required type="tel" inputMode="numeric" placeholder="Ej. 3500" value={formData.montoCredito} onChange={(e) => setFormData({ ...formData, montoCredito: e.target.value.replace(/\D/g, '') })} className={inputClass + " pl-9"} />
-    </div>
   </div>
 </div>
 ```

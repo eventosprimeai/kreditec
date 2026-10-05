@@ -912,6 +912,12 @@ Para transformar este proceso en una experiencia digital Fintech de alto impacto
   - Distintivo visual: Punto verde esmeralda pulsante sincronizado con la estética de KREDITEC.
 - **Botón para Nueva Solicitud:** Permite reiniciar el formulario para ingresar un nuevo trámite sin recargar la página.
 
+#### 6. Botón de Envío Oficial hacia HubSpot
+- **Acción y Conexión:** Este botón (`<button type="submit">`) es el disparador oficial del evento `onSubmit` (`handleSubmit`). Valida todos los campos obligatorios, el algoritmo matemático de cédula (Módulo 10), el formato celular ecuatoriano (10 dígitos), las casillas de autorización LOPDP y compila los 5 bloques de datos con su traza de auditoría hacia **HubSpot Forms API**.
+- **Texto en Reposo:** `Enviar Solicitud` (reemplazando el texto genérico previo *"Optimice su colocación hoy mismo"*).
+- **Texto en Estado de Carga (`isSubmitting`):** `Enviando Solicitud...` (reemplazando *"Procesando Requerimiento..."*).
+- **Estilo:** Botón primordial con gradiente verde institucional Kreditec, sombra luminosa esmeralda (`shadow-[var(--color-accent)]/20`) y micro-animación de elevación al hover.
+
 ---
 
 ### 6.3. Procedimiento de Rollback (Bloque 6)

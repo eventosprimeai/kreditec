@@ -880,7 +880,7 @@ export default function ContactoPage() {
                     disabled={isSubmitting}
                     className={`w-full py-4 text-lg mt-8 shadow-lg shadow-[var(--color-accent)]/20 hover:-translate-y-1 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                   >
-                    {isSubmitting ? 'Procesando Requerimiento...' : 'Optimice su colocación hoy mismo'}
+                    {isSubmitting ? 'Enviando Solicitud...' : 'Enviar Solicitud'}
                   </Button>
                 </form>
               )}

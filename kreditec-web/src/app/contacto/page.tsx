@@ -10,7 +10,10 @@ const inputClass =
 
 export default function ContactoPage() {
   const [formData, setFormData] = useState({
-    name: '',
+    nombres: '',
+    apellidos: '',
+    cedula: '',
+    fechaNacimiento: '',
     email: '',
     institution: '',
     cargo: '',
@@ -42,9 +45,8 @@ export default function ContactoPage() {
     const HUBSPOT_PORTAL_ID = '51170037';
     const HUBSPOT_FORM_ID   = '9395a983-3bc8-42af-87e9-bc9d360361bc';
 
-    const nameParts = formData.name.trim().split(' ');
-    const firstname = nameParts[0] || '';
-    const lastname  = nameParts.slice(1).join(' ') || '';
+    const firstname = formData.nombres.trim();
+    const lastname  = formData.apellidos.trim();
 
     try {
       const res = await fetch(
@@ -109,28 +111,110 @@ export default function ContactoPage() {
                   </p>
                   <Button onClick={() => {
                     setIsSuccess(false);
-                    setFormData({ name: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false, privacyDatos: false });
+                    setFormData({ nombres: '', apellidos: '', cedula: '', fechaNacimiento: '', email: '', institution: '', cargo: '', telefono: '', interes: '', fecha: '', mensaje: '', privacy: false, privacyDatos: false });
                   }}>
                     Enviar Otro Mensaje
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Nombre */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-700 mb-2">
-                        Nombre y Apellido <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        required
-                        type="text"
-                        placeholder="Ej. María García"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className={inputClass}
-                      />
+                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                  {/* ── 1. DATOS DE IDENTIFICACIÓN ── */}
+                  <div className="space-y-6">
+                    <div className="bg-[#e8f5ed] border-l-4 border-[#00bc4c] px-4 py-2.5 rounded-r-xl">
+                      <h2 className="text-sm md:text-base font-bold text-[#002d14] tracking-wide uppercase">
+                        1. DATOS DE IDENTIFICACIÓN
+                      </h2>
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* Nombres */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Nombres <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          placeholder="Ej. Juan Carlos"
+                          value={formData.nombres}
+                          onChange={(e) => setFormData({ ...formData, nombres: e.target.value })}
+                          className={inputClass}
+                        />
+                        <span className="text-xs text-gray-400 mt-1.5 block">Texto</span>
+                      </div>
+
+                      {/* Apellidos */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Apellidos <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="text"
+                          placeholder="Ej. Pérez Rodríguez"
+                          value={formData.apellidos}
+                          onChange={(e) => setFormData({ ...formData, apellidos: e.target.value })}
+                          className={inputClass}
+                        />
+                        <span className="text-xs text-gray-400 mt-1.5 block">Texto</span>
+                      </div>
+
+                      {/* Cédula de Identidad */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Cédula de Identidad (10 dígitos) <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="tel"
+                          inputMode="numeric"
+                          pattern="[0-9]{10}"
+                          maxLength={10}
+                          placeholder="Solo números de 10 dígitos"
+                          value={formData.cedula}
+                          onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({ ...formData, cedula: val });
+                          }}
+                          className={inputClass}
+                        />
+                        <div className="flex justify-between items-center mt-1.5">
+                          <span className="text-xs text-gray-400">Solo números de 10 dígitos</span>
+                          {formData.cedula && formData.cedula.length < 10 && (
+                            <span className="text-xs text-amber-600 font-medium">
+                              {formData.cedula.length}/10 dígitos
+                            </span>
+                          )}
+                          {formData.cedula && formData.cedula.length === 10 && (
+                            <span className="text-xs text-green-600 font-semibold flex items-center gap-1">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                              </svg>
+                              10 dígitos completos
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Fecha de nacimiento */}
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">
+                          Fecha de nacimiento <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          required
+                          type="date"
+                          max={new Date().toISOString().split('T')[0]}
+                          value={formData.fechaNacimiento}
+                          onChange={(e) => setFormData({ ...formData, fechaNacimiento: e.target.value })}
+                          className={inputClass + " cursor-pointer"}
+                        />
+                        <span className="text-xs text-gray-400 mt-1.5 block">Desplegar calendario</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
 
                     {/* Email */}
                     <div>
